@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калмыкия — форум, праздники и традиции | Путь Дхармы</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container flex-between">
+            <a href="index.html" class="logo flex-center">
+                <i data-lucide="compass" class="icon-primary"></i>
+                <span data-i18n="site.name">Путь Дхармы</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" class="active" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button
+                    class="nav-toggle"
+                    type="button"
+                    data-mobile-nav-toggle
+                    aria-expanded="false"
+                    data-i18n-aria-label="ui.menu"
+                    data-i18n-title="ui.menu"
+                    aria-label="Меню"
+                    title="Меню"
+                >
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-nav-backdrop" data-mobile-nav-backdrop></div>
+        <div class="mobile-nav-panel" data-mobile-nav-panel>
+            <ul>
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" class="active" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container py-80">
+        <section class="kalm-hero animate-slide-up">
+            <div class="kalm-hero-content">
+                <span class="kalm-badge">Калмыкия и буддизм</span>
+                <h1>Калмыкия: степь, народ и буддийская традиция</h1>
+                <p class="subtitle" style="margin-top: 8px;">Единственный регион Европы, где тибетский буддизм — часть исторической идентичности. Здесь переплетаются кочевая культура ойратов и учение школы гелуг.</p>
+            </div>
+        </section>
+
+        <nav class="kalm-subnav animate-slide-up" aria-label="Разделы страницы">
+            <a href="#kalm-about">О регионе</a>
+            <a href="#kalm-forum">III форум</a>
+            <a href="#kalm-holidays">Праздники и традиции</a>
+        </nav>
+
+        <section id="kalm-about" class="kalm-section kalm-about-block animate-slide-up">
+            <div class="kalm-about-grid">
+                <div class="kalm-about-visual">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Burkhan_Bakshin_Altan_Sume.jpg/960px-Burkhan_Bakshin_Altan_Sume.jpg" alt="Центральный хурул Золотая обитель Будды Шакьямуни в Элисте" loading="lazy">
+                    <p class="kalm-about-caption">Центральный хурул «Золотая обитель Будды Шакьямуни», Элиста.</p>
+                </div>
+                <div class="kalm-about-text">
+                    <h2 class="kalm-section-title">Кто такие калмыки и как здесь живёт буддизм</h2>
+                    <p>Калмыки — ойратский народ, исторически связанный с кочевой культурой Прикаспия и Поволжья. С XVII века в среде калмыцкой знати и духовенства укрепилась линия тибетского буддизма в традиции <strong>гелуг</strong> («жёлтая шапка»). После возвращения из ссылки (1990-е) республика заново отстроила храмы и восстановила институт лам.</p>
+                    <p>Сегодня буддизм в Калмыкии — не только религия, но и язык культуры: праздники, этика гостеприимства, уважение к старшим и память о общей истории.</p>
+                    <ul class="kalm-about-list">
+                        <li><strong>Регион.</strong> Республика Калмыкия, столица — Элиста.</li>
+                        <li><strong>Хурул.</strong> Главный храм республики — крупнейший буддийский комплекс в России и Европе по масштабу.</li>
+                        <li><strong>Община.</strong> Действуют буддийские общины, воскресные школы, культурные и просветительские проекты.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="kalm-facts-strip">
+                <h3 class="kalm-facts-title">Интересные факты</h3>
+                <div class="kalm-facts-grid">
+                    <article class="kalm-fact-card">
+                        <span class="kalm-fact-num">01</span>
+                        <p><strong>Европейский буддизм.</strong> Калмыкия — единственный субъект РФ, где буддизм традиционно исповедует значительная часть населения.</p>
+                    </article>
+                    <article class="kalm-fact-card">
+                        <span class="kalm-fact-num">02</span>
+                        <p><strong>108 ступ.</strong> Вокруг «Золотой обители» символически расположены 108 субурганов — число, важное в буддийской символике.</p>
+                    </article>
+                    <article class="kalm-fact-card">
+                        <span class="kalm-fact-num">03</span>
+                        <p><strong>Зул и Цонкапа.</strong> Главный зимний праздник Зул связан с памятью основателя школы гелуг — Ламы Цонкапы.</p>
+                    </article>
+                    <article class="kalm-fact-card">
+                        <span class="kalm-fact-num">04</span>
+                        <p><strong>Элиста и форумы.</strong> В столице проходят международные буддийские форумы с участием стран Азии и регионов России.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="kalm-forum" class="kalm-section kalm-branch-section">
+            <div class="kalm-forum-track">
+                <header class="kalm-branch-header kalm-branch-header--dharma animate-slide-up">
+                    <div class="kalm-branch-header__ornament" aria-hidden="true">
+                        <span class="kalm-dharma-wheel" title="Дхармачакра — колесо учения"></span>
+                    </div>
+                    <p class="kalm-branch-header__eyebrow">Дхармачакра · путь форума</p>
+                    <h2 class="kalm-section-title kalm-branch-header__title">III Международный буддийский форум</h2>
+                    <p class="kalm-section-subtitle kalm-branch-header__subtitle">Элиста, 25–28 сентября 2025. Пленарные заседания, круглые столы, выставки и национальные мероприятия. Ниже — этапы как <strong>поворот колеса</strong>: от встречи участников к просветлению дискуссий и к <strong>сострадательным итогам</strong> для общин и регионов.</p>
+                </header>
+
+                <div class="kalm-source-bar kalm-source-bar--dharma animate-slide-up">
+                    <i data-lucide="newspaper" class="kalm-source-bar__icon" aria-hidden="true"></i>
+                    <span class="kalm-source-label">Материалы в СМИ</span>
+                    <a href="https://ria.ru/20250925/elista-2044443100.html" target="_blank" rel="noopener noreferrer">РИА Новости</a>
+                    <a href="https://riakalm.ru/mbf-2025/49572-vtoroj-den-iii-mezhdunarodnogo-buddijskogo-foruma-v-kalmykii-kakim-on-byl" target="_blank" rel="noopener noreferrer">РИА Калмыкия</a>
+                    <a href="https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/v-eliste-nachalsya-iii-mezhdunarodnyy-buddiyskiy-forum/" target="_blank" rel="noopener noreferrer">Нацпроект «Туризм»</a>
+                </div>
+
+                <div class="kalm-forum-video-wide kalm-forum-video-wide--dharma animate-slide-up">
+                    <div class="kalm-forum-video-wide__head">
+                        <i data-lucide="clapperboard" class="kalm-forum-video-wide__icon" aria-hidden="true"></i>
+                        <p class="kalm-video-label">Сюжет о Калмыкии и роли буддизма (федеральный выпуск, 2025)</p>
+                    </div>
+                    <div class="kalm-embed kalm-embed--dharma kalm-embed--rutube">
+                        <iframe src="https://rutube.ru/play/embed/f8e2b8ea2f74b7219f76b99084e98280" title="Калмыкия и буддизм — сюжет национального проекта" allow="clipboard-write; autoplay" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <p class="kalm-video-note kalm-video-note--dharma">Источник: канал «Национальный Акцент» на Rutube. Полные репортажи о форуме ищите также на каналах <strong>РИА Новости</strong> и <strong>РИА Калмыкия</strong>.</p>
+                </div>
+
+            <div class="kalm-forum-flow kalm-forum-flow--samsara animate-slide-up" id="kalmForumFlow">
+                <div class="samsara-wheel" aria-label="Колесо этапов форума">
+                    <div class="samsara-wheel__rings" aria-hidden="true"></div>
+                    <div class="samsara-wheel__spokes" aria-hidden="true"></div>
+                    <div class="samsara-wheel__hub">
+                        <i data-lucide="sun-medium"></i>
+                        <span>Колесо форума</span>
+                    </div>
+
+                    <article class="samsara-node" style="--node-index: 0;" data-kalm-step>
+                        <div class="samsara-node__dot"><i data-lucide="users"></i></div>
+                        <div class="samsara-node__card">
+                            <span class="samsara-node__tag">Этап 1</span>
+                            <h3>Подготовка и приезд участников</h3>
+                            <p>Регистрация делегаций, согласование панелей и культурной программы, встреча гостей из десятков стран.</p>
+                        </div>
+                    </article>
+
+                    <article class="samsara-node" style="--node-index: 1;" data-kalm-step>
+                        <div class="samsara-node__dot"><i data-lucide="landmark"></i></div>
+                        <div class="samsara-node__card">
+                            <span class="samsara-node__tag">Этап 2</span>
+                            <h3>Открытие у центрального хурула</h3>
+                            <p>Торжественные события проходят рядом с главным духовным символом республики — «Золотой обителью Будды Шакьямуни».</p>
+                        </div>
+                    </article>
+
+                    <article class="samsara-node" style="--node-index: 2;" data-kalm-step>
+                        <div class="samsara-node__dot"><i data-lucide="book-open"></i></div>
+                        <div class="samsara-node__card">
+                            <span class="samsara-node__tag">Этап 3</span>
+                            <h3>Дискуссии и круглые столы</h3>
+                            <p>Темы включают сохранение монашества, философию буддизма, традиционную медицину, развитие буддизма в России и диалог культур.</p>
+                        </div>
+                    </article>
+
+                    <article class="samsara-node" style="--node-index: 3;" data-kalm-step>
+                        <div class="samsara-node__dot"><i data-lucide="flower-2"></i></div>
+                        <div class="samsara-node__card">
+                            <span class="samsara-node__tag">Этап 4</span>
+                            <h3>Культура и открытые лекции в Элисте</h3>
+                            <p>Выставки, концерты и национальные мероприятия идут вместе с просветительскими встречами в традиции калмыцкого буддизма.</p>
+                        </div>
+                    </article>
+
+                    <article class="samsara-node" style="--node-index: 4;" data-kalm-step>
+                        <div class="samsara-node__dot"><i data-lucide="globe-2"></i></div>
+                        <div class="samsara-node__card">
+                            <span class="samsara-node__tag">Этап 5</span>
+                            <h3>Итоги и совместные планы</h3>
+                            <p>Подведение итогов, объявление просветительских и молодёжных инициатив, укрепление международных контактов.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section id="kalm-holidays" class="kalm-section">
+            <h2 class="kalm-section-title animate-slide-up">Калмыцкие праздники и традиции</h2>
+            <p class="kalm-section-subtitle animate-slide-up">Календарные праздники и повседневные обычаи — в одном разделе, с иллюстрациями к каждой теме.</p>
+            <div class="holiday-grid">
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Preparing_butter_lamps_at_Thag-Thok_Gompa._2010.jpg/960px-Preparing_butter_lamps_at_Thag-Thok_Gompa._2010.jpg" alt="Масляные лампы — символ света" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="flame"></i></div>
+                        <h3>Зул</h3>
+                        <p>Калмыцкий Новый год и день «общего возраста»: зажигают лампады «насн», чтут старших, просят благополучия. Связан с памятью о Ламе Цонкапе.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://riakalm.ru/images/MARCH/0303.jpg" alt="Праздничный обряд в честь лунного Нового года" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="moon"></i></div>
+                        <h3>Цаган Сар</h3>
+                        <p>«Белый месяц»: весна, чистота дома и помыслов, визиты к родным, борцоки и чай. Аналог весеннего обновления у родственных народов степи.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Musicians_at_Naadam_2023.jpg/960px-Musicians_at_Naadam_2023.jpg" alt="Летний праздник в степи" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="sun"></i></div>
+                        <h3>Ур Сар</h3>
+                        <p>Летнее обновление, благодарность природе и стаду, общинные собрания на открытом воздухе, спорт и музыка.</p>
+                    </div>
+                </article>
+
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Suutei_tsai_at_Inner_Mongolia_Jinjiang_International_Hotel_%2820171007092308%29.jpg/960px-Suutei_tsai_at_Inner_Mongolia_Jinjiang_International_Hotel_%2820171007092308%29.jpg" alt="Молочный чай с солью — близкий по рецепту напиток к джомбе" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="coffee"></i></div>
+                        <h3>Джомба</h3>
+                        <p>Калмыцкий чай с молоком, солью, иногда мускатом и маслом — ежедневный ритуал гостеприимства. Первую пиалу нередко подносят на алтарь (Деедж) в знак уважения к традиции.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Prayer_drum_in_the_St._Petersburg_Buddhist_temple.jpg/960px-Prayer_drum_in_the_St._Petersburg_Buddhist_temple.jpg" alt="Молитвенный барабан в буддийском храме России" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="refresh-cw"></i></div>
+                        <h3>Вращение кюрде</h3>
+                        <p>Обход хурула по часовой стрелке с вращением молитвенных барабанов: внутри — свитки с мантрами. Считается благим делом и напоминанием внимательности.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://media.nazaccent.ru/cache/f2/ae/f2ae80826d94cd54224630057786d45a.jpg" alt="Молитвенные флажки лунгта в горах" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="flag"></i></div>
+                        <h3>Киштн</h3>
+                        <p>Цветные молитвенные флажки с текстами вывешивают на ветру: движение воздуха «читает» мантры и отсылает благие пожелания всем существам.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Khata.jpg/960px-Khata.jpg" alt="Тибетские хадаки — шёлковые шарфы для подношения" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="hand-heart"></i></div>
+                        <h3>Подношение хадака</h3>
+                        <p>Шёлковый шарф (часто белый или голубой) преподносят ламе, старшим и почётным гостям — как знак уважения, благодарности и чистых намерений.</p>
+                    </div>
+                </article>
+                <article class="holiday-card kalm-card-item animate-slide-up holiday-card--photo-only">
+                    <div class="holiday-card__media">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Mongolian_Folklore_1.JPG/960px-Mongolian_Folklore_1.JPG" alt="Монгольские музыканты и фольклор" loading="lazy">
+                    </div>
+                    <div class="holiday-content">
+                        <div class="kalm-card-icon"><i data-lucide="music"></i></div>
+                        <h3>Шаваши и домбра</h3>
+                        <p>Горловое пение шаваши, домбра и эпос «Джангар» — неотъемлемая часть народных сборищ и праздников, связанная с калмыцкой и степной культурой.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+   <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3 data-i18n="site.name">Путь Дхармы</h3>
+                <p>Откройте для себя богатство буддийских традиций.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer.sections">Разделы</h4>
+                <ul>
+                    <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                    <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                    <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                    <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                    <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+                </ul>
+            </div>
+            <div class="footer-quote">
+                <h4 data-i18n="footer.wisdom">Мудрость дня</h4>
+                <p><i id="daily-quote">"Ты не можешь путешествовать по пути, пока не станешь самим путем."</i></p>
+            </div>
+        </div>
+    </footer>
+
+     <script>
+        lucide.createIcons();
+        
+        const quotes = [
+            { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
+            { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
+            { text: "Мудрость — это умение видеть взаимосвязь всех вещей.", author: "Тит Нат Хан" },
+            { text: "Сострадание — это не роскошь, а необходимость для выживания человечества.", author: "Далай-лама XIV" },
+            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" },
+            { text: "Не совершай зла, твори добро, очищай свой ум — таково учение Будды.", author: "Дхаммапада" },
+            { text: "Мир начинается с улыбки.", author: "Тит Нат Хан" },
+            { text: "Гнев не решает проблем, он только создает новые.", author: "Далай-лама XIV" },
+            { text: "Ваша цель в жизни — быть счастливым.", author: "Далай-лама XIV" },
+            { text: "Каждый день — это новое рождение. Каждое утро — это новое начало.", author: "Буддийская мудрость" }
+        ];
+        
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+        
+        const dailyQuoteElement = document.getElementById('daily-quote');
+        if (dailyQuoteElement) {
+            const randomQuote = getRandomQuote();
+            dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
+        }
+
+        (function initKalmForumFlow() {
+            const root = document.getElementById('kalmForumFlow');
+            if (!root) return;
+
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const steps = root.querySelectorAll('[data-kalm-step]');
+
+            if (!prefersReduced && steps.length) {
+                root.classList.add('kalm-forum-flow--enhanced');
+                const io = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) entry.target.classList.add('kalm-forum-step--inview');
+                        });
+                    },
+                    { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+                );
+                steps.forEach((step) => io.observe(step));
+            }
+
+            function updateWheelProgress() {
+                const rect = root.getBoundingClientRect();
+                const vh = window.innerHeight || 1;
+                const top = rect.top;
+                const h = rect.height;
+                if (h <= 0) return;
+                const scrollProgress = (vh * 0.4 - top) / h;
+                const t = Math.max(0, Math.min(1, scrollProgress));
+                root.style.setProperty('--wheel-progress', String(t));
+            }
+
+            if (!prefersReduced) {
+                window.addEventListener('scroll', updateWheelProgress, { passive: true });
+                window.addEventListener('resize', updateWheelProgress);
+                updateWheelProgress();
+            } else {
+                root.style.setProperty('--wheel-progress', '1');
+            }
+        })();
+
+    </script>
+
+    <div class="ai-chatbot" id="aiChatbot">
+        <button class="chat-toggle" id="chatToggle">
+            <i data-lucide="message-circle"></i>
+            <span data-i18n="ui.askWisdom">Спросите у ИИ</span>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4>🧘 Буддийский наставник (AI)</h4>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <button id="chatSend">
+                    <i data-lucide="send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
+        <i data-lucide="arrow-up"></i>
+    </button>
+    <script src="lotus-bg.js"></script>
+    <script src="site-ui.js"></script>
+    <script src="back-to-top.js"></script>
+    <script src="config.local.js"></script>
+    <script src="ai-chatbot.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

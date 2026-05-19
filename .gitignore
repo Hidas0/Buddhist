@@ -1,0 +1,11 @@
+# Медиа хранятся в облаке (Яндекс Object Storage), не в GitHub
+video/
+audio/
+
+# Секреты (ключ OpenRouter)
+config.local.js
+
+# Служебное
+.vscode/
+.DS_Store
+Thumbs.db

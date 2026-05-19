@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медиа - Путь Дхармы</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container flex-between">
+            <a href="index.html" class="logo flex-center">
+                <i data-lucide="compass" class="icon-primary"></i>
+                <span data-i18n="site.name">Путь Дхармы</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" class="active" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button
+                    class="nav-toggle"
+                    type="button"
+                    data-mobile-nav-toggle
+                    aria-expanded="false"
+                    data-i18n-aria-label="ui.menu"
+                    data-i18n-title="ui.menu"
+                    aria-label="Меню"
+                    title="Меню"
+                >
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-nav-backdrop" data-mobile-nav-backdrop></div>
+        <div class="mobile-nav-panel" data-mobile-nav-panel>
+            <ul>
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" class="active" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container py-80">
+        <h1 class="text-center mb-40 animate-slide-up" data-i18n="media.title">Медиа контент</h1>
+        
+        <!-- Сетка с категориями -->
+        <div class="media-grid">
+            <!-- Категория: Жизнь монастыря -->
+            <div class="media-card animate-slide-up" style="animation-delay: 0.1s" onclick="window.location.href='video-player.html?category=monastery&title=Жизнь+монастыря'">
+                <div class="video-thumb" style="background-image: url('images/monks.png'); background-size: cover; background-position: center;">
+                    <i data-lucide="play" class="play-icon"></i>
+                    <span class="label" data-i18n="media.playlistLabel">ПЛЕЙЛИСТ • 5 ВИДЕО</span>
+                </div>
+                <div class="media-info">
+                    <h3>Жизнь монастыря</h3>
+                    <p>Документальные кадры повседневности.</p>
+                </div>
+            </div>
+
+            <!-- Категория: Ритуалы очищения -->
+            <div class="media-card animate-slide-up" style="animation-delay: 0.2s" onclick="window.location.href='video-player.html?category=rituals&title=Ритуалы+очищения'">
+                <div class="video-thumb" style="background-image: url('images/prayer-wheels.png'); background-size: cover; background-position: center;">
+                    <i data-lucide="play" class="play-icon"></i>
+                    <span class="label" data-i18n="media.playlistLabel">ПЛЕЙЛИСТ • 5 ВИДЕО</span>
+                </div>
+                <div class="media-info">
+                    <h3>Ритуалы очищения</h3>
+                    <p>Священные обряды в высокогорье.</p>
+                </div>
+            </div>
+
+            <!-- Категория: Священные места -->
+            <div class="media-card animate-slide-up" style="animation-delay: 0.3s" onclick="window.location.href='video-player.html?category=sacred&title=Священные+места'">
+                <div class="video-thumb" style="background-image: url('images/flags.png'); background-size: cover; background-position: center;">
+                    <i data-lucide="play" class="play-icon"></i>
+                    <span class="label" data-i18n="media.playlistLabel">ПЛЕЙЛИСТ • 5 ВИДЕО</span>
+                </div>
+                <div class="media-info">
+                    <h3>Священные места</h3>
+                    <p>Атмосфера традиционных мест паломничества.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3 data-i18n="site.name">Путь Дхармы</h3>
+                <p>Откройте для себя богатство буддийских традиций.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer.sections">Разделы</h4>
+                <ul>
+                    <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                    <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                    <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                    <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                    <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+                </ul>
+            </div>
+            <div class="footer-quote">
+                <h4 data-i18n="footer.wisdom">Мудрость дня</h4>
+                <p><i id="daily-quote">"Ты не можешь путешествовать по пути, пока не станешь самим путем."</i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Добавляем курсор-pointer для карточек
+        document.querySelectorAll('.media-card').forEach(card => {
+            card.style.cursor = 'pointer';
+        });
+    </script>
+
+     <script>
+        lucide.createIcons();
+        
+        // Массив цитат для футера
+        const quotes = [
+            { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
+            { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
+            { text: "Мудрость — это умение видеть взаимосвязь всех вещей.", author: "Тит Нат Хан" },
+            { text: "Сострадание — это не роскошь, а необходимость для выживания человечества.", author: "Далай-лама XIV" },
+            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" },
+            { text: "Не совершай зла, твори добро, очищай свой ум — таково учение Будды.", author: "Дхаммапада" },
+            { text: "Мир начинается с улыбки.", author: "Тит Нат Хан" },
+            { text: "Гнев не решает проблем, он только создает новые.", author: "Далай-лама XIV" },
+            { text: "Ваша цель в жизни — быть счастливым.", author: "Далай-лама XIV" },
+            { text: "Каждый день — это новое рождение. Каждое утро — это новое начало.", author: "Буддийская мудрость" }
+        ];
+        
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+        
+        const dailyQuoteElement = document.getElementById('daily-quote');
+        if (dailyQuoteElement) {
+            const randomQuote = getRandomQuote();
+            dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
+        }
+    </script>
+
+    <!-- AI Чат-бот OpenRouter -->
+    <div class="ai-chatbot" id="aiChatbot">
+        <button class="chat-toggle" id="chatToggle">
+            <i data-lucide="message-circle"></i>
+            <span data-i18n="ui.askWisdom">Спросите у ИИ</span>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4>🧘 Буддийский наставник (AI)</h4>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <button id="chatSend">
+                    <i data-lucide="send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+     <!-- Подключаем AI чат-бот -->
+    <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
+        <i data-lucide="arrow-up"></i>
+    </button>
+    <script src="lotus-bg.js"></script>
+    <script src="site-ui.js"></script>
+    <script src="back-to-top.js"></script>
+    <script src="config.local.js"></script>
+    <script src="ai-chatbot.js"></script>
+    <script>lucide.createIcons();</script>
+
+</body>
+</html>

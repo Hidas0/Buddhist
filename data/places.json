@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Бодх-Гая",
+    "coords": [24.6950, 84.9910],
+    "type": "святыня",
+    "region": "Индия",
+    "description": "Место просветления Будды",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Great_Buddha_Statue%2C_Bodh_Gaya.jpg"
+  },
+  {
+    "name": "Лумбини",
+    "coords": [27.4844, 83.2760],
+    "type": "святыня",
+    "region": "Непал",
+    "description": "Место рождения Будды",
+    "image": "https://ic.pics.livejournal.com/vlade_mir/25001231/534966/534966_original.jpg"
+  },
+  {
+    "name": "Сарнатх",
+    "coords": [25.3810, 83.0210],
+    "type": "святыня",
+    "region": "Индия",
+    "description": "Первое учение Будды",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/78/Sarnath1.jpg"
+  },
+  {
+    "name": "Кушинагар",
+    "coords": [26.7400, 83.8900],
+    "type": "святыня",
+    "region": "Индия",
+    "description": "Место ухода Будды",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Kusinara.jpg"
+  },
+  {
+    "name": "Боробудур",
+    "coords": [-7.6079, 110.2038],
+    "type": "святыня",
+    "region": "Индонезия",
+    "description": "Крупнейший буддийский храм",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Borobudur-Nothwest-view.jpg"
+  },
+  {
+    "name": "Шведагон",
+    "coords": [16.7983, 96.1497],
+    "type": "святыня",
+    "region": "Мьянма",
+    "description": "Главная пагода Мьянмы",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Yangon_-_Shwedagon_Pagoda_03.jpg"
+  },
+  {
+    "name": "Потала",
+    "coords": [29.6577, 91.1175],
+    "type": "монастырь",
+    "region": "Тибет",
+    "description": "Резиденция Далай-ламы",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Potala.jpg"
+  },
+  {
+    "name": "Джоканг",
+    "coords": [29.6520, 91.1721],
+    "type": "святыня",
+    "region": "Тибет",
+    "description": "Главный храм Лхасы",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Jokhang.jpg"
+  },
+  {
+    "name": "Дрепунг",
+    "coords": [29.6535, 91.0350],
+    "type": "монастырь",
+    "region": "Тибет",
+    "description": "Крупнейший монастырь Тибета",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Drepung.jpg"
+  },
+  {
+    "name": "Киёмидзу-дэра",
+    "coords": [34.9948, 135.7850],
+    "type": "святыня",
+    "region": "Япония",
+    "description": "Знаменитый храм в Киото",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Kiyomizu.jpg"
+  },
+  {
+    "name": "Золотая обитель Будды Шакьямуни",
+    "coords": [46.308797, 44.284119],
+    "type": "святыня",
+    "region": "Калмыкия, Россия",
+    "description": "Крупнейший буддийский храм Европы",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Golden_Temple_Elista.jpg"
+  }
+]

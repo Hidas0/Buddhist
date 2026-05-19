@@ -1,0 +1,3 @@
+// Скопируйте этот файл как config.local.js и вставьте свой ключ OpenRouter.
+// config.local.js в .gitignore — в GitHub не попадёт.
+window.DHARMA_OPENROUTER_KEY = 'sk-or-v1-ВАШ_КЛЮЧ';

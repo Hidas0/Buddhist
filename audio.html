@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аудиогид - Путь Дхармы</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container flex-between">
+            <a href="index.html" class="logo flex-center">
+                <i data-lucide="compass" class="icon-primary"></i>
+                <span data-i18n="site.name">Путь Дхармы</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" class="active" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button
+                    class="nav-toggle"
+                    type="button"
+                    data-mobile-nav-toggle
+                    aria-expanded="false"
+                    data-i18n-aria-label="ui.menu"
+                    data-i18n-title="ui.menu"
+                    aria-label="Меню"
+                    title="Меню"
+                >
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-nav-backdrop" data-mobile-nav-backdrop></div>
+        <div class="mobile-nav-panel" data-mobile-nav-panel>
+            <ul>
+                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
+                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                <li><a href="audio.html" class="active" data-i18n="nav.audio">Аудиогид</a></li>
+                <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container py-80">
+        <div class="max-w-800 animate-slide-up">
+            <h1 data-i18n="audio.title">Аудио гиды</h1>
+            <p class="subtitle" data-i18n="audio.subtitle">Слушайте мантры и скачивайте для практики в любое время.</p>
+            
+            <div class="audio-list" id="audioList">
+                <!-- Плашки будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Аудиоплеер -->
+    <div class="audio-player" id="audioPlayer">
+        <div class="player-content">
+            <div class="player-info">
+                <h4 id="currentTrackTitle" data-i18n="audio.player.pick">Выберите медитацию</h4>
+                <p id="currentTrackDesc" data-i18n="audio.player.hint">Нажмите на плей для прослушивания</p>
+            </div>
+            <div class="player-controls">
+                <button id="playPauseBtn">
+                    <i data-lucide="play"></i>
+                </button>
+                <button id="stopBtn">
+                    <i data-lucide="square"></i>
+                </button>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-track" id="progressTrack">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-info">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+            <button class="close-player" id="closePlayer">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3 data-i18n="site.name">Путь Дхармы</h3>
+                <p>Откройте для себя богатство буддийских традиций.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer.sections">Разделы</h4>
+                <ul>
+                    <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
+                    <li><a href="map.html" data-i18n="nav.map">Карта</a></li>
+                    <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
+                    <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
+                    <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+                </ul>
+            </div>
+            <div class="footer-quote">
+                <h4 data-i18n="footer.wisdom">Мудрость дня</h4>
+                <p><i id="daily-quote">"Ты не можешь путешествовать по пути, пока не станешь самим путем."</i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Массив с 10 медитациями
+        const meditations = [
+            {
+                id: 1,
+                title: "Мантра Будды Сострадания (Авалокитешвары)",
+                description: "ОМ МАНИ ПАДМЕ ХУМ",
+                category: "МАНТРА",
+                duration: "23:02",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_-_Mantra_Avalokiteshvary_Om_Mani_Pad_Me_Hum_(SkySound.cc).mp3",
+                fileName: "Mantra_-_Mantra_Avalokiteshvary_Om_Mani_Pad_Me_Hum_(SkySound.cc).mp3"
+            },
+            {
+                id: 2,
+                title: "Коренная мантра Тары",
+                description: "ОМ ТАРЕ ТУТТАРЕ ТУРЕ СОХА.",
+                category: "МАНТРА",
+                duration: "23:51",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_Zelyonoj_Tary_-_Om_Tare_Tuttare_Ture_Soha_(SkySound.cc).mp3",
+                fileName: "Mantra_Zelyonoj_Tary_-_Om_Tare_Tuttare_Ture_Soha_(SkySound.cc).mp3"
+            },
+            {
+                id: 3,
+                title: "Мантра Гуру Ринпоче",
+                description: "ОМ А ХУМ ВАДЖРА ГУРУ ПАДМА СИДДХИ ХУМ.",
+                category: "МАНТРА",
+                duration: "17:00",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Padmasambhava_Guru_Rinpoche_mantra_-_Om_Ah_Hum_Vajra_Guru_Padma_Siddhi_Hum_(SkySound.cc).mp3",
+                fileName: "Padmasambhava_Guru_Rinpoche_mantra_-_Om_Ah_Hum_Vajra_Guru_Padma_Siddhi_Hum_(SkySound.cc).mp3"
+            },
+            {
+                id: 4,
+                title: "Мантра Будды ",
+                description: "ТЕЯТА ОМ МУНЕ МУНЕ МАХА МУНАЕ СОХА.",
+                category: "МАНТРА",
+                duration: "7:13",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_Buddy_SHakyamuni_-_Om_muni_muni_maha_muni_soha_(SkySound.cc).mp3",
+                fileName: "Mantra_Buddy_SHakyamuni_-_Om_muni_muni_maha_muni_soha_(SkySound.cc).mp3"
+            },
+            {
+                id: 5,
+                title: "Очистительная мантра Ваджрасаттвы",
+                description: "ОМ ВАДЖРАСАТТВА ХУМ.",
+                category: "МАНТРА",
+                duration: "46:09",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Deva_Premal_-_100-slogovaya_mantra_Vadzhrasattvy_(SkySound.cc).mp3",
+                fileName: "Deva_Premal_-_100-slogovaya_mantra_Vadzhrasattvy_(SkySound.cc).mp3"
+            },
+            {
+                id: 6,
+                title: "Мантра Будды Мудрости, Манджушри",
+                description: "ОМ А: РА ПА ЦА НА ДХИ.",
+                category: "МАНТРА",
+                duration: "8:25",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Existence_Margot_Reisinger_-_Mantra_Mandzhushri_-_Om_A_Ra_Pa_Ca_Na_Di_(SkySound.cc).mp3",
+                fileName: "Existence_Margot_Reisinger_-_Mantra_Mandzhushri_-_Om_A_Ra_Pa_Ca_Na_Di_(SkySound.cc).mp3"
+            },
+            {
+                id: 7,
+                title: "Мантра Будды Медицины",
+                description: "ТАЯТА ОМ БЕКАНДЗЕ БЕКАНДЗЕ МАХА БЕКАНДЗЕ РАДЗА САМУДГАТЕ СОХА.",
+                category: "МАНТРА",
+                duration: "10:48",
+                audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Iscelyayucshie_Matry_Tibeta_6_chakra_-_Matra_Zdrovya_Buddy._TEJATA_OM_BEKANDZE_BEKANDZE_MAHA_BEKANDZE_(SkySound.cc).mp3",
+                fileName: "Iscelyayucshie_Matry_Tibeta_6_chakra_-_Matra_Zdrovya_Buddy._TEJATA_OM_BEKANDZE_BEKANDZE_MAHA_BEKANDZE_(SkySound.cc).mp3"
+            }
+            
+        ];
+
+        let currentAudio = null;
+        let currentTrackIndex = null;
+        let isPlaying = false;
+
+        function isRemoteAudioUrl(url) {
+            return /^https?:\/\//i.test(String(url || '').trim());
+        }
+
+        /** Облако — как есть; /audio/... — с сайта; иначе — папка audio/ */
+        function resolveAudioUrl(audioUrl) {
+            var raw = String(audioUrl || '').trim();
+            if (!raw) return '';
+            if (isRemoteAudioUrl(raw)) return raw;
+            if (raw.charAt(0) === '/') return raw;
+            return 'audio/' + raw.split('/').filter(Boolean).map(function (part) {
+                return encodeURIComponent(part);
+            }).join('/');
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function audioFileName(track) {
+            if (track.fileName) return track.fileName;
+            if (isRemoteAudioUrl(track.audioUrl)) {
+                try {
+                    var path = new URL(track.audioUrl).pathname;
+                    return decodeURIComponent(path.split('/').pop() || 'meditation.mp3');
+                } catch (e) {
+                    return 'meditation.mp3';
+                }
+            }
+            return 'audio.mp3';
+        }
+
+        // Скачивание: локально — через blob; облако — прямая ссылка (CORS не мешает)
+        function downloadAudio(audioUrl, fileName, title) {
+            var url = resolveAudioUrl(audioUrl);
+            if (!url) return;
+
+            if (isRemoteAudioUrl(url)) {
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = fileName || 'meditation.mp3';
+                link.rel = 'noopener';
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                return;
+            }
+
+            fetch(url)
+                .then(function (response) {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.blob();
+                })
+                .then(function (blob) {
+                    var link = document.createElement('a');
+                    var objectUrl = URL.createObjectURL(blob);
+                    link.href = objectUrl;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(objectUrl);
+                    console.log('Скачивание начато: ' + title);
+                })
+                .catch(function (error) {
+                    console.error('Ошибка скачивания:', error);
+                    alert('Не удалось скачать файл. Пожалуйста, попробуйте позже.');
+                });
+        }
+
+        // Функция форматирования времени
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Функция обновления прогресса
+        function updateProgress() {
+            if (currentAudio && currentAudio.duration) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('currentTime').textContent = formatTime(currentAudio.currentTime);
+                document.getElementById('totalTime').textContent = formatTime(currentAudio.duration);
+            }
+        }
+
+        // Функция воспроизведения
+        function playTrack(index) {
+            const track = meditations[index];
+            if (!track) return;
+            
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.removeEventListener('timeupdate', updateProgress);
+                currentAudio.removeEventListener('ended', onTrackEnd);
+            }
+            
+            currentAudio = new Audio(resolveAudioUrl(track.audioUrl));
+            currentAudio.addEventListener('timeupdate', updateProgress);
+            currentAudio.addEventListener('ended', onTrackEnd);
+            currentAudio.addEventListener('error', function () {
+                alert('Не удалось загрузить аудио. Проверьте ссылку и доступ к файлу в облаке.');
+                isPlaying = false;
+                document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
+                lucide.createIcons();
+            });
+
+            currentAudio.play().catch(function () {
+                alert('Воспроизведение недоступно. Откройте сайт через http(s), не как файл с диска.');
+            });
+            isPlaying = true;
+            currentTrackIndex = index;
+            
+            // Обновляем интерфейс плеера
+            document.getElementById('currentTrackTitle').textContent = track.title;
+            document.getElementById('currentTrackDesc').textContent = track.description;
+            document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="pause"></i>';
+            
+            // Показываем плеер
+            document.getElementById('audioPlayer').classList.add('active');
+            
+            // Обновляем иконки
+            lucide.createIcons();
+        }
+        
+        function onTrackEnd() {
+            isPlaying = false;
+            document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('currentTime').textContent = '0:00';
+            lucide.createIcons();
+        }
+        
+        function togglePlayPause() {
+            if (!currentAudio) return;
+            
+            if (isPlaying) {
+                currentAudio.pause();
+                document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
+                isPlaying = false;
+            } else {
+                currentAudio.play();
+                document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="pause"></i>';
+                isPlaying = true;
+            }
+            lucide.createIcons();
+        }
+        
+        function stopPlayback() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                isPlaying = false;
+                document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
+                document.getElementById('progressFill').style.width = '0%';
+                document.getElementById('currentTime').textContent = '0:00';
+                lucide.createIcons();
+            }
+        }
+        
+        function closePlayer() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                isPlaying = false;
+            }
+            document.getElementById('audioPlayer').classList.remove('active');
+        }
+        
+        function seekTo(e) {
+            if (!currentAudio) return;
+            const track = document.getElementById('progressTrack');
+            const rect = track.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = percent * currentAudio.duration;
+        }
+
+        // Создание плашек
+        const audioList = document.getElementById('audioList');
+        
+        meditations.forEach((med, index) => {
+            var resolvedUrl = resolveAudioUrl(med.audioUrl);
+            var downloadName = audioFileName(med);
+
+            const trackDiv = document.createElement('div');
+            trackDiv.className = 'audio-track animate-slide-right';
+            trackDiv.style.animationDelay = `${0.1 + (index * 0.05)}s`;
+            
+            trackDiv.innerHTML = `
+                <div class="play-btn" data-index="${index}">
+                    <i data-lucide="play-circle"></i>
+                </div>
+                <div class="track-info">
+                    <span class="track-cat">${escapeHtml(med.category)}</span>
+                    <h3>${escapeHtml(med.title)}</h3>
+                    <p>${escapeHtml(med.description)}</p>
+                </div>
+                <div class="track-actions">
+                    <div class="track-duration">${escapeHtml(med.duration)}</div>
+                    <div class="download-btn" data-url="${escapeHtml(resolvedUrl)}" data-filename="${escapeHtml(downloadName)}" data-title="${escapeHtml(med.title)}">
+                        <i data-lucide="download"></i>
+                    </div>
+                </div>
+            `;
+            
+            audioList.appendChild(trackDiv);
+        });
+        
+        // Добавляем обработчики событий после создания DOM
+        setTimeout(() => {
+            // Обработчики для кнопок воспроизведения
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const index = parseInt(btn.dataset.index);
+                    playTrack(index);
+                });
+            });
+            
+            // Обработчики для кнопок скачивания
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const url = btn.dataset.url;
+                    const filename = btn.dataset.filename;
+                    const title = btn.dataset.title;
+                    downloadAudio(url, filename, title);
+                });
+            });
+            
+            // Обработчики плеера
+            document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
+            document.getElementById('stopBtn').addEventListener('click', stopPlayback);
+            document.getElementById('closePlayer').addEventListener('click', closePlayer);
+            document.getElementById('progressTrack').addEventListener('click', seekTo);
+            
+            lucide.createIcons();
+        }, 100);
+    </script>
+
+     <script>
+        lucide.createIcons();
+        
+        // Массив цитат для футера
+        const quotes = [
+            { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
+            { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
+            { text: "Мудрость — это умение видеть взаимосвязь всех вещей.", author: "Тит Нат Хан" },
+            { text: "Сострадание — это не роскошь, а необходимость для выживания человечества.", author: "Далай-лама XIV" },
+            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" },
+            { text: "Не совершай зла, твори добро, очищай свой ум — таково учение Будды.", author: "Дхаммапада" },
+            { text: "Мир начинается с улыбки.", author: "Тит Нат Хан" },
+            { text: "Гнев не решает проблем, он только создает новые.", author: "Далай-лама XIV" },
+            { text: "Ваша цель в жизни — быть счастливым.", author: "Далай-лама XIV" },
+            { text: "Каждый день — это новое рождение. Каждое утро — это новое начало.", author: "Буддийская мудрость" }
+        ];
+        
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+        
+        const dailyQuoteElement = document.getElementById('daily-quote');
+        if (dailyQuoteElement) {
+            const randomQuote = getRandomQuote();
+            dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
+        }
+    </script>
+
+    <!-- AI Чат-бот OpenRouter -->
+    <div class="ai-chatbot" id="aiChatbot">
+        <button class="chat-toggle" id="chatToggle">
+            <i data-lucide="message-circle"></i>
+            <span data-i18n="ui.askWisdom">Спросите у ИИ</span>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4>🧘 Буддийский наставник (AI)</h4>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <button id="chatSend">
+                    <i data-lucide="send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+     <!-- Подключаем AI чат-бот -->
+    <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
+        <i data-lucide="arrow-up"></i>
+    </button>
+    <script src="lotus-bg.js"></script>
+    <script src="site-ui.js"></script>
+    <script src="back-to-top.js"></script>
+    <script src="config.local.js"></script>
+    <script src="ai-chatbot.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
