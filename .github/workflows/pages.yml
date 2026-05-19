@@ -28,7 +28,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
           if [ -n "$OPENROUTER_API_KEY" ]; then
-            printf '%s\n' "window.DHARMA_OPENROUTER_KEY = '$OPENROUTER_API_KEY';" > config.local.js
+            printf '%s\n' "window.DHARMA_OPENROUTER_KEY = '$OPENROUTER_API_KEY';" > js/config.local.js
           fi
 
       - uses: actions/configure-pages@v5

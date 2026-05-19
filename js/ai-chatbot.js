@@ -1,6 +1,6 @@
 // ========== OPENROUTER AI ЧАТ-БОТ (БЕСПЛАТНЫЕ МОДЕЛИ) ==========
 
-/** Ключ из config.local.js (читается при отправке, не при загрузке скрипта) */
+/** Ключ из js/config.local.js (читается при отправке, не при загрузке скрипта) */
 function getOpenRouterApiKey() {
     const key =
         (typeof window !== 'undefined' && window.DHARMA_OPENROUTER_KEY) || '';
@@ -57,7 +57,7 @@ async function sendMessage() {
                 window.location.hostname.endsWith('github.io');
             const errorMessage = onGithubPages
                 ? 'AI ключ на сайте неверный. GitHub → Settings → Secrets → Actions → OPENROUTER_API_KEY: вставьте ключ sk-or-v1-... с openrouter.ai/keys, затем Actions → Deploy to GitHub Pages → Run workflow.'
-                : 'AI ключ не настроен. Создайте config.local.js из config.local.js.example и вставьте ключ sk-or-v1-... с openrouter.ai/keys.';
+                : 'AI ключ не настроен. Создайте js/config.local.js из js/config.local.js.example и вставьте ключ sk-or-v1-... с openrouter.ai/keys.';
             addMessage(errorMessage, 'bot');
             messageHistory.push({ role: 'assistant', content: errorMessage });
             saveChatState();
@@ -135,7 +135,7 @@ async function sendMessage() {
                     if (response.status === 401) {
                         authErrorMessage =
                             (errorData.error?.message || 'Неверный ключ') +
-                            '. Создайте новый на https://openrouter.ai/keys и вставьте в config.local.js';
+                            '. Создайте новый на https://openrouter.ai/keys и вставьте в js/config.local.js';
                         break;
                     }
 

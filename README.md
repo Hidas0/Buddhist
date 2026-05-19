@@ -9,11 +9,18 @@
 
 ## AI-чат (OpenRouter)
 
-1. Скопируйте `config.local.js.example` → `config.local.js`
+1. Скопируйте `js/config.local.js.example` → `js/config.local.js`
 2. Вставьте ключ с [openrouter.ai](https://openrouter.ai)
-3. На страницах перед `ai-chatbot.js` подключён `config.local.js` (если файла нет — чат покажет подсказку)
+3. На страницах подключены скрипты из папки `js/` (если `config.local.js` нет — чат покажет подсказку)
 
-**Важно:** не коммитьте `config.local.js` в Git — только `config.local.js.example` без реального ключа.
+**Важно:** не коммитьте `js/config.local.js` в Git — только `js/config.local.js.example` без реального ключа.
+
+## Структура проекта
+
+- `css/` — стили (`style.css`)
+- `js/` — скрипты сайта и чата
+- `images/` — картинки
+- `data/` — данные (карта)
 
 ## Сайт в интернете (GitHub Pages)
 
