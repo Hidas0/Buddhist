@@ -21,6 +21,13 @@
 - `js/` — скрипты сайта и чата
 - `images/` — картинки
 - `data/` — данные (карта)
+- `presentation/` — слайды для защиты/демонстрации ([открыть](presentation/index.html))
+
+## Презентация с скриншотами
+
+Папка **`presentation/`**: HTML-слайды с местами под скрины каждого раздела.  
+Инструкция: [presentation/КАК-СДЕЛАТЬ-СКРИНЫ.md](presentation/КАК-СДЕЛАТЬ-СКРИНЫ.md)  
+Онлайн: https://hidas0.github.io/Buddhist/presentation/
 
 ## Сайт в интернете (GitHub Pages)
 
