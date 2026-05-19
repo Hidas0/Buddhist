@@ -68,9 +68,14 @@ async function sendMessage() {
                     'Authorization': `Bearer ${OPENROUTER_API_KEY}`
                 };
 
-                // OpenRouter can reject non-http(s) referers (e.g. file:// in local runs).
-                if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-                    requestHeaders['HTTP-Referer'] = window.location.origin;
+                // OpenRouter: стабильный referer (свой домен или GitHub Pages)
+                const referer =
+                    (typeof window !== 'undefined' && window.DHARMA_SITE_ORIGIN) ||
+                    (window.location.protocol === 'http:' || window.location.protocol === 'https:'
+                        ? window.location.origin
+                        : '');
+                if (referer) {
+                    requestHeaders['HTTP-Referer'] = referer;
                     requestHeaders['X-Title'] = 'Put Dharamy';
                 }
 
