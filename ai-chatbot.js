@@ -1,8 +1,12 @@
 // ========== OPENROUTER AI ЧАТ-БОТ (БЕСПЛАТНЫЕ МОДЕЛИ) ==========
 
-/** Ключ: скопируйте config.local.js.example → config.local.js (файл не попадает в Git) */
-const OPENROUTER_API_KEY =
-    (typeof window !== 'undefined' && window.DHARMA_OPENROUTER_KEY) || '';
+/** Ключ из config.local.js (читается при отправке, не при загрузке скрипта) */
+function getOpenRouterApiKey() {
+    const key =
+        (typeof window !== 'undefined' && window.DHARMA_OPENROUTER_KEY) || '';
+    return String(key).trim();
+}
+
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 const chatToggle = document.getElementById('chatToggle');
@@ -46,9 +50,11 @@ async function sendMessage() {
     showTypingIndicator();
     
     try {
-        if (!OPENROUTER_API_KEY || !OPENROUTER_API_KEY.startsWith('sk-or-')) {
+        const apiKey = getOpenRouterApiKey();
+        if (!apiKey || !apiKey.startsWith('sk-or-')) {
             removeTypingIndicator();
-            const errorMessage = 'AI ключ не настроен. Проверьте OPENROUTER_API_KEY.';
+            const errorMessage =
+                'AI ключ не настроен. Создайте config.local.js из config.local.js.example (рядом с index.html).';
             addMessage(errorMessage, 'bot');
             messageHistory.push({ role: 'assistant', content: errorMessage });
             saveChatState();
@@ -65,7 +71,7 @@ async function sendMessage() {
                 
                 const requestHeaders = {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`
+                    'Authorization': `Bearer ${apiKey}`
                 };
 
                 // OpenRouter: стабильный referer (свой домен или GitHub Pages)
