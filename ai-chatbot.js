@@ -53,8 +53,11 @@ async function sendMessage() {
         const apiKey = getOpenRouterApiKey();
         if (!apiKey || !apiKey.startsWith('sk-or-')) {
             removeTypingIndicator();
-            const errorMessage =
-                'AI ключ не настроен. Создайте config.local.js из config.local.js.example (рядом с index.html).';
+            const onGithubPages = typeof window !== 'undefined' &&
+                window.location.hostname.endsWith('github.io');
+            const errorMessage = onGithubPages
+                ? 'AI ключ на сайте неверный. GitHub → Settings → Secrets → Actions → OPENROUTER_API_KEY: вставьте ключ sk-or-v1-... с openrouter.ai/keys, затем Actions → Deploy to GitHub Pages → Run workflow.'
+                : 'AI ключ не настроен. Создайте config.local.js из config.local.js.example и вставьте ключ sk-or-v1-... с openrouter.ai/keys.';
             addMessage(errorMessage, 'bot');
             messageHistory.push({ role: 'assistant', content: errorMessage });
             saveChatState();
