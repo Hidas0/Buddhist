@@ -270,24 +270,36 @@ function removeTypingIndicator() {
     if (indicator) indicator.remove();
 }
 
-chatToggle.addEventListener('click', () => {
-    chatWindow.classList.toggle('active');
-    if (chatWindow.classList.contains('active')) {
-        chatInput.focus();
-    }
-});
+function setChatOpen(open) {
+    if (!chatWindow) return;
+    chatWindow.classList.toggle('active', open);
+    document.body.classList.toggle('chat-open', open);
+    if (open && chatInput) chatInput.focus();
+}
 
-chatClose.addEventListener('click', () => {
-    chatWindow.classList.remove('active');
-});
+if (chatToggle) {
+    chatToggle.addEventListener('click', () => {
+        setChatOpen(!chatWindow.classList.contains('active'));
+    });
+}
 
-chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
+if (chatClose) {
+    chatClose.addEventListener('click', () => setChatOpen(false));
+}
+
+if (chatSend) chatSend.addEventListener('click', sendMessage);
+if (chatInput) {
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+}
+
+if (!chatToggle || !chatWindow || !chatMessages) {
+    console.warn('AI чат: элементы не найдены на этой странице');
+}
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
