@@ -19,29 +19,14 @@
 
 После push в `main` сайт публикуется автоматически.
 
-**Адреса:**
-
-- https://hidas0.github.io/Buddhist/ — всегда работает после публикации
-- https://put-dharmy.com/ — свой домен (нужна настройка DNS, см. ниже)
+**Адрес сайта:** https://hidas0.github.io/Buddhist/
 
 Первый раз включите Pages на GitHub:
 
 1. Репозиторий **Buddhist** → **Settings** → **Pages**
 2. **Build and deployment** → Source: **GitHub Actions**
-3. Подождите 2–5 минут после push (вкладка **Actions** → зелёная галочка)
-
-### Свой домен put-dharmy.com
-
-В репозитории есть файл `CNAME`. У регистратора домена:
-
-| Тип | Имя | Значение |
-|-----|-----|----------|
-| A | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
-| CNAME | `www` | `hidas0.github.io` |
-
-В GitHub: **Settings → Pages → Custom domain** → `put-dharmy.com`, включить **Enforce HTTPS**.
-
-Ошибка в Chrome `Unsafe attempt to load URL ... from frame chrome-error://` обычно значит, что **домен не открывается** (DNS ещё не обновился или сайт открыт во встроенном превью IDE). Откройте ссылку в обычном Chrome/Edge. Пока домен не работает — используйте **https://hidas0.github.io/Buddhist/**.
+3. Если в поле **Custom domain** указан `put-dharmy.com` — нажмите **Remove** (оставьте только адрес `hidas0.github.io`)
+4. Подождите 2–5 минут после push (вкладка **Actions** → зелёная галочка)
 
 ### AI-чат на опубликованном сайте
 
