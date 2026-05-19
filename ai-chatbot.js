@@ -130,7 +130,9 @@ async function sendMessage() {
                     
                     // При 401 дальнейшие попытки бесполезны: проблема в ключе.
                     if (response.status === 401) {
-                        authErrorMessage = errorData.error?.message || 'Неверный или просроченный OpenRouter API ключ.';
+                        authErrorMessage =
+                            (errorData.error?.message || 'Неверный ключ') +
+                            '. Создайте новый на https://openrouter.ai/keys и вставьте в config.local.js';
                         break;
                     }
 
@@ -154,7 +156,7 @@ async function sendMessage() {
             messageHistory.push({ role: 'assistant', content: reply });
             saveChatState();
         } else if (authErrorMessage) {
-            const errorMessage = `Ошибка авторизации OpenRouter (401): ${authErrorMessage} Обновите OPENROUTER_API_KEY.`;
+            const errorMessage = `Ошибка авторизации OpenRouter (401): ${authErrorMessage}`;
             addMessage(errorMessage, 'bot');
             messageHistory.push({ role: 'assistant', content: errorMessage });
             saveChatState();
