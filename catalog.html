@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Традиции Калмыкии - Путь Дхармы</title>
+    <title>Традиции и обычаи — каталог | Путь Дхармы</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -50,285 +50,221 @@
             </ul>
         </div>
     </nav>
- <div class="traditions-hero">
-        <div class="container">
-            <h1 class="animate-slide-up" data-i18n="catalog.hero.title">📿 Буддийские традиции</h1>
-            <p class="animate-slide-up" style="animation-delay: 0.2s" data-i18n="catalog.hero.subtitle">Более 2500 лет мудрости, переданной через поколения</p>
+    <header class="traditions-hero traditions-hero--rich">
+        <div class="traditions-hero__bg" style="background-image: url('images/monks.png');" role="presentation"></div>
+        <div class="traditions-hero__overlay" role="presentation"></div>
+        <div class="container traditions-hero__content scroll-reveal">
+            <span class="badge" data-i18n="catalog.hero.badge">ПУТЬ ДХАРМЫ</span>
+            <h1 data-i18n="catalog.hero.title">Традиции и обычаи буддийских народов</h1>
+            <p data-i18n="catalog.hero.subtitle">Систематический обзор: практики, ритуалы, праздники и священные места — с акцентом на то, как учение живёт в разных культурах</p>
+            <div class="hero-actions">
+                <button type="button" class="btn btn-primary" data-catalog-cta="beginner">
+                    <i data-lucide="help-circle"></i>
+                    <span>Я новичок</span>
+                </button>
+                <button type="button" class="btn btn-ghost" data-catalog-cta="practice">
+                    <i data-lucide="flower-2"></i>
+                    <span>К практикам</span>
+                </button>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <main class="container">
-        <section class="experience-panel animate-slide-up">
+    <div class="catalog-page">
+    <section class="catalog-band catalog-band--white" aria-label="С чего начать">
+        <div class="container">
+        <section class="experience-panel scroll-reveal">
             <h2 data-i18n="catalog.start.title">С чего начать знакомство с буддийскими традициями?</h2>
-            <p>
-                <span data-lang="ru">Представьте, что вы здесь впервые: вам нужен простой путь, немного вдохновения и ответы на частые вопросы. Ниже можно выбрать тему по интересу, быстро перейти к нужному разделу и посмотреть атмосферные материалы.</span>
-                <span data-lang="en">Imagine you’re here for the first time: you need a simple path, a bit of inspiration, and answers to common questions. Below you can pick a topic by interest, jump to the right section, and explore atmospheric materials.</span>
-            </p>
+            <p>Представьте, что вы здесь впервые: вам нужен простой путь, немного вдохновения и ответы на частые вопросы. Ниже можно выбрать тему по интересу, быстро перейти к нужному разделу и посмотреть материалы с других страниц сайта.</p>
             <div class="quick-links" id="quickLinks">
                 <button type="button" class="quick-link-btn" data-target="meditation" data-filter="practice" data-i18n="catalog.quick.meditation">Медитация</button>
-                <button type="button" class="quick-link-btn" data-target="rituals" data-filter="culture">
-                    <span data-lang="ru">Ритуалы</span><span data-lang="en">Rituals</span>
-                </button>
-                <button type="button" class="quick-link-btn" data-target="pilgrimage" data-filter="travel">
-                    <span data-lang="ru">Паломничество</span><span data-lang="en">Pilgrimage</span>
-                </button>
-                <button type="button" class="quick-link-btn" data-target="holidays" data-filter="culture">
-                    <span data-lang="ru">Праздники</span><span data-lang="en">Holidays</span>
-                </button>
-                <button type="button" class="quick-link-btn" data-target="mantras" data-filter="practice">
-                    <span data-lang="ru">Мантры</span><span data-lang="en">Mantras</span>
-                </button>
+                <button type="button" class="quick-link-btn" data-target="rituals" data-filter="culture">Ритуалы</button>
+                <button type="button" class="quick-link-btn" data-target="pilgrimage" data-filter="travel">Паломничество</button>
+                <button type="button" class="quick-link-btn" data-target="holidays" data-filter="culture">Праздники</button>
+                <button type="button" class="quick-link-btn" data-target="mantras" data-filter="practice">Мантры</button>
+                <button type="button" class="quick-link-btn" data-target="peoples" data-filter="peoples">Народы</button>
             </div>
             <div class="interest-filter" id="interestFilter">
                 <button class="interest-btn active" data-filter="all" data-i18n="catalog.filter.all">Показать все</button>
+                <button class="interest-btn" data-filter="peoples">Народы и регионы</button>
                 <button class="interest-btn" data-filter="practice" data-i18n="catalog.filter.practice">Хочу практиковать</button>
                 <button class="interest-btn" data-filter="culture" data-i18n="catalog.filter.culture">Интересна культура</button>
                 <button class="interest-btn" data-filter="travel" data-i18n="catalog.filter.travel">Планирую путешествие</button>
                 <button class="interest-btn" data-filter="beginner" data-i18n="catalog.filter.beginner">Я новичок</button>
             </div>
+            <p class="filter-status" id="filterStatus" aria-live="polite">Показано 6 разделов · 20 карточек</p>
         </section>
+        </div>
+    </section>
 
-        <!-- Статистика -->
-        <div class="stats-grid animate-slide-up">
+    <nav class="catalog-section-nav" id="catalogSectionNav" aria-label="Разделы каталога">
+        <div class="container catalog-section-nav__inner">
+            <a class="catalog-section-nav__link" href="#meditation">Медитация</a>
+            <a class="catalog-section-nav__link" href="#rituals">Ритуалы</a>
+            <a class="catalog-section-nav__link" href="#pilgrimage">Паломничество</a>
+            <a class="catalog-section-nav__link" href="#holidays">Праздники</a>
+            <a class="catalog-section-nav__link" href="#mantras">Мантры</a>
+            <a class="catalog-section-nav__link" href="#peoples">Народы</a>
+            <a class="catalog-section-nav__link" href="#catalog-media">Материалы</a>
+            <a class="catalog-section-nav__link" href="#catalog-faq">FAQ</a>
+        </div>
+    </nav>
+
+    <section class="catalog-band catalog-band--cream" aria-label="Статистика и разделы">
+    <main class="container">
+        <p class="stats-note scroll-reveal" id="statsNote">Цифры отражают масштаб буддизма в мире</p>
+        <div class="stats-grid stats-grid--catalog scroll-reveal" id="catalogStats">
             <div class="stat-item">
                 <div class="stat-number">2500+</div>
                 <div class="stat-label" data-i18n="catalog.stats.years">лет истории</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number">500+</div>
-                <div class="stat-label">
-                    <span data-lang="ru">миллионов последователей</span>
-                    <span data-lang="en">million followers</span>
-                </div>
+                <div class="stat-label">миллионов последователей</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number">3</div>
-                <div class="stat-label">
-                    <span data-lang="ru">основные школы</span>
-                    <span data-lang="en">major schools</span>
-                </div>
+                <div class="stat-label">основные школы</div>
             </div>
             <div class="stat-item">
                 <div class="stat-number">100+</div>
-                <div class="stat-label">
-                    <span data-lang="ru">стран мира</span>
-                    <span data-lang="en">countries worldwide</span>
-                </div>
+                <div class="stat-label">стран мира</div>
             </div>
         </div>
 
         <!-- Раздел: Медитация -->
-        <div class="category-section" id="meditation" data-interest="practice beginner">
-            <h2 class="category-title animate-slide-up">
-                <span data-lang="ru">🧘 Медитация и практики</span>
-                <span data-lang="en">🧘 Meditation & practices</span>
+        <div class="category-section category-section--meditation scroll-reveal" id="meditation" data-interest="practice beginner">
+            <h2 class="category-title">
+                <i data-lucide="flower-2"></i>
+                Медитация и практики
             </h2>
             <div class="traditions-grid">
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.1s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
                     <div class="tradition-header">
-                        <h3><i data-lucide="wind"></i>
-                            <span data-lang="ru">Анапанасати</span>
-                            <span data-lang="en">Anapanasati</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Все школы</span>
-                            <span data-lang="en">All schools</span>
-                        </span>
+                        <h3><i data-lucide="wind"></i> Анапанасати</h3>
+                        <span class="tradition-region">Все школы</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">Медитация осознанности дыхания — одна из самых древних и фундаментальных практик буддизма. Будда научил этой технике как универсальному методу развития концентрации и прозрения.</span>
-                            <span data-lang="en">Mindfulness of breathing is one of the oldest and most foundational Buddhist practices. The Buddha taught it as a universal method for developing concentration and insight.</span>
-                        </p>
+                        <p>Медитация осознанности дыхания — одна из самых древних и фундаментальных практик буддизма. Будда научил этой технике как универсальному методу развития концентрации и прозрения.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">✨ Интересный факт</span>
-                                <span data-lang="en">✨ Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">Слово "Анапанасати" переводится как "осознавание вдоха и выдоха". Эта практика описана в "Сатипаттхана сутте" — одном из самых важных текстов о медитации.</span>
-                                <span data-lang="en">The word “Anapanasati” means “mindfulness of inhalation and exhalation”. This practice is described in the Satipatthana Sutta—one of the most important meditation texts.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>Слово «Анапанасати» переводится как «осознавание вдоха и выдоха». Эта практика описана в «Сатипаттхана-сутте» — одном из самых важных текстов о медитации.</p>
                         </div>
                         <ul class="tradition-list">
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Развивает концентрацию</span><span data-lang="en">Builds concentration</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Успокаивает ум</span><span data-lang="en">Calms the mind</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Ведет к прозрению</span><span data-lang="en">Leads to insight</span></li>
+                            <li><i data-lucide="check"></i> Развивает концентрацию</li>
+                            <li><i data-lucide="check"></i> Успокаивает ум</li>
+                            <li><i data-lucide="check"></i> Ведёт к прозрению</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.2s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
                     <div class="tradition-header">
-                        <h3><i data-lucide="heart"></i>
-                            <span data-lang="ru">Метта-бхавана</span>
-                            <span data-lang="en">Metta Bhavana</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Тхеравада</span>
-                            <span data-lang="en">Theravada</span>
-                        </span>
+                        <h3><i data-lucide="heart"></i> Метта-бхавана</h3>
+                        <span class="tradition-region">Тхеравада</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">Медитация любящей доброты — практика развития безусловной любви и сострадания ко всем существам. Считается, что регулярная практика Метты полностью преображает характер человека.</span>
-                            <span data-lang="en">Loving-kindness meditation cultivates unconditional goodwill and compassion toward all beings. Regular Metta practice is said to profoundly transform one’s character.</span>
-                        </p>
+                        <p>Медитация любящей доброты — практика развития безусловной любви и сострадания ко всем существам. Считается, что регулярная практика Метты полностью преображает характер человека.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">💖 Интересный факт</span>
-                                <span data-lang="en">💖 Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">Будда говорил, что у практики Метты есть 11 благ: человек спит спокойно, не видит плохих снов, его любят люди и божества, он защищен от огня, яда и оружия.</span>
-                                <span data-lang="en">The Buddha described 11 benefits of Metta: one sleeps well, has no bad dreams, is loved by people and devas, and is protected from fire, poison, and weapons.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>Будда говорил, что у практики Метты есть 11 благ: человек спит спокойно, не видит плохих снов, его любят люди и божества, он защищён от огня, яда и оружия.</p>
                         </div>
                         <ul class="tradition-list">
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Уменьшает гнев</span><span data-lang="en">Reduces anger</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Улучшает отношения</span><span data-lang="en">Improves relationships</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Приносит внутренний мир</span><span data-lang="en">Brings inner peace</span></li>
+                            <li><i data-lucide="check"></i> Уменьшает гнев</li>
+                            <li><i data-lucide="check"></i> Улучшает отношения</li>
+                            <li><i data-lucide="check"></i> Приносит внутренний мир</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.3s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
                     <div class="tradition-header">
-                        <h3><i data-lucide="eye"></i>
-                            <span data-lang="ru">Випассана</span>
-                            <span data-lang="en">Vipassana</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Тхеравада</span>
-                            <span data-lang="en">Theravada</span>
-                        </span>
+                        <h3><i data-lucide="eye"></i> Випассана</h3>
+                        <span class="tradition-region">Тхеравада</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">"Прозрение" или "видение реальности как есть" — глубокая медитация, ведущая к постижению трех характеристик существования: непостоянства, страдания и бессамности.</span>
-                            <span data-lang="en">“Insight”, or “seeing reality as it is”, is a deep meditation that leads to understanding the three marks of existence: impermanence, unsatisfactoriness, and non-self.</span>
-                        </p>
+                        <p>«Прозрение» или «видение реальности как есть» — глубокая медитация, ведущая к постижению трёх характеристик существования: непостоянства, страдания и бессамности.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">🔍 Интересный факт</span>
-                                <span data-lang="en">🔍 Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">Курсы Випассаны длительностью 10 дней проводятся по всему миру совершенно бесплатно. Питание и проживание предоставляются за счет пожертвований тех, кто уже прошел курс.</span>
-                                <span data-lang="en">Ten-day Vipassana courses are held worldwide free of charge. Food and accommodation are funded by donations from people who have completed the course.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>Курсы Випассаны длительностью 10 дней проводятся по всему миру бесплатно. Питание и проживание предоставляются за счёт пожертвований тех, кто уже прошёл курс.</p>
                         </div>
                         <ul class="tradition-list">
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Понимание непостоянства</span><span data-lang="en">Understanding impermanence</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Освобождение от страданий</span><span data-lang="en">Freedom from suffering</span></li>
-                            <li><i data-lucide="check"></i> <span data-lang="ru">Развитие мудрости</span><span data-lang="en">Developing wisdom</span></li>
+                            <li><i data-lucide="check"></i> Понимание непостоянства</li>
+                            <li><i data-lucide="check"></i> Освобождение от страданий</li>
+                            <li><i data-lucide="check"></i> Развитие мудрости</li>
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="category-section__footer">
+                <p>Углубить практику можно через медиатеку и видео на сайте.</p>
+                <a class="btn btn-primary" href="media.html"><i data-lucide="play-circle"></i> Медиатека</a>
             </div>
         </div>
 
         <!-- Раздел: Ритуалы и церемонии -->
-        <div class="category-section" id="rituals" data-interest="culture beginner">
-            <h2 class="category-title animate-slide-up">
-                <span data-lang="ru">🪔 Ритуалы и церемонии</span>
-                <span data-lang="en">🪔 Rituals & ceremonies</span>
+        <div class="category-section category-section--rituals scroll-reveal" id="rituals" data-interest="culture beginner">
+            <h2 class="category-title">
+                <i data-lucide="flame"></i>
+                Ритуалы и церемонии
             </h2>
             <div class="traditions-grid">
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.4s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
                     <div class="tradition-header">
-                        <h3><i data-lucide="candle"></i>
-                            <span data-lang="ru">Подношение света</span>
-                            <span data-lang="en">Offering of light</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Все школы</span>
-                            <span data-lang="en">All schools</span>
-                        </span>
+                        <h3><i data-lucide="candle"></i> Подношение света</h3>
+                        <span class="tradition-region">Все школы</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">Зажигание лампад и свечей символизирует мудрость, рассеивающую тьму невежества. Это один из самых распространенных буддийских ритуалов.</span>
-                            <span data-lang="en">Lighting butter lamps and candles symbolizes wisdom that dispels the darkness of ignorance. It is one of the most widespread Buddhist rituals.</span>
-                        </p>
+                        <p>Зажигание лампад и свечей символизирует мудрость, рассеивающую тьму невежества. Это один из самых распространённых буддийских ритуалов.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">🕯️ Интересный факт</span>
-                                <span data-lang="en">🕯️ Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">В Тибете и Монголии используют масляные лампады из топленого масла яка. В Калмыкии на праздник Зул зажигают особые лампады "насн", которые символизируют прожитые годы.</span>
-                                <span data-lang="en">In Tibet and Mongolia, butter lamps are traditionally fueled with clarified yak butter. In Kalmykia, during Zul, special “nasn” lamps are lit to symbolize the years lived.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>В Тибете и Монголии используют масляные лампады из топлёного масла яка. В Калмыкии на праздник Зул зажигают особые лампады «насн», которые символизируют прожитые годы.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.5s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
                     <div class="tradition-header">
-                        <h3><i data-lucide="flower"></i>
-                            <span data-lang="ru">Подношение цветов</span>
-                            <span data-lang="en">Offering of flowers</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Все школы</span>
-                            <span data-lang="en">All schools</span>
-                        </span>
+                        <h3><i data-lucide="flower"></i> Подношение цветов</h3>
+                        <span class="tradition-region">Все школы</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">Цветы подносят Будде как символ непостоянства — их красота быстро увядает, напоминая о быстротечности жизни.</span>
-                            <span data-lang="en">Flowers are offered as a symbol of impermanence: their beauty fades quickly, reminding us of life’s transience.</span>
-                        </p>
+                        <p>Цветы подносят Будде как символ непостоянства — их красота быстро увядает, напоминая о быстротечности жизни.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">🌸 Интересный факт</span>
-                                <span data-lang="en">🌸 Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">Лотос — главный буддийский цветок. Он растет в мутной воде, но распускается чистым и прекрасным, символизируя возможность просветления даже в мирской суете.</span>
-                                <span data-lang="en">The lotus is the central Buddhist flower. It grows in muddy water yet blooms pure and beautiful, symbolizing the possibility of awakening even amid worldly life.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>Лотос — главный буддийский цветок. Он растёт в мутной воде, но распускается чистым и прекрасным, символизируя возможность просветления даже в мирской суете.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.6s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
                     <div class="tradition-header">
-                        <h3><i data-lucide="refresh-cw"></i>
-                            <span data-lang="ru">Вращение молитвенных барабанов</span>
-                            <span data-lang="en">Spinning prayer wheels</span>
-                        </h3>
-                        <span class="tradition-region">
-                            <span data-lang="ru">Тибет, Калмыкия, Бурятия</span>
-                            <span data-lang="en">Tibet, Kalmykia, Buryatia</span>
-                        </span>
+                        <h3><i data-lucide="refresh-cw"></i> Вращение молитвенных барабанов</h3>
+                        <span class="tradition-region">Тибет, Калмыкия, Бурятия</span>
                     </div>
                     <div class="tradition-body">
-                        <p>
-                            <span data-lang="ru">Внутри барабана находятся миллионы мантр. Считается, что одно вращение барабана приносит ту же пользу, что и прочтение всех мантр внутри.</span>
-                            <span data-lang="en">Prayer wheels contain millions of mantras. It is believed that one rotation brings the same merit as reciting all the mantras inside.</span>
-                        </p>
+                        <p>Внутри барабана находятся миллионы мантр. Считается, что одно вращение барабана приносит ту же пользу, что и прочтение всех мантр внутри.</p>
                         <div class="fact-box">
-                            <strong>
-                                <span data-lang="ru">🌀 Интересный факт</span>
-                                <span data-lang="en">🌀 Fun fact</span>
-                            </strong>
-                            <p>
-                                <span data-lang="ru">Самый большой молитвенный барабан в мире находится в монастыре Пунтанг (Бутан). Его высота — 6 метров, и для его вращения нужно несколько человек.</span>
-                                <span data-lang="en">One of the world’s largest prayer wheels is in Punakha (Bhutan). It is about 6 meters tall, and several people are needed to spin it.</span>
-                            </p>
+                            <strong>Интересный факт</strong>
+                            <p>Один из крупнейших молитвенных барабанов — в Пунаке (Бутан). Его высота около 6 метров, и для вращения нужно несколько человек.</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="category-section__footer">
+                <p>Калмыцкие ритуалы и праздник Зул — в разделе о республике.</p>
+                <a class="btn btn-primary" href="kalm.html"><i data-lucide="map-pin"></i> Калмыкия</a>
+            </div>
         </div>
 
         <!-- Раздел: Паломничество -->
-        <div class="category-section" id="pilgrimage" data-interest="travel culture">
-            <h2 class="category-title animate-slide-up">🚶 Священные места и паломничество</h2>
+        <div class="category-section category-section--pilgrimage scroll-reveal" id="pilgrimage" data-interest="travel culture">
+            <h2 class="category-title">
+                <i data-lucide="footprints"></i>
+                Священные места и паломничество
+            </h2>
             <div class="traditions-grid">
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.7s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
                     <div class="tradition-header">
                         <h3><i data-lucide="tree-pine"></i> Бодхгая</h3>
                         <span class="tradition-region">Индия</span>
@@ -342,7 +278,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.8s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
                     <div class="tradition-header">
                         <h3><i data-lucide="mountain"></i> Гора Кайлас</h3>
                         <span class="tradition-region">Тибет</span>
@@ -356,7 +292,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 0.9s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
                     <div class="tradition-header">
                         <h3><i data-lucide="map-pin"></i> Лумбини</h3>
                         <span class="tradition-region">Непал</span>
@@ -370,13 +306,20 @@
                     </div>
                 </div>
             </div>
+            <div class="category-section__footer">
+                <p>Священные места Калмыкии и маршруты — на интерактивной карте.</p>
+                <a class="btn btn-primary" href="map.html"><i data-lucide="map"></i> Открыть карту</a>
+            </div>
         </div>
 
         <!-- Раздел: Праздники -->
-        <div class="category-section" id="holidays" data-interest="culture beginner">
-            <h2 class="category-title animate-slide-up">🎉 Главные буддийские праздники</h2>
+        <div class="category-section category-section--holidays scroll-reveal" id="holidays" data-interest="culture beginner">
+            <h2 class="category-title">
+                <i data-lucide="calendar"></i>
+                Главные буддийские праздники
+            </h2>
             <div class="traditions-grid">
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
                     <div class="tradition-header">
                         <h3><i data-lucide="sun"></i> Весак</h3>
                         <span class="tradition-region">Все школы</span>
@@ -390,7 +333,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1.1s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
                     <div class="tradition-header">
                         <h3><i data-lucide="moon"></i> Асальха</h3>
                         <span class="tradition-region">Тхеравада</span>
@@ -404,7 +347,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1.2s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
                     <div class="tradition-header">
                         <h3><i data-lucide="flame"></i> Зул</h3>
                         <span class="tradition-region">Калмыкия</span>
@@ -418,13 +361,20 @@
                     </div>
                 </div>
             </div>
+            <div class="category-section__footer">
+                <p>Праздник Зул и калмыцкий Новый год — подробнее в разделе о Калмыкии.</p>
+                <a class="btn btn-primary" href="kalm.html"><i data-lucide="flame"></i> Праздники Калмыкии</a>
+            </div>
         </div>
 
         <!-- Раздел: Мантры -->
-        <div class="category-section" id="mantras" data-interest="practice beginner">
-            <h2 class="category-title animate-slide-up">🔊 Священные звуки и мантры</h2>
+        <div class="category-section category-section--mantras scroll-reveal" id="mantras" data-interest="practice beginner">
+            <h2 class="category-title">
+                <i data-lucide="mic"></i>
+                Священные звуки и мантры
+            </h2>
             <div class="traditions-grid">
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1.3s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
                     <div class="tradition-header">
                         <h3><i data-lucide="mic"></i> Ом Мани Падме Хум</h3>
                         <span class="tradition-region">Махаяна, Ваджраяна</span>
@@ -438,7 +388,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1.4s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
                     <div class="tradition-header">
                         <h3><i data-lucide="mic"></i> Ом Таре Туттаре Туре Соха</h3>
                         <span class="tradition-region">Ваджраяна</span>
@@ -452,7 +402,7 @@
                     </div>
                 </div>
 
-                <div class="tradition-card animate-slide-up" style="animation-delay: 1.5s">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
                     <div class="tradition-header">
                         <h3><i data-lucide="mic"></i> Гате Гате Парагате...</h3>
                         <span class="tradition-region">Все школы</span>
@@ -466,51 +416,176 @@
                     </div>
                 </div>
             </div>
+            <div class="category-section__footer">
+                <p>Послушайте мантры в аудиогиде — с текстом и пояснениями.</p>
+                <a class="btn btn-primary" href="audio.html"><i data-lucide="headphones"></i> Аудиогид</a>
+            </div>
         </div>
 
-        <section class="media-showcase animate-slide-up">
-            <h2>📸 Атмосфера традиции: посмотреть и почувствовать</h2>
-            <p>Если вы лучше воспринимаете информацию визуально, начните с этих материалов: реальные места, ритуалы и короткое видео-введение.</p>
+        <!-- Раздел: Народы и регионы -->
+        <div class="category-section category-section--peoples scroll-reveal" id="peoples" data-interest="peoples culture beginner">
+            <h2 class="category-title">
+                <i data-lucide="globe-2"></i>
+                Народы и регионы
+            </h2>
+            <p class="category-section__intro">Одно учение — разные языки, праздники и быт. Здесь сравнение того, <strong>как традиция звучит у конкретных народов</strong>, а не только общие буддийские практики.</p>
+            <div class="traditions-grid">
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-1">
+                    <div class="tradition-header">
+                        <h3><i data-lucide="flag"></i> Тибет</h3>
+                        <span class="tradition-region">Ваджраяна · гелуг и др.</span>
+                    </div>
+                    <div class="tradition-body">
+                        <p>Тибетская культура связывает горы, монастыри и домашний алтарь. Молитвенные флажки (лунгта) развевают на ветру тексты мантр; обход святынь (кора) — пеший ритуал смирения и накопления заслуги.</p>
+                        <div class="fact-box">
+                            <strong>Обычай: Лосар</strong>
+                            <p>Тибетский Новый год — уборка дома, подношения на алтаре, танцы и встреча с родными. Считается, что настроение в первые дни года задаёт тон всему году.</p>
+                        </div>
+                        <ul class="tradition-list">
+                            <li><i data-lucide="check"></i> Простирания перед святынями и учителями</li>
+                            <li><i data-lucide="check"></i> Масляные лампады и подношения на алтаре</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-2">
+                    <div class="tradition-header">
+                        <h3><i data-lucide="sun"></i> Таиланд, Лаос, Камбоджа</h3>
+                        <span class="tradition-region">Тхеравада</span>
+                    </div>
+                    <div class="tradition-body">
+                        <p>В Юго-Восточной Азии буддизм тесно вплетён в деревню и город: утреннее подношение еды монахам, уважение к старшим, школьные и семейные храмы (ваты).</p>
+                        <div class="fact-box">
+                            <strong>Обычай: алмс и Сонгкран</strong>
+                            <p>На рассвете lay-люди подносят рис и еду монахам — акт щедрости и связи с общиной. На Новый год по лунному календарю (Сонгкран) обливают друг друга водой как очищение и пожелание удачи.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-3">
+                    <div class="tradition-header">
+                        <h3><i data-lucide="mountain"></i> Монголия и Бурятия</h3>
+                        <span class="tradition-region">Степь · ваджраяна</span>
+                    </div>
+                    <div class="tradition-body">
+                        <p>Кочевая среда оставила след в ритуале: почитание природы, курганы-овоо, голубые платки (хадак) на камнях и встречах — знак уважения и пожелания счастливого пути.</p>
+                        <div class="fact-box">
+                            <strong>Обычай: Цаган Сар</strong>
+                            <p>«Белый месяц» — весенний праздник чистоты дома и помыслов, визиты к старшим, угощения и обновление отношений в семье и роде.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-4">
+                    <div class="tradition-header">
+                        <h3><i data-lucide="map-pin"></i> Калмыкия</h3>
+                        <span class="tradition-region">Ойраты · гелуг</span>
+                    </div>
+                    <div class="tradition-body">
+                        <p>Единственный регион Европы с исторически буддийским большинством: калмыцкий язык, хурулы, степная этика гостя и память о репрессиях и возрождении общины.</p>
+                        <div class="fact-box">
+                            <strong>Обычаи: Зул и джомба</strong>
+                            <p>Зул — «лампадный» Новый год с насн из теста и «прибавлением» года жизни. Джомба — солёный чай с молоком и маслом, первую пиалу нередко подносят на домашний алтарь (Деедж).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tradition-card scroll-reveal scroll-reveal--delay-4">
+                    <div class="tradition-header">
+                        <h3><i data-lucide="waves"></i> Шри-Ланка и Мьянма</h3>
+                        <span class="tradition-region">Тхеравада</span>
+                    </div>
+                    <div class="tradition-body">
+                        <p>Островная и бирманская традиции держатся монашеского Устава (Виная): строгие дни поста, уважение к Пали-канону, процессии с реликвиями в праздники полнолуния.</p>
+                        <div class="fact-box">
+                            <strong>Обычай: дни Пойя</strong>
+                            <p>В дни полнолуния и ключевые даты многие верующие посещают храм, держат дополнительные обеты (не пить, не лгать), медитируют и слушают проповедь монаха.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-section__footer">
+                <p>Подробнее о калмыцких праздниках, форуме и быте — отдельный раздел сайта.</p>
+                <a class="btn btn-primary" href="kalm.html"><i data-lucide="map-pin"></i> Калмыкия: праздники и традиции</a>
+            </div>
+        </div>
+
+        <section class="media-showcase scroll-reveal" id="catalog-media">
+            <h2 class="category-title">
+                <i data-lucide="image"></i>
+                Материалы с сайта
+            </h2>
+            <p>Фото и разделы проекта — продолжение знакомства с традициями вне этой страницы.</p>
+            <div class="media-showcase__links">
+                <a class="btn btn-ghost" href="media.html"><i data-lucide="play-circle"></i> Медиатека</a>
+                <a class="btn btn-ghost" href="map.html"><i data-lucide="map"></i> Карта мест</a>
+                <a class="btn btn-ghost" href="audio.html"><i data-lucide="headphones"></i> Аудиогид</a>
+            </div>
             <div class="media-grid-custom">
-                <div class="media-item">
-                    <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1200&q=80" alt="Буддийский храм и пространство для медитации">
-                    <div class="media-caption">Храмовое пространство для практики созерцания и тишины.</div>
-                </div>
-                <div class="media-item">
-                    <img src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" alt="Молитвенные флажки в горной местности">
-                    <div class="media-caption">Молитвенные флажки как напоминание о сострадании ко всем существам.</div>
-                </div>
-                <div class="media-item">
-                    <iframe height="220" src="https://www.youtube.com/embed/mMMerxh_12U" title="Короткое видео о буддийской медитации и традициях" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    <div class="media-caption">Короткое видео: как медитация и ритуалы влияют на повседневную жизнь.</div>
-                </div>
+                <a class="media-item media-item--link" href="media.html">
+                    <img src="images/monks.png" alt="Монахи в храмовом пространстве" width="600" height="400" loading="lazy">
+                    <div class="media-caption">Медиатека: видео и материалы о практике и культуре.</div>
+                </a>
+                <a class="media-item media-item--link" href="map.html">
+                    <img src="images/flags.png" alt="Молитвенные флажки" width="600" height="400" loading="lazy">
+                    <div class="media-caption">Карта: храмы и священные места Калмыкии.</div>
+                </a>
+                <a class="media-item media-item--link" href="kalm.html">
+                    <img src="images/prayer-wheels.png" alt="Молитвенные барабаны" width="600" height="400" loading="lazy">
+                    <div class="media-caption">Калмыкия: ритуалы, Зул и местная традиция.</div>
+                </a>
             </div>
         </section>
 
-        <section class="faq-section animate-slide-up">
-            <h2 class="category-title">❓ Частые вопросы новичков</h2>
+        <section class="faq-section scroll-reveal" id="catalog-faq">
+            <h2 class="category-title">
+                <i data-lucide="help-circle"></i>
+                Частые вопросы новичков
+            </h2>
             <div class="faq-list">
                 <div class="faq-item">
-                    <button class="faq-question">Нужно ли быть буддистом, чтобы медитировать? <i data-lucide="chevron-down"></i></button>
+                    <button type="button" class="faq-question">Нужно ли быть буддистом, чтобы медитировать? <i data-lucide="chevron-down"></i></button>
                     <div class="faq-answer">Нет. Базовые практики осознанности и доброжелательности доступны каждому и полезны независимо от религиозной принадлежности.</div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">Сколько времени в день достаточно для старта? <i data-lucide="chevron-down"></i></button>
-                    <div class="faq-answer">Начните с 5-10 минут в одно и то же время. Важно не количество, а регулярность и мягкое внимание к дыханию.</div>
+                    <button type="button" class="faq-question">Сколько времени в день достаточно для старта? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Начните с 5–10 минут в одно и то же время. Важны регулярность и мягкое внимание к дыханию, а не длительность сессии.</div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">Какая традиция подходит новичку лучше всего? <i data-lucide="chevron-down"></i></button>
-                    <div class="faq-answer">Обычно рекомендуют начинать с Анапанасати и Метта-бхаваны: это безопасные и понятные практики, которые развивают спокойствие и доброту.</div>
+                    <button type="button" class="faq-question">Какая традиция подходит новичку лучше всего? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Обычно рекомендуют начинать с Анапанасати и Метта-бхаваны: это понятные практики, которые развивают спокойствие и доброту.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-question">Чем отличаются тхеравада, махаяна и ваджраяна? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Тхеравада опирается на ранние тексты и личное освобождение; махаяна добавляет идеал бодхисаттвы и широкий круг сутр; ваджраяна (тибетская линия) использует мантры, визуализации и наставника. На практике школы дополняют друг друга, а не «конкурируют».</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-question">Можно ли практиковать без храма? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Да. Домашняя медитация, чтение сутр и этичное поведение — полноценная основа. Храм и община помогают, но не обязательны для первых шагов.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-question">Чем калмыцкий буддизм отличается от тибетского? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Калмыцкая традиция относится к тибетскому буддизму (гелуг и др.), но с местным языком, праздниками вроде Зула и историей степного народа. Ритуалы близки, акценты и контекст — свои.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-question">Зачем повторять мантры, если я не знаю санскрит? <i data-lucide="chevron-down"></i></button>
+                    <div class="faq-answer">Звук и ритм настраивают ум; со временем приходит смысл через перевод и наставника. В аудиогиде на сайте можно слушать мантры с пояснениями.</div>
                 </div>
             </div>
         </section>
-
-        <!-- Цитата в конце -->
-        <div class="fact-box" style="background: var(--secondary); color: white; text-align: center; margin: 60px 0;">
-            <strong style="color: var(--primary); font-size: 1.2rem;">🌺 Мудрость буддизма</strong>
-            <p style="color: white; font-style: italic; font-size: 1.1rem;">"Традиции — это не поклонение пеплу, а передача пламени." — Буддийская пословица</p>
-        </div>
     </main>
+    </section>
+
+    <section class="catalog-quote-band catalog-band--warm" aria-label="Цитата">
+        <div class="container">
+            <blockquote class="quote-card quote-card--featured scroll-reveal">
+                <i data-lucide="quote"></i>
+                <p class="quote-card__text">«Традиции — это не поклонение пеплу, а передача пламени.»</p>
+                <p class="quote-author">— Буддийская пословица</p>
+            </blockquote>
+        </div>
+    </section>
+    </div>
    
     
 
@@ -518,7 +593,7 @@
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h3 data-i18n="site.name">Путь Дхармы</h3>
-                <p>Откройте для себя богатство буддийских традиций.</p>
+                <p>Изучение традиций и обычаев буддийских народов.</p>
             </div>
             <div class="footer-links">
                 <h4 data-i18n="footer.sections">Разделы</h4>
@@ -538,8 +613,8 @@
     </footer>
      <script>
         lucide.createIcons();
-        
-        // Массив цитат для футера
+
+        // Случайная цитата в подвале
         const quotes = [
             { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
             { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
@@ -564,60 +639,6 @@
             dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
         }
 
-        const filterContainer = document.getElementById('interestFilter');
-        const filterButtons = document.querySelectorAll('.interest-btn');
-        const categorySections = document.querySelectorAll('.category-section[data-interest]');
-        function applyFilter(filterValue) {
-            categorySections.forEach((section) => {
-                if (filterValue === 'all') {
-                    section.style.display = 'block';
-                    return;
-                }
-                const tags = section.dataset.interest || '';
-                section.style.display = tags.includes(filterValue) ? 'block' : 'none';
-            });
-        }
-
-        function setActiveFilter(filterValue) {
-            filterButtons.forEach((btn) => {
-                const isActive = btn.dataset.filter === filterValue;
-                btn.classList.toggle('active', isActive);
-            });
-            applyFilter(filterValue);
-        }
-
-        if (filterContainer) {
-            filterContainer.addEventListener('click', (event) => {
-                const button = event.target.closest('.interest-btn');
-                if (!button) return;
-                setActiveFilter(button.dataset.filter || 'all');
-            });
-        }
-
-        const quickLinks = document.getElementById('quickLinks');
-        if (quickLinks) {
-            quickLinks.addEventListener('click', (event) => {
-                const button = event.target.closest('.quick-link-btn');
-                if (!button) return;
-
-                const nextFilter = button.dataset.filter || 'all';
-                const targetId = button.dataset.target;
-                if (nextFilter) setActiveFilter(nextFilter);
-
-                if (targetId) {
-                    const target = document.getElementById(targetId);
-                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        }
-
-        const faqButtons = document.querySelectorAll('.faq-question');
-        faqButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const item = button.closest('.faq-item');
-                if (item) item.classList.toggle('open');
-            });
-        });
     </script>
 
     <!-- AI Чат-бот OpenRouter -->
@@ -628,18 +649,18 @@
         </button>
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
-                <h4>🧘 Буддийский наставник (AI)</h4>
+                <h4>Помощник по традициям (AI)</h4>
                 <button class="chat-close" id="chatClose">&times;</button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                        Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». Могу рассказать о ритуалах, праздниках (Зул, Лосар, Весак), быте калмыков, тибетцев, монголов и юго-восточной Азии, а также ответить на общие вопросы о буддизме. Чем помочь?
                     </div>
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <input type="text" placeholder="Обычаи, праздники, народы…" id="chatInput">
                 <button id="chatSend">
                     <i data-lucide="send"></i>
                 </button>
@@ -649,7 +670,9 @@
     <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
         <i data-lucide="arrow-up"></i>
     </button>
-     <!-- Подключаем AI чат-бот -->
+    <!-- catalog: scroll-reveal.js, catalog.js (фильтры, якоря); остальное — js/README.md -->
+    <script src="js/scroll-reveal.js"></script>
+    <script src="js/catalog.js"></script>
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>

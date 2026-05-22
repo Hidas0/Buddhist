@@ -24,16 +24,7 @@
                 <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
             </ul>
             <div class="nav-actions">
-                <button
-                    class="nav-toggle"
-                    type="button"
-                    data-mobile-nav-toggle
-                    aria-expanded="false"
-                    data-i18n-aria-label="ui.menu"
-                    data-i18n-title="ui.menu"
-                    aria-label="Меню"
-                    title="Меню"
-                >
+                <button class="nav-toggle" type="button" data-mobile-nav-toggle aria-expanded="false" aria-label="Меню" title="Меню">
                     <i data-lucide="menu"></i>
                 </button>
             </div>
@@ -53,10 +44,8 @@
 
     <main class="container py-80">
         <h1 class="text-center mb-40 animate-slide-up" data-i18n="media.title">Медиа контент</h1>
-        
-        <!-- Сетка с категориями -->
+
         <div class="media-grid">
-            <!-- Категория: Жизнь монастыря -->
             <div class="media-card animate-slide-up" style="animation-delay: 0.1s" onclick="window.location.href='video-player.html?category=monastery&title=Жизнь+монастыря'">
                 <div class="video-thumb" style="background-image: url('images/monks.png'); background-size: cover; background-position: center;">
                     <i data-lucide="play" class="play-icon"></i>
@@ -68,19 +57,17 @@
                 </div>
             </div>
 
-            <!-- Категория: Ритуалы очищения -->
-            <div class="media-card animate-slide-up" style="animation-delay: 0.2s" onclick="window.location.href='video-player.html?category=rituals&title=Ритуалы+очищения'">
+            <div class="media-card animate-slide-up" style="animation-delay: 0.2s" onclick="window.location.href='video-player.html?category=rituals&title=Ритуалы'">
                 <div class="video-thumb" style="background-image: url('images/prayer-wheels.png'); background-size: cover; background-position: center;">
                     <i data-lucide="play" class="play-icon"></i>
-                    <span class="label" data-i18n="media.playlistLabel">ПЛЕЙЛИСТ • 5 ВИДЕО</span>
+                    <span class="label" data-i18n="media.playlistLabel">ПЛЕЙЛИСТ • 4 ВИДЕО</span>
                 </div>
                 <div class="media-info">
-                    <h3>Ритуалы очищения</h3>
-                    <p>Священные обряды в высокогорье.</p>
+                    <h3>Ритуалы</h3>
+                    <p>Ритуалы и все, что с ними связано.</p>
                 </div>
             </div>
 
-            <!-- Категория: Священные места -->
             <div class="media-card animate-slide-up" style="animation-delay: 0.3s" onclick="window.location.href='video-player.html?category=sacred&title=Священные+места'">
                 <div class="video-thumb" style="background-image: url('images/flags.png'); background-size: cover; background-position: center;">
                     <i data-lucide="play" class="play-icon"></i>
@@ -94,7 +81,7 @@
         </div>
     </main>
 
-   <footer class="footer">
+    <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h3 data-i18n="site.name">Путь Дхармы</h3>
@@ -119,72 +106,26 @@
 
     <script>
         lucide.createIcons();
-        
-        // Добавляем курсор-pointer для карточек
-        document.querySelectorAll('.media-card').forEach(card => {
-            card.style.cursor = 'pointer';
-        });
-    </script>
-
-     <script>
-        lucide.createIcons();
-        
-        // Массив цитат для футера
+        document.querySelectorAll('.media-card').forEach(card => { card.style.cursor = 'pointer'; });
         const quotes = [
             { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
-            { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
-            { text: "Мудрость — это умение видеть взаимосвязь всех вещей.", author: "Тит Нат Хан" },
-            { text: "Сострадание — это не роскошь, а необходимость для выживания человечества.", author: "Далай-лама XIV" },
-            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" },
-            { text: "Не совершай зла, твори добро, очищай свой ум — таково учение Будды.", author: "Дхаммапада" },
-            { text: "Мир начинается с улыбки.", author: "Тит Нат Хан" },
-            { text: "Гнев не решает проблем, он только создает новые.", author: "Далай-лама XIV" },
-            { text: "Ваша цель в жизни — быть счастливым.", author: "Далай-лама XIV" },
-            { text: "Каждый день — это новое рождение. Каждое утро — это новое начало.", author: "Буддийская мудрость" }
+            { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" }
         ];
-        
-        function getRandomQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            return quotes[randomIndex];
-        }
-        
-        const dailyQuoteElement = document.getElementById('daily-quote');
-        if (dailyQuoteElement) {
-            const randomQuote = getRandomQuote();
-            dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
-        }
+        const el = document.getElementById('daily-quote');
+        if (el) { const q = quotes[Math.floor(Math.random() * quotes.length)]; el.innerHTML = `"${q.text}" — ${q.author}`; }
     </script>
 
-    <!-- AI Чат-бот OpenRouter -->
     <div class="ai-chatbot" id="aiChatbot">
-        <button class="chat-toggle" id="chatToggle">
-            <i data-lucide="message-circle"></i>
-            <span data-i18n="ui.askWisdom">Спросите у ИИ</span>
-        </button>
+        <button class="chat-toggle" id="chatToggle"><i data-lucide="message-circle"></i><span data-i18n="ui.askWisdom">Спросите у ИИ</span></button>
         <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <h4>🧘 Буддийский наставник (AI)</h4>
-                <button class="chat-close" id="chatClose">&times;</button>
-            </div>
+            <div class="chat-header"><h4>Помощник по традициям (AI)</h4><button class="chat-close" id="chatClose">&times;</button></div>
             <div class="chat-messages" id="chatMessages">
-                <div class="message bot">
-                    <div class="message-content">
-                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
-                    </div>
-                </div>
+                <div class="message bot"><div class="message-content">Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». Чем помочь?</div></div>
             </div>
-            <div class="chat-input">
-                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
-                <button id="chatSend">
-                    <i data-lucide="send"></i>
-                </button>
-            </div>
+            <div class="chat-input"><input type="text" placeholder="Обычаи, праздники, народы…" id="chatInput"><button id="chatSend"><i data-lucide="send"></i></button></div>
         </div>
     </div>
-     <!-- Подключаем AI чат-бот -->
-    <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
-        <i data-lucide="arrow-up"></i>
-    </button>
+    <button class="back-to-top" id="backTopBtn" aria-label="Наверх страницы"><i data-lucide="arrow-up"></i></button>
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>
@@ -192,6 +133,5 @@
     <script src="js/config.local.js"></script>
     <script src="js/ai-chatbot.js"></script>
     <script>lucide.createIcons();</script>
-
 </body>
 </html>

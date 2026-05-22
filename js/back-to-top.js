@@ -1,3 +1,7 @@
+/**
+ * back-to-top.js — кнопка прокрутки наверх (#backTopBtn или .back-to-top).
+ * Появляется после ~400px прокрутки; плавный scroll + снятие анимации при остановке.
+ */
 (() => {
   const SCROLL_SHOW_Y = 400;
   const SCROLL_TOP_EPSILON = 4;

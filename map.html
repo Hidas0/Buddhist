@@ -84,10 +84,11 @@
         </div>
     </div>
 
+    <!-- Яндекс.Карты; точки — data/places.json -->
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60ccde2f-bf26-46f9-a681-91f3dd0ec16a"></script>
 
     <script>
-        // Глобальная функция для закрытия панорамы
+        // Панорама храма: модальное окно #panorama-modal
         window.closePanorama = function() {
             const modal = document.getElementById('panorama-modal');
             const container = document.getElementById('panorama-container');
@@ -130,6 +131,7 @@
             
         
 
+            // Метки святынь из data/places.json
             const response = await fetch("data/places.json");
             const places = await response.json();
 
@@ -467,18 +469,18 @@
         </button>
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
-                <h4>🧘 Буддийский наставник (AI)</h4>
+                <h4>Помощник по традициям (AI)</h4>
                 <button class="chat-close" id="chatClose">&times;</button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                        Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». Могу рассказать о ритуалах, праздниках (Зул, Лосар, Весак), быте калмыков, тибетцев, монголов и юго-восточной Азии, а также ответить на общие вопросы о буддизме. Чем помочь?
                     </div>
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <input type="text" placeholder="Обычаи, праздники, народы…" id="chatInput">
                 <button id="chatSend">
                     <i data-lucide="send"></i>
                 </button>
@@ -489,6 +491,7 @@
         <i data-lucide="arrow-up"></i>
     </button>
      <!-- Подключаем AI чат-бот -->
+    <!-- Общие скрипты — js/README.md -->
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>

@@ -1,3 +1,7 @@
+/**
+ * site-ui.js — мобильная навигация.
+ * Разметка: [data-mobile-nav-toggle], [data-mobile-nav-panel], [data-mobile-nav-backdrop].
+ */
 (() => {
   function initMobileNav() {
     const toggle = document.querySelector("[data-mobile-nav-toggle]");

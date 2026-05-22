@@ -1,3 +1,5 @@
+# Деплой статического сайта на GitHub Pages.
+# Секрет OPENROUTER_API_KEY (необязательно) → создаёт js/config.local.js при сборке для AI-чата.
 name: Deploy to GitHub Pages
 
 on:

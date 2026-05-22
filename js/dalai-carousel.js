@@ -1,5 +1,10 @@
+/**
+ * dalai-carousel.js — карусель «14 Далай-лам» на главной.
+ * Разметка: [data-dalai-carousel], [data-dalai-prev/next], [data-dalai-photo-img], …
+ * Данные слайдов — массив slides ниже; фото в images/dalai-lamas/.
+ */
 (function () {
-    /** Порядок по убыванию: XIV → I. Фото: images/dalai-lamas/Dalai_Lama_14.jpg … Dalai_Lama_1.jpg (поле photo — только имя файла). */
+    /** Порядок: XIV → I. Поле photo — только имя файла (Dalai_Lama_14.jpg …). */
     var DALAI_PHOTO_DIR = 'images/dalai-lamas/';
     var slides = [
         {

@@ -308,7 +308,8 @@
 
      <script>
         lucide.createIcons();
-        
+
+        // Цитата в подвале + анимация блока праздников (#kalmForumFlow)
         const quotes = [
             { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
             { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
@@ -333,6 +334,7 @@
             dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
         }
 
+        // Блок «форум / колесо»: появление шагов при прокрутке (IntersectionObserver)
         (function initKalmForumFlow() {
             const root = document.getElementById('kalmForumFlow');
             if (!root) return;
@@ -382,18 +384,18 @@
         </button>
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
-                <h4>🧘 Буддийский наставник (AI)</h4>
+                <h4>Помощник по традициям (AI)</h4>
                 <button class="chat-close" id="chatClose">&times;</button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Здравствуйте! Я буддийский наставник на основе ИИ. Могу ответить на вопросы о буддизме, медитации, традициях Калмыкии и философии. Чем могу помочь? 
+                        Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». Могу рассказать о ритуалах, праздниках (Зул, Лосар, Весак), быте калмыков, тибетцев, монголов и юго-восточной Азии, а также ответить на общие вопросы о буддизме. Чем помочь?
                     </div>
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Задайте вопрос о буддизме..." id="chatInput">
+                <input type="text" placeholder="Обычаи, праздники, народы…" id="chatInput">
                 <button id="chatSend">
                     <i data-lucide="send"></i>
                 </button>
@@ -403,6 +405,7 @@
     <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
         <i data-lucide="arrow-up"></i>
     </button>
+    <!-- Общие скрипты — js/README.md -->
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>

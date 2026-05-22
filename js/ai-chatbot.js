@@ -1,6 +1,14 @@
-// ========== OPENROUTER AI ЧАТ-БОТ (БЕСПЛАТНЫЕ МОДЕЛИ) ==========
+/**
+ * ai-chatbot.js — виджет «Спросите у ИИ» (OpenRouter, бесплатные модели).
+ *
+ * Нужны элементы: #chatToggle, #chatWindow, #chatClose, #chatSend, #chatInput, #chatMessages.
+ * Ключ: window.DHARMA_OPENROUTER_KEY из config.local.js (или CI на GitHub Pages).
+ * Referer: window.DHARMA_SITE_ORIGIN из site-config.js.
+ *
+ * При ошибке 401 перебор моделей прекращается. При 429 — следующая модель из FREE_MODELS.
+ */
 
-/** Ключ из js/config.local.js (читается при отправке, не при загрузке скрипта) */
+/** Ключ читается в момент отправки (config.local.js может подключиться позже скрипта) */
 function getOpenRouterApiKey() {
     const key =
         (typeof window !== 'undefined' && window.DHARMA_OPENROUTER_KEY) || '';
@@ -21,7 +29,22 @@ let messageHistory = [];
 const CHAT_STORAGE_KEY = 'dharmaAiChatMessages';
 const HISTORY_STORAGE_KEY = 'dharmaAiMessageHistory';
 
-// АКТУАЛЬНЫЕ БЕСПЛАТНЫЕ МОДЕЛИ (из официальной коллекции OpenRouter)
+/** Приветствие в #chatMessages (одинаковое на всех страницах) */
+const CHAT_WELCOME =
+    'Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». ' +
+    'Могу рассказать о ритуалах, праздниках (Зул, Лосар, Весак), быте калмыков, тибетцев, монголов и юго-восточной Азии, ' +
+    'а также ответить на общие вопросы о буддизме. Чем помочь?';
+
+const CHAT_SYSTEM_PROMPT = `Ты — образовательный помощник сайта «Путь Дхармы» по теме «Традиции и обычаи буддийских народов».
+Отвечай мудро, спокойно, на русском языке. Будь добрым и уважительным к разным культурам.
+Используй эмодзи умеренно.
+
+Приоритет тем: бытовые и календарные обычаи, ритуалы, этикет, праздники, сравнение регионов (Тибет, Калмыкия, Монголия, Бурятия, ЮВА, Шри-Ланка), паломничество, мантры в культуре.
+Ты знаешь: Зул, Цаган Сар, Лосар, Весак, Сонгкран, алмс, овоо, хадак, джомба-чай, молитвенные флажки и барабаны, хурулы, гелуг, тхеравада.
+Общую философию (4 истины, 8 путь, карма) давай кратко, если вопрос про обычаи — не уходи в длинную лекцию.
+Если спрашивают про Калмыкию — опирайся на материалы сайта (раздел kalm.html).`;
+
+/** Список бесплатных моделей OpenRouter — перебор по порядку до первого успешного ответа */
 const FREE_MODELS = [
     'openrouter/free',  // АВТОМАТИЧЕСКИЙ ВЫБОР ЛУЧШЕЙ БЕСПЛАТНОЙ МОДЕЛИ
     'nvidia/nemotron-3-super:free',
@@ -67,7 +90,6 @@ async function sendMessage() {
         let reply = null;
         let authErrorMessage = '';
         
-        // Пробуем каждую модель по очереди
         for (const model of FREE_MODELS) {
             try {
                 console.log(`Пробуем модель: ${model}`);
@@ -77,7 +99,6 @@ async function sendMessage() {
                     'Authorization': `Bearer ${apiKey}`
                 };
 
-                // OpenRouter: стабильный referer (свой домен или GitHub Pages)
                 const referer =
                     (typeof window !== 'undefined' && window.DHARMA_SITE_ORIGIN) ||
                     (window.location.protocol === 'http:' || window.location.protocol === 'https:'
@@ -96,15 +117,7 @@ async function sendMessage() {
                         messages: [
                             {
                                 role: 'system',
-                                content: `Ты — буддийский наставник и учитель Дхармы. 
-                                Отвечай мудро, спокойно, на русском языке.
-                                Будь добрым и сострадательным.
-                                Используй эмодзи для украшения ответов.
-                                
-                                Ты знаешь о буддизме, медитации, Четырех Благородных Истинах, 
-                                Восьмеричном Пути, мантрах, традициях Калмыкии, 
-                                праздниках Зул и Цаган Сар, калмыцком чае Джомба,
-                                карме, перерождении, Будде Шакьямуни и Далай-ламе.`
+                                content: CHAT_SYSTEM_PROMPT
                             },
                             ...messageHistory.slice(-5)
                         ],
@@ -131,7 +144,6 @@ async function sendMessage() {
                     }
                     console.log(`Модель ${model} ошибка ${response.status}:`, errorData.error?.message || 'Неизвестная ошибка');
                     
-                    // При 401 дальнейшие попытки бесполезны: проблема в ключе.
                     if (response.status === 401) {
                         authErrorMessage =
                             (errorData.error?.message || 'Неверный ключ') +
@@ -139,7 +151,6 @@ async function sendMessage() {
                         break;
                     }
 
-                    // Если ошибка 429 (превышен лимит), пробуем следующую модель
                     if (response.status === 429) {
                         console.log(`Модель ${model} превысила лимит, пробуем следующую...`);
                         continue;
@@ -238,6 +249,7 @@ function restoreChatState() {
     }
 }
 
+/** История чата не сохраняется между перезагрузками страницы (намеренно) */
 function clearChatStateOnPageLoad() {
     messageHistory = [];
     try {
@@ -301,13 +313,21 @@ if (!chatToggle || !chatWindow || !chatMessages) {
     console.warn('AI чат: элементы не найдены на этой странице');
 }
 
+function applyWelcomeMessage() {
+    if (!chatMessages) return;
+    const firstBot = chatMessages.querySelector('.message.bot .message-content');
+    if (firstBot) firstBot.textContent = CHAT_WELCOME;
+}
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         clearChatStateOnPageLoad();
+        applyWelcomeMessage();
         initChatIcons();
     }, { once: true });
 } else {
     clearChatStateOnPageLoad();
+    applyWelcomeMessage();
     initChatIcons();
 }
 

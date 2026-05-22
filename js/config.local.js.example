@@ -1,3 +1,10 @@
-// Скопируйте этот файл как js/config.local.js и вставьте свой ключ OpenRouter.
-// js/config.local.js в .gitignore — в GitHub не попадёт.
+/**
+ * Пример локального конфига AI.
+ *
+ * 1. Скопировать:  config.local.js.example  →  config.local.js
+ * 2. Вставить ключ с https://openrouter.ai/keys (формат sk-or-v1-...)
+ * 3. Подключить в HTML ПЕРЕД ai-chatbot.js, без defer
+ *
+ * config.local.js в .gitignore. На GitHub Pages ключ даёт CI (секрет OPENROUTER_API_KEY).
+ */
 window.DHARMA_OPENROUTER_KEY = 'sk-or-v1-ВАШ_КЛЮЧ';

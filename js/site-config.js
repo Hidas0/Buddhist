@@ -1,3 +1,8 @@
+/**
+ * site-config.js — базовый origin сайта для заголовков OpenRouter (HTTP-Referer).
+ * На GitHub Pages: https://hidas0.github.io/Buddhist
+ * Локально: текущий origin (Live Server и т.п.).
+ */
 (() => {
   const host = window.location.hostname;
   const path = window.location.pathname;

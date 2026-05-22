@@ -1,3 +1,8 @@
+/**
+ * lotus-bg.js — фоновые кликабельные лотосы по краям экрана.
+ * Клик: вспышка, радиальная «волна», сдвиг текста, случайная цитата.
+ * z-index: .lotus-bg ниже контента; main/header с pointer-events: none (см. style.css).
+ */
 (() => {
   const LOTUS_COUNT = 16;
   const PETAL_BURST_COUNT = 14;
