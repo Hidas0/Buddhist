@@ -105,6 +105,7 @@
   let showRoute = false;
   let panoramaPlayer = null;
   let savedScrollY = 0;
+  let suppressMapClickUntil = 0;
 
   function escapeHtml(str) {
     return String(str)
@@ -195,9 +196,57 @@
     pm.options.set("preset", TYPE_PRESETS[place.type] || "islands#grayIcon");
   }
 
+  function hidePlacePanel() {
+    document.getElementById("map-place-panel")?.classList.add("hidden");
+  }
+
+  function bindPlacePanelActions(container, place) {
+    container.querySelector(".map-panorama-btn")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.showMapPanorama?.(place);
+    });
+    container.querySelector(".map-place-panel__close")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hidePlacePanel();
+      document.querySelectorAll(".map-list__item").forEach((el) => el.classList.remove("is-active"));
+      if (currentPlacemark) {
+        resetPlacemarkStyle(currentPlacemark);
+        currentPlacemark = null;
+      }
+    });
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function renderPlacePanel(place) {
+    const panel = document.getElementById("map-place-panel");
+    if (!panel) return;
+
+    const dist = userCoords
+      ? `<p class="map-place-panel__distance"><i data-lucide="navigation"></i> ~${haversineKm(userCoords, place.coords).toFixed(0)} км</p>`
+      : "";
+    const excerpt = (place.story || place.description || "").slice(0, 220);
+    const tail = (place.story || place.description || "").length > 220 ? "…" : "";
+
+    panel.innerHTML = `
+      <button type="button" class="map-place-panel__close" aria-label="Закрыть">&times;</button>
+      <span class="map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || place.type)}</span>
+      <h3>${escapeHtml(place.name)}</h3>
+      <p class="map-place-panel__region">${escapeHtml(place.region)}</p>
+      <p class="map-place-panel__desc">${escapeHtml(excerpt)}${tail}</p>
+      ${dist}
+      <button type="button" class="btn btn-primary map-panorama-btn">
+        <i data-lucide="scan-eye"></i>
+        Уличная панорама
+      </button>
+    `;
+    panel.classList.remove("hidden");
+    bindPlacePanelActions(panel, place);
+  }
+
   function selectPlace(place, placemark) {
     if (!place || !map) return;
 
+    suppressMapClickUntil = Date.now() + 250;
     map.setCenter(place.coords, 12, { duration: 350 });
 
     if (currentPlacemark) resetPlacemarkStyle(currentPlacemark);
@@ -207,39 +256,7 @@
     }
 
     setActiveListItem(place.id);
-    renderDetailCard(place);
-  }
-
-  function renderDetailCard(place) {
-    const card = document.getElementById("place-card");
-    if (!card) return;
-
-    const dist = userCoords
-      ? `<p class="map-detail__distance"><i data-lucide="navigation"></i> ~${haversineKm(userCoords, place.coords).toFixed(0)} км от вас</p>`
-      : "";
-
-    card.innerHTML = `
-      <img src="${placeImg(place)}" alt="${escapeHtml(place.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/hero.png'">
-      <div class="map-detail__body">
-        <span class="map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || place.type)}</span>
-        <h3>${escapeHtml(place.name)}</h3>
-        <p class="map-detail__region">${escapeHtml(place.region)}</p>
-        <p class="map-detail__story">${escapeHtml(place.story || place.description)}</p>
-        ${dist || ""}
-        <button type="button" class="btn btn-primary map-panorama-btn" data-place-id="${escapeHtml(place.id)}">
-          <i data-lucide="scan-eye"></i>
-          Уличная панорама
-        </button>
-      </div>
-    `;
-    card.classList.remove("hidden");
-
-    card.querySelector(".map-panorama-btn")?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      window.showMapPanorama?.(place);
-    });
-
-    if (window.lucide) window.lucide.createIcons();
+    renderPlacePanel(place);
   }
 
   function renderList(places) {
@@ -274,9 +291,10 @@
             <img class="map-list__thumb" src="${placeImg(place)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/hero.png'">
             <div class="map-list__text">
               <span class="map-list__type map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || "")}</span>
-              <strong>${escapeHtml(place.name)}</strong>
-              <span class="map-list__meta">${escapeHtml(place.region)}</span>
-              ${km || ""}
+            <strong>${escapeHtml(place.name)}</strong>
+            <span class="map-list__desc">${escapeHtml(place.description || "")}</span>
+            <span class="map-list__meta">${escapeHtml(place.region)}</span>
+            ${km || ""}
             </div>
           </li>
         `;
@@ -348,7 +366,8 @@
 
       placemark.properties.set("placeData", place);
       placemark.events.add("click", (e) => {
-        e.stopPropagation();
+        e.preventDefault();
+        suppressMapClickUntil = Date.now() + 250;
         selectPlace(
           e.get("target").properties.get("placeData"),
           e.get("target")
@@ -376,19 +395,13 @@
     const places = getFilteredPlaces();
     renderMapMarkers(places);
 
-    const card = document.getElementById("place-card");
-    if (card && places.length) {
-      /* keep card if selection still visible */
-      const activeId = document.querySelector(".map-list__item.is-active")?.dataset.id;
-      if (activeId && !places.find((p) => p.id === activeId)) {
-        card.classList.add("hidden");
-        if (currentPlacemark) {
-          resetPlacemarkStyle(currentPlacemark);
-          currentPlacemark = null;
-        }
+    const activeId = document.querySelector(".map-list__item.is-active")?.dataset.id;
+    if (activeId && !places.find((p) => p.id === activeId)) {
+      hidePlacePanel();
+      if (currentPlacemark) {
+        resetPlacemarkStyle(currentPlacemark);
+        currentPlacemark = null;
       }
-    } else if (card) {
-      card.classList.add("hidden");
     }
   }
 
@@ -610,9 +623,15 @@
 
   function initMapScrollFix() {
     if (!map) return;
-    map.behaviors.disable("scrollZoom");
 
     const mapEl = document.getElementById("map");
+    const panel = document.getElementById("map-place-panel");
+    if (panel && !panel.dataset.bound) {
+      panel.dataset.bound = "1";
+      panel.addEventListener("mousedown", (e) => e.stopPropagation());
+      panel.addEventListener("click", (e) => e.stopPropagation());
+      panel.addEventListener("dblclick", (e) => e.stopPropagation());
+    }
     map.events.add("actionend", () => {
       if (!document.getElementById("panorama-modal")?.classList.contains("is-open")) {
         unlockPageScroll();
@@ -695,8 +714,9 @@
     });
 
     map.events.add("click", () => {
+      if (Date.now() < suppressMapClickUntil) return;
       map.balloon?.close();
-      document.getElementById("place-card")?.classList.add("hidden");
+      hidePlacePanel();
       document.querySelectorAll(".map-list__item").forEach((el) => el.classList.remove("is-active"));
       if (currentPlacemark) {
         resetPlacemarkStyle(currentPlacemark);
