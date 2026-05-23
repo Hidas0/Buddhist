@@ -21,34 +21,40 @@
   const LIFE_ERAS = ["birth", "enlighten", "teach", "parinirvana"];
 
   const ERA_STEPS = [
-    { key: "all", label: "Все эпохи", filter: () => true },
+    { key: "all", short: "Все", label: "Все эпохи", filter: () => true },
     {
       key: "life",
+      short: "VI в. до н. э.",
       label: "Жизнь Будды (VI в. до н. э.)",
       filter: (p) => LIFE_ERAS.includes(p.era),
     },
     {
       key: "heritage",
-      label: "Древность и ранний буддизм",
+      short: "Древность",
+      label: "Древность и ранний буддизм (III в. до н. э. – V в. н. э.)",
       filter: (p) => p.era === "heritage",
     },
     {
       key: "medieval",
+      short: "V–XIV вв.",
       label: "Средневековье (V–XIV вв.)",
       filter: (p) => p.era === "medieval",
     },
     {
       key: "spread",
-      label: "Распространение в Азии",
+      short: "XV–XVIII вв.",
+      label: "Новое время (XV–XVIII вв.)",
       filter: (p) => p.era === "spread",
     },
     {
       key: "revival",
-      label: "Возрождение в России и Монголии",
+      short: "XIX–XX вв.",
+      label: "XIX–XX век",
       filter: (p) => p.era === "revival",
     },
     {
       key: "living",
+      short: "Сегодня",
       label: "Современность",
       filter: (p) => p.era === "living",
     },
@@ -428,14 +434,11 @@
     const routeBtn = document.getElementById("map-route-toggle");
     if (routeBtn) routeBtn.classList.toggle("active", showRoute);
 
-    const slider = document.getElementById("map-era-slider");
     if (presetId === "four") {
       activeEraIndex = 1;
-      if (slider) slider.value = "1";
       updateEraLabel();
     } else if (activeEraIndex === 1) {
       activeEraIndex = 0;
-      if (slider) slider.value = "0";
       updateEraLabel();
     }
   }
@@ -545,10 +548,8 @@
     activeTypeFilter = "all";
     activeEraIndex = 0;
     showRoute = false;
-    const slider = document.getElementById("map-era-slider");
     const routeBtn = document.getElementById("map-route-toggle");
     const search = document.getElementById("map-search");
-    if (slider) slider.value = "0";
     if (routeBtn) routeBtn.classList.remove("active");
     if (search) search.value = "";
     updatePresetChips();
@@ -573,19 +574,34 @@
     applyPreset("all", { syncType: true, clearSearch: false });
   }
 
+  function renderEraChips() {
+    const wrap = document.getElementById("map-era-chips");
+    if (!wrap) return;
+
+    wrap.innerHTML = ERA_STEPS.map(
+      (step, i) => `
+        <button type="button" class="map-chip" data-era="${i}" title="${escapeHtml(step.label)}">
+          ${escapeHtml(step.short)}
+        </button>
+      `
+    ).join("");
+
+    wrap.querySelectorAll("[data-era]").forEach((btn) => {
+      btn.addEventListener("click", () => setEraIndex(Number(btn.dataset.era)));
+    });
+    updateEraChips();
+  }
+
+  function updateEraChips() {
+    document.querySelectorAll("#map-era-chips [data-era]").forEach((btn) => {
+      btn.classList.toggle("active", Number(btn.dataset.era) === activeEraIndex);
+    });
+  }
+
   function updateEraLabel() {
     const label = document.getElementById("map-era-label");
     if (label) label.textContent = ERA_STEPS[activeEraIndex].label;
-
-    const slider = document.getElementById("map-era-slider");
-    if (slider) slider.value = String(activeEraIndex);
-
-    document.querySelectorAll("[data-era-step]").forEach((btn) => {
-      btn.classList.toggle(
-        "is-active",
-        Number(btn.dataset.eraStep) === activeEraIndex
-      );
-    });
+    updateEraChips();
   }
 
   function setEraIndex(index) {
@@ -893,15 +909,7 @@
       applyView();
     });
 
-    document.getElementById("map-era-slider")?.addEventListener("input", (e) => {
-      setEraIndex(Number(e.target.value));
-    });
-
-    document.querySelectorAll("[data-era-step]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        setEraIndex(Number(btn.dataset.eraStep));
-      });
-    });
+    renderEraChips();
 
     document.getElementById("map-route-toggle")?.addEventListener("click", (e) => {
       showRoute = !showRoute;
@@ -986,7 +994,6 @@
     initMapScrollFix();
     bindControls();
     initGeolocation();
-    updateEraLabel();
     updatePresetChips();
     updateTypeChips();
     applyPreset("all");
