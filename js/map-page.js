@@ -18,18 +18,34 @@
     праздник: "Праздник / обряд",
   };
 
+  const LIFE_ERAS = ["birth", "enlighten", "teach", "parinirvana"];
+
   const ERA_STEPS = [
     { key: "all", label: "Все эпохи", filter: () => true },
     {
       key: "life",
-      label: "Жизнь Будды",
-      filter: (p) =>
-        ["birth", "enlighten", "teach", "parinirvana"].includes(p.era),
+      label: "Жизнь Будды (VI в. до н. э.)",
+      filter: (p) => LIFE_ERAS.includes(p.era),
     },
     {
       key: "heritage",
-      label: "Древнее наследие",
+      label: "Древность и ранний буддизм",
       filter: (p) => p.era === "heritage",
+    },
+    {
+      key: "medieval",
+      label: "Средневековье (V–XIV вв.)",
+      filter: (p) => p.era === "medieval",
+    },
+    {
+      key: "spread",
+      label: "Распространение в Азии",
+      filter: (p) => p.era === "spread",
+    },
+    {
+      key: "revival",
+      label: "Возрождение в России и Монголии",
+      filter: (p) => p.era === "revival",
     },
     {
       key: "living",
@@ -61,6 +77,16 @@
       filter: (p) => /россия/i.test(p.region),
       showRoute: false,
     },
+    asia: {
+      label: "Юго-Восточная Азия",
+      filter: (p) =>
+        /индонезия|мьянма|япония|таиланд|камбоджа|вьетнам|корея|шри-ланка|малайзия|сингапур/i.test(
+          p.region
+        ),
+      showRoute: false,
+      center: [15, 110],
+      zoom: 4,
+    },
   };
 
   const ROUTE_IDS = ["lumbini", "bodhgaya", "sarnath", "kushinagar"];
@@ -77,6 +103,7 @@
   let activeEraIndex = 0;
   let activePresetId = "all";
   let showRoute = false;
+  let panoramaPlayer = null;
 
   function escapeHtml(str) {
     return String(str)
@@ -170,9 +197,9 @@
         <p class="map-detail__region">${escapeHtml(place.region)}</p>
         <p class="map-detail__story">${escapeHtml(place.story || place.description)}</p>
         ${dist || ""}
-        <button type="button" class="btn btn-primary map-panorama-btn" data-coords='${JSON.stringify(place.coords)}'>
+        <button type="button" class="btn btn-primary map-panorama-btn" data-place-id="${escapeHtml(place.id)}">
           <i data-lucide="scan-eye"></i>
-          Открыть панораму
+          Уличная панорама
         </button>
       </div>
     `;
@@ -180,8 +207,7 @@
 
     card.querySelector(".map-panorama-btn")?.addEventListener("click", (e) => {
       e.stopPropagation();
-      const coords = JSON.parse(e.currentTarget.dataset.coords);
-      window.showMapPanorama?.(coords);
+      window.showMapPanorama?.(place);
     });
 
     if (window.lucide) window.lucide.createIcons();
@@ -287,6 +313,7 @@
               <p><strong>${escapeHtml(place.description)}</strong></p>
               <p>${escapeHtml((place.story || "").slice(0, 220))}…</p>
               <small>${escapeHtml(place.region)}</small>
+              <button type="button" class="map-balloon-pano" onclick="window.openMapPanoramaById('${escapeHtml(place.id)}')">Уличная панорама</button>
             </div>
           `,
           hintContent: place.name,
@@ -396,51 +423,113 @@
     if (label) label.textContent = ERA_STEPS[activeEraIndex].label;
   }
 
+  function destroyPanoramaPlayer() {
+    if (!panoramaPlayer) return;
+    try {
+      if (typeof panoramaPlayer.destroy === "function") panoramaPlayer.destroy();
+    } catch (_) {
+      /* ignore */
+    }
+    panoramaPlayer = null;
+  }
+
+  function getPanoramaSearchPoints(target) {
+    if (Array.isArray(target) && typeof target[0] === "number") {
+      return [target];
+    }
+    const base = target.panoramaCoords || target.coords;
+    const [lat, lon] = base;
+    const d = 0.0015;
+    const d2 = 0.004;
+    return [
+      base,
+      [lat + d, lon],
+      [lat - d, lon],
+      [lat, lon + d],
+      [lat, lon - d],
+      [lat + d2, lon],
+      [lat - d2, lon],
+      [lat, lon + d2],
+      [lat, lon - d2],
+    ];
+  }
+
+  function pickBestPanorama(panoramas, target) {
+    let best = panoramas[0];
+    let bestD = Infinity;
+    panoramas.forEach((p) => {
+      const pos = p.getPosition?.();
+      if (!pos) return;
+      const d = (pos[0] - target[0]) ** 2 + (pos[1] - target[1]) ** 2;
+      if (d < bestD) {
+        bestD = d;
+        best = p;
+      }
+    });
+    return best;
+  }
+
+  async function findNearestPanorama(points) {
+    if (!ymaps.panorama?.locate) return null;
+    for (const pt of points) {
+      try {
+        const panoramas = await ymaps.panorama.locate(pt);
+        if (panoramas?.length) return { panoramas, point: pt };
+      } catch (_) {
+        /* try next point */
+      }
+    }
+    return null;
+  }
+
   function initPanorama() {
-    window.showMapPanorama = function showMapPanorama(coords) {
+    window.openMapPanoramaById = function openMapPanoramaById(id) {
+      const place = allPlaces.find((p) => p.id === id);
+      if (place) window.showMapPanorama(place);
+    };
+
+    window.showMapPanorama = async function showMapPanorama(target) {
       const modal = document.getElementById("panorama-modal");
       const container = document.getElementById("panorama-container");
       if (!modal || !container) return;
 
+      const points = getPanoramaSearchPoints(target);
+      const anchor = points[0];
+
       modal.removeAttribute("hidden");
       modal.classList.add("is-open");
       document.body.classList.add("map-panorama-open");
+      destroyPanoramaPlayer();
       container.innerHTML =
         '<div class="map-panorama-loading">Загрузка панорамы…</div>';
 
-      ymaps.panorama.locate(coords).then(
-        (panoramas) => {
-          if (!panoramas.length) {
-            container.innerHTML =
-              '<div class="map-panorama-loading"><p>Панорама для этого места недоступна.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
-            return;
-          }
-          let best = panoramas[0];
-          let bestD = Infinity;
-          panoramas.forEach((p) => {
-            const pos = p.getPosition?.();
-            if (!pos) return;
-            const d =
-              (pos[0] - coords[0]) ** 2 + (pos[1] - coords[1]) ** 2;
-            if (d < bestD) {
-              bestD = d;
-              best = p;
-            }
-          });
-          container.innerHTML = "";
-          new ymaps.panorama.Player(container, best, {
-            direction: [0, 0],
-            controls: ["zoomControl", "fullscreenControl"],
-          });
-        },
-        () => {
+      if (!ymaps.panorama?.locate) {
+        container.innerHTML =
+          '<div class="map-panorama-loading"><p>Модуль панорам не загружен. Обновите страницу.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+        return;
+      }
+
+      try {
+        const found = await findNearestPanorama(points);
+        if (!found) {
           container.innerHTML =
-            '<div class="map-panorama-loading"><p>Не удалось загрузить панораму.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+            '<div class="map-panorama-loading"><p>Уличная панорама рядом с этой точкой пока недоступна — попробуйте другое место на карте.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+          return;
         }
-      );
+        const best = pickBestPanorama(found.panoramas, anchor);
+        container.innerHTML = "";
+        panoramaPlayer = new ymaps.panorama.Player(container, best, {
+          direction: [0, 0],
+          controls: ["zoomControl", "fullscreenControl"],
+        });
+      } catch (_) {
+        container.innerHTML =
+          '<div class="map-panorama-loading"><p>Не удалось загрузить панораму.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+      }
     };
 
     window.closePanorama = function closePanorama() {
+      destroyPanoramaPlayer();
       const modal = document.getElementById("panorama-modal");
       const container = document.getElementById("panorama-container");
       if (container) container.innerHTML = "";
@@ -450,6 +539,10 @@
       }
       document.body.classList.remove("map-panorama-open");
     };
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") window.closePanorama?.();
+    });
   }
 
   function initGeolocation() {

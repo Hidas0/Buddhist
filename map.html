@@ -57,6 +57,7 @@
                     <button type="button" class="map-chip" data-preset="four">4 святыни Будды</button>
                     <button type="button" class="map-chip" data-preset="tibet">Тибет</button>
                     <button type="button" class="map-chip" data-preset="russia">Россия и Бурятия</button>
+                    <button type="button" class="map-chip" data-preset="asia">Юго-Восточная Азия</button>
                 </div>
             </div>
 
@@ -107,11 +108,14 @@
                 <h2><i data-lucide="history"></i> Эпоха</h2>
                 <span id="map-era-label" class="map-timeline__value">Все эпохи</span>
             </div>
-            <input type="range" id="map-era-slider" class="map-era-slider" min="0" max="3" step="1" value="0" aria-valuemin="0" aria-valuemax="3" aria-label="Выбор эпохи">
-            <div class="map-timeline__ticks" aria-hidden="true">
+            <input type="range" id="map-era-slider" class="map-era-slider" min="0" max="6" step="1" value="0" aria-valuemin="0" aria-valuemax="6" aria-label="Выбор эпохи">
+            <div class="map-timeline__ticks map-timeline__ticks--many" aria-hidden="true">
                 <span>Все</span>
                 <span>Жизнь Будды</span>
-                <span>Наследие</span>
+                <span>Древность</span>
+                <span>Средневековье</span>
+                <span>Азия</span>
+                <span>Россия XIX–XX</span>
                 <span>Сегодня</span>
             </div>
         </section>
@@ -204,7 +208,7 @@
         </div>
     </div>
 
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60ccde2f-bf26-46f9-a681-91f3dd0ec16a"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=60ccde2f-bf26-46f9-a681-91f3dd0ec16a&amp;load=package.full"></script>
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>

@@ -4062,6 +4062,38 @@ a.media-card {
     color: var(--text-muted);
     padding: 0 2px;
 }
+.map-timeline__ticks--many {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px 2px;
+    font-size: 0.68rem;
+    text-align: center;
+    line-height: 1.25;
+}
+.map-timeline__ticks--many span {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+    .map-timeline__ticks--many {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+.map-balloon-pano {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.map-balloon-pano:hover {
+    background: var(--primary);
+    color: #fff;
+}
 .map-legend__grid {
     list-style: none;
     margin: 0;
