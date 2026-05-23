@@ -35,3 +35,9 @@ data/         — places.json для карты
 ## Локальный запуск
 
 Откройте проект через локальный сервер (Live Server, `npx serve` и т.п.), не как `file://`. Для работы чата локально скопируйте `js/config.local.js.example` → `js/config.local.js` и укажите ключ с [openrouter.ai](https://openrouter.ai).
+
+## Синхронизация с GitHub
+
+- После работы агента в Cursor изменения **автоматически** коммитятся и отправляются на `origin/main` (хук `.cursor/hooks/git-sync.ps1`).
+- Вручную: `powershell -File scripts/git-push.ps1 -Message "описание изменений"`.
+- Папки `video/` и `audio/` в репозиторий не попадают (см. `.gitignore`) — файлы хранятся в облаке.
