@@ -343,7 +343,6 @@
         {
           preset: TYPE_PRESETS[place.type] || "islands#grayIcon",
           openBalloonOnClick: false,
-          hasBalloon: false,
         }
       );
 
@@ -707,6 +706,19 @@
     });
   }
 
+  function showMapLoadError(message) {
+    const list = document.getElementById("map-list");
+    const mapEl = document.getElementById("map");
+    const countEl = document.getElementById("map-count");
+    if (countEl) countEl.textContent = "—";
+    if (list) {
+      list.innerHTML = `<li class="map-list__empty">${escapeHtml(message)}</li>`;
+    }
+    if (mapEl) {
+      mapEl.innerHTML = `<div class="map-load-error"><p>${escapeHtml(message)}</p><p>Откройте сайт через локальный сервер или GitHub Pages, не как файл <code>file://</code>.</p></div>`;
+    }
+  }
+
   async function init() {
     unlockPageScroll();
     initPanorama();
@@ -715,13 +727,21 @@
       fetch("data/places.json", { cache: "no-cache" }),
       fetch("data/place-images.json", { cache: "no-cache" }),
     ]);
+
+    if (!placesRes.ok) {
+      throw new Error(`Не удалось загрузить data/places.json (${placesRes.status})`);
+    }
+
     const places = await placesRes.json();
     let images = {};
-    try {
-      images = await imagesRes.json();
-    } catch (_) {
-      /* optional */
+    if (imagesRes.ok) {
+      try {
+        images = await imagesRes.json();
+      } catch (_) {
+        /* optional */
+      }
     }
+
     allPlaces = places.map((p) => ({
       ...p,
       image: images[p.id] || p.image,
@@ -741,8 +761,6 @@
       preset: "islands#invertedGoldClusterIcons",
       groupByCoordinates: false,
       clusterDisableClickZoom: false,
-      clusterOpenBalloonOnClick: false,
-      hasBalloon: false,
       gridSize: 64,
     });
     map.geoObjects.add(clusterer);
@@ -757,9 +775,16 @@
   }
 
   if (typeof ymaps !== "undefined") {
-    ymaps.ready(init);
+    ymaps.ready(() => {
+      init().catch((err) => {
+        console.error("Map init failed:", err);
+        showMapLoadError(
+          err?.message || "Ошибка инициализации карты. Обновите страницу."
+        );
+      });
+    });
   } else {
-    console.error("Yandex Maps API не загружен");
+    showMapLoadError("Яндекс.Карты не загрузились. Проверьте интернет и обновите страницу.");
   }
 
   window.addEventListener("pagehide", unlockPageScroll);

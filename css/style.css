@@ -3967,6 +3967,24 @@ a.media-card {
 .map-stage {
     min-height: 520px;
 }
+.map-load-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 480px;
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+.map-load-error p {
+    margin: 0 0 12px;
+    max-width: 420px;
+}
+.map-load-error code {
+    font-size: 0.85em;
+}
 .real-map {
     height: min(72vh, 680px);
     min-height: 480px;
