@@ -91,6 +91,22 @@
 
   const ROUTE_IDS = ["lumbini", "bodhgaya", "sarnath", "kushinagar"];
 
+  /** Связка «маршрут ↔ тип места» */
+  const PRESET_TO_TYPE = {
+    all: "all",
+    four: "святыня",
+    tibet: "монастырь",
+    russia: "монастырь",
+    asia: "святыня",
+  };
+
+  const TYPE_TO_PRESET = {
+    all: "all",
+    святыня: "four",
+    монастырь: "russia",
+    паломничество: "all",
+  };
+
   let allPlaces = [];
   let map = null;
   let clusterer = null;
@@ -106,6 +122,7 @@
   let panoramaPlayer = null;
   let panoramaOpenGen = 0;
   let suppressMapClickUntil = 0;
+  let syncingFilters = false;
 
   function escapeHtml(str) {
     return String(str)
@@ -408,40 +425,108 @@
     }
   }
 
-  function applyPreset(presetId) {
+  function applyPresetSideEffects(presetId) {
     const preset = PRESETS[presetId];
     if (!preset) return;
-
-    activePresetId = presetId;
-    updatePresetChips();
 
     showRoute = !!preset.showRoute;
     const routeBtn = document.getElementById("map-route-toggle");
     if (routeBtn) routeBtn.classList.toggle("active", showRoute);
 
+    const slider = document.getElementById("map-era-slider");
     if (presetId === "four") {
       activeEraIndex = 1;
-      const slider = document.getElementById("map-era-slider");
       if (slider) slider.value = "1";
       updateEraLabel();
+    } else if (activeEraIndex === 1) {
+      activeEraIndex = 0;
+      if (slider) slider.value = "0";
+      updateEraLabel();
     }
+  }
 
-    const search = document.getElementById("map-search");
-    if (search) search.value = "";
+  function syncTypeFromPreset(presetId) {
+    activeTypeFilter = PRESET_TO_TYPE[presetId] ?? "all";
+    updateTypeChips();
+  }
 
-    applyView();
+  function syncPresetFromType(typeFilter) {
+    const presetId = TYPE_TO_PRESET[typeFilter] ?? "all";
+    activePresetId = presetId;
+    updatePresetChips();
+    applyPresetSideEffects(presetId);
+  }
 
+  function fitMapToFilteredPlaces(presetId) {
+    const preset = PRESETS[presetId];
     const places = getFilteredPlaces();
-    if (preset.center && preset.zoom && !places.length) {
+    if (preset?.center && preset?.zoom && !places.length) {
       map.setCenter(preset.center, preset.zoom, { duration: 400 });
       return;
     }
     if (places.length) {
       const bounds = calculateBounds(places);
-      if (bounds) map.setBounds(bounds, { checkZoomRange: true, duration: 450, zoomMargin: 56 });
-    } else if (preset.center && preset.zoom) {
+      if (bounds) {
+        map.setBounds(bounds, { checkZoomRange: true, duration: 450, zoomMargin: 56 });
+      }
+    } else if (preset?.center && preset?.zoom) {
       map.setCenter(preset.center, preset.zoom, { duration: 400 });
     }
+  }
+
+  function applyPreset(presetId, options = {}) {
+    const preset = PRESETS[presetId];
+    if (!preset) return;
+
+    const { syncType = true, clearSearch = true } = options;
+
+    activePresetId = presetId;
+    updatePresetChips();
+
+    if (syncType) syncTypeFromPreset(presetId);
+    applyPresetSideEffects(presetId);
+
+    if (clearSearch) {
+      const search = document.getElementById("map-search");
+      if (search) search.value = "";
+    }
+
+    applyView();
+    fitMapToFilteredPlaces(presetId);
+  }
+
+  function applyTypeFilter(typeFilter, options = {}) {
+    const { syncPreset = true, clearSearch = true } = options;
+
+    activeTypeFilter = typeFilter;
+    updateTypeChips();
+
+    if (syncPreset) syncPresetFromType(typeFilter);
+
+    if (clearSearch) {
+      const search = document.getElementById("map-search");
+      if (search) search.value = "";
+    }
+
+    applyView();
+    fitMapToFilteredPlaces(activePresetId);
+  }
+
+  function resetMapFilters() {
+    activePresetId = "all";
+    activeTypeFilter = "all";
+    activeEraIndex = 0;
+    showRoute = false;
+    const slider = document.getElementById("map-era-slider");
+    const routeBtn = document.getElementById("map-route-toggle");
+    const search = document.getElementById("map-search");
+    if (slider) slider.value = "0";
+    if (routeBtn) routeBtn.classList.remove("active");
+    if (search) search.value = "";
+    updatePresetChips();
+    updateTypeChips();
+    updateEraLabel();
+    applyView();
   }
 
   function updatePresetChips() {
@@ -457,8 +542,7 @@
   }
 
   function clearPresetSelection() {
-    activePresetId = "all";
-    updatePresetChips();
+    applyPreset("all", { syncType: true, clearSearch: false });
   }
 
   function updateEraLabel() {
@@ -726,26 +810,48 @@
 
   function bindControls() {
     document.querySelectorAll("[data-preset]").forEach((btn) => {
-      btn.addEventListener("click", () => applyPreset(btn.dataset.preset));
+      btn.addEventListener("click", () => {
+        if (syncingFilters) return;
+        syncingFilters = true;
+        applyPreset(btn.dataset.preset, { syncType: true, clearSearch: true });
+        syncingFilters = false;
+      });
     });
 
     document.querySelectorAll("[data-filter]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        activeTypeFilter = btn.dataset.filter;
-        updateTypeChips();
-        applyView();
+        if (syncingFilters) return;
+        syncingFilters = true;
+        applyTypeFilter(btn.dataset.filter, { syncPreset: true, clearSearch: true });
+        syncingFilters = false;
       });
     });
 
     document.getElementById("map-search")?.addEventListener("input", () => {
-      clearPresetSelection();
+      if (syncingFilters) return;
+      syncingFilters = true;
+      activePresetId = "all";
+      activeTypeFilter = "all";
+      showRoute = false;
+      document.getElementById("map-route-toggle")?.classList.remove("active");
+      updatePresetChips();
+      updateTypeChips();
+      syncingFilters = false;
       applyView();
     });
 
     document.getElementById("map-era-slider")?.addEventListener("input", (e) => {
-      clearPresetSelection();
+      if (syncingFilters) return;
+      syncingFilters = true;
+      activePresetId = "all";
+      activeTypeFilter = "all";
+      updatePresetChips();
+      updateTypeChips();
       activeEraIndex = Number(e.target.value);
       updateEraLabel();
+      showRoute = false;
+      document.getElementById("map-route-toggle")?.classList.remove("active");
+      syncingFilters = false;
       applyView();
     });
 
