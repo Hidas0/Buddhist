@@ -576,6 +576,31 @@
   function updateEraLabel() {
     const label = document.getElementById("map-era-label");
     if (label) label.textContent = ERA_STEPS[activeEraIndex].label;
+
+    const slider = document.getElementById("map-era-slider");
+    if (slider) slider.value = String(activeEraIndex);
+
+    document.querySelectorAll("[data-era-step]").forEach((btn) => {
+      btn.classList.toggle(
+        "is-active",
+        Number(btn.dataset.eraStep) === activeEraIndex
+      );
+    });
+  }
+
+  function setEraIndex(index) {
+    if (syncingFilters) return;
+    syncingFilters = true;
+    activePresetId = "all";
+    activeTypeFilter = "all";
+    updatePresetChips();
+    updateTypeChips();
+    showRoute = false;
+    document.getElementById("map-route-toggle")?.classList.remove("active");
+    activeEraIndex = index;
+    updateEraLabel();
+    syncingFilters = false;
+    applyView();
   }
 
   function destroyPanoramaPlayer() {
@@ -869,18 +894,13 @@
     });
 
     document.getElementById("map-era-slider")?.addEventListener("input", (e) => {
-      if (syncingFilters) return;
-      syncingFilters = true;
-      activePresetId = "all";
-      activeTypeFilter = "all";
-      updatePresetChips();
-      updateTypeChips();
-      activeEraIndex = Number(e.target.value);
-      updateEraLabel();
-      showRoute = false;
-      document.getElementById("map-route-toggle")?.classList.remove("active");
-      syncingFilters = false;
-      applyView();
+      setEraIndex(Number(e.target.value));
+    });
+
+    document.querySelectorAll("[data-era-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setEraIndex(Number(btn.dataset.eraStep));
+      });
     });
 
     document.getElementById("map-route-toggle")?.addEventListener("click", (e) => {
