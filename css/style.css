@@ -4259,6 +4259,17 @@ html.map-scroll-locked {
 .map-page .map-sidebar {
     pointer-events: auto;
 }
+.map-page .map-toolbar,
+.map-page .map-toolbar .map-chip-row,
+.map-page .map-toolbar .map-chip {
+    pointer-events: auto;
+}
+.map-page .map-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(180, 83, 9, 0.35);
+}
 .map-panorama-modal {
     display: none;
     position: fixed;

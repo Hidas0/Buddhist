@@ -413,10 +413,7 @@
     if (!preset) return;
 
     activePresetId = presetId;
-
-    document.querySelectorAll("[data-preset]").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.preset === presetId);
-    });
+    updatePresetChips();
 
     showRoute = !!preset.showRoute;
     const routeBtn = document.getElementById("map-route-toggle");
@@ -428,11 +425,6 @@
       if (slider) slider.value = "1";
       updateEraLabel();
     }
-
-    activeTypeFilter = "all";
-    document.querySelectorAll("[data-filter]").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.filter === "all");
-    });
 
     const search = document.getElementById("map-search");
     if (search) search.value = "";
@@ -452,11 +444,21 @@
     }
   }
 
+  function updatePresetChips() {
+    document.querySelectorAll("[data-preset]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.preset === activePresetId);
+    });
+  }
+
+  function updateTypeChips() {
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.filter === activeTypeFilter);
+    });
+  }
+
   function clearPresetSelection() {
     activePresetId = "all";
-    document.querySelectorAll("[data-preset]").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.preset === "all");
-    });
+    updatePresetChips();
   }
 
   function updateEraLabel() {
@@ -729,10 +731,8 @@
 
     document.querySelectorAll("[data-filter]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        clearPresetSelection();
-        document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
         activeTypeFilter = btn.dataset.filter;
+        updateTypeChips();
         applyView();
       });
     });
@@ -804,10 +804,12 @@
       }
     }
 
-    allPlaces = places.map((p) => ({
-      ...p,
-      image: images[p.id] || p.image,
-    }));
+    allPlaces = places
+      .filter((p) => p.type !== "музей" && p.type !== "праздник")
+      .map((p) => ({
+        ...p,
+        image: images[p.id] || p.image,
+      }));
 
     map = new ymaps.Map(
       "map",
@@ -831,6 +833,8 @@
     bindControls();
     initGeolocation();
     updateEraLabel();
+    updatePresetChips();
+    updateTypeChips();
     applyPreset("all");
 
     if (window.lucide) window.lucide.createIcons();
