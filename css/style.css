@@ -533,7 +533,7 @@ body.nav-open { overflow: hidden; }
 
 /* Клики: main/header/footer не ловят мышь (pointer-events: none),
    дочерние элементы — auto; пустое место между блоками → клик по лотосу */
-nav, main, header, footer, section, .ai-chatbot, .audio-player, #panorama-modal {
+nav, main, header, footer, section, .ai-chatbot, .audio-player {
     position: relative;
     z-index: 1;
 }
@@ -4249,15 +4249,8 @@ a.media-card {
     border-radius: 8px;
     margin-bottom: 8px;
 }
-html.map-scroll-locked,
-body.map-scroll-locked {
+html.map-scroll-locked {
     overflow: hidden;
-}
-body.map-scroll-locked {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    right: 0;
 }
 .map-page .map-layout,
 .map-page .map-stage,
@@ -4270,28 +4263,49 @@ body.map-scroll-locked {
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 3000;
+    z-index: 10000;
+    pointer-events: auto;
 }
 .map-panorama-modal__backdrop {
     position: absolute;
     inset: 0;
     background: rgba(15, 10, 8, 0.92);
     backdrop-filter: blur(8px);
+    cursor: pointer;
 }
 .map-panorama-modal.is-open {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 .map-panorama-modal__inner {
     position: relative;
     z-index: 1;
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    pointer-events: auto;
 }
 .map-panorama-modal__view {
     flex: 1;
-    min-height: 50vh;
     width: 100%;
+    min-height: 60vh;
+    height: calc(100vh - 72px);
+    position: relative;
+}
+.map-panorama-modal__view iframe,
+.map-panorama-modal__view > ymaps {
+    width: 100% !important;
+    height: 100% !important;
+}
+.map-place-panel__photo {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: block;
+    background: var(--primary-light);
 }
 .map-panorama-fallback {
     display: flex;

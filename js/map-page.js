@@ -104,7 +104,7 @@
   let activePresetId = "all";
   let showRoute = false;
   let panoramaPlayer = null;
-  let savedScrollY = 0;
+  let panoramaOpenGen = 0;
   let suppressMapClickUntil = 0;
 
   function escapeHtml(str) {
@@ -120,21 +120,23 @@
   }
 
   function unlockPageScroll() {
-    const y = savedScrollY;
-    savedScrollY = 0;
     document.documentElement.classList.remove("map-scroll-locked");
-    document.body.classList.remove("map-scroll-locked", "map-panorama-open");
+    document.body.classList.remove("map-panorama-open");
     document.body.style.overflow = "";
-    document.body.style.top = "";
     document.documentElement.style.overflow = "";
-    if (y) window.scrollTo(0, y);
   }
 
   function lockPageScroll() {
-    savedScrollY = window.scrollY;
     document.documentElement.classList.add("map-scroll-locked");
-    document.body.classList.add("map-scroll-locked");
-    document.body.style.top = `-${savedScrollY}px`;
+  }
+
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("timeout")), ms);
+      }),
+    ]);
   }
 
   function getYandexPanoramaUrl(coords) {
@@ -229,6 +231,7 @@
 
     panel.innerHTML = `
       <button type="button" class="map-place-panel__close" aria-label="Закрыть">&times;</button>
+      <img class="map-place-panel__photo" src="${placeImg(place)}" alt="${escapeHtml(place.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/hero.png'">
       <span class="map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || place.type)}</span>
       <h3>${escapeHtml(place.name)}</h3>
       <p class="map-place-panel__region">${escapeHtml(place.region)}</p>
@@ -532,11 +535,26 @@
       ?.addEventListener("click", () => window.closePanorama());
   }
 
+  function showPanoramaLoading(container, coords) {
+    const url = getYandexPanoramaUrl(coords);
+    container.innerHTML = `
+      <div class="map-panorama-loading">
+        <p>Загрузка панорамы…</p>
+        <div class="map-panorama-fallback">
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Открыть на Яндекс.Картах</a>
+          <button type="button" class="btn btn-secondary map-panorama-fallback-close">Отмена</button>
+        </div>
+      </div>`;
+    container
+      .querySelector(".map-panorama-fallback-close")
+      ?.addEventListener("click", () => window.closePanorama());
+  }
+
   async function findNearestPanorama(points) {
     if (!ymaps.panorama?.locate) return null;
     for (const pt of points) {
       try {
-        const panoramas = await ymaps.panorama.locate(pt);
+        const panoramas = await withTimeout(ymaps.panorama.locate(pt), 7000);
         if (panoramas?.length) return { panoramas, point: pt };
       } catch (_) {
         /* try next point */
@@ -554,58 +572,82 @@
       const points = getPanoramaSearchPoints(target);
       const anchor = points[0];
 
+      const openGen = ++panoramaOpenGen;
+      suppressMapClickUntil = Date.now() + 400;
       modal.removeAttribute("hidden");
       modal.classList.add("is-open");
       lockPageScroll();
       destroyPanoramaPlayer();
-      container.innerHTML =
-        '<div class="map-panorama-loading">Загрузка панорамы…</div>';
-
-      const hasModule = await ensurePanoramaModule();
-      if (!hasModule) {
-        showPanoramaFallback(
-          container,
-          anchor,
-          "Встроенная панорама недоступна — откройте просмотр на Яндекс.Картах."
-        );
-        return;
-      }
+      container.style.height = "";
+      showPanoramaLoading(container, anchor);
 
       try {
+        const hasModule = await withTimeout(ensurePanoramaModule(), 5000).catch(() => false);
+        if (!hasModule) {
+          showPanoramaFallback(
+            container,
+            anchor,
+            "Встроенная панорама недоступна — откройте просмотр на Яндекс.Картах."
+          );
+          return;
+        }
+
         const found = await findNearestPanorama(points);
         if (!found) {
           showPanoramaFallback(
             container,
             anchor,
-            "Рядом с этой точкой нет уличной панорамы. Можно посмотреть ближайший участок на Яндекс.Картах."
+            "Рядом с этой точкой нет уличной панорамы. Откройте ближайший участок на Яндекс.Картах."
           );
           return;
         }
+
         const best = pickBestPanorama(found.panoramas, anchor);
         container.innerHTML = "";
+        container.style.height = "calc(100vh - 72px)";
+        container.style.minHeight = "400px";
+
         panoramaPlayer = new ymaps.panorama.Player(container, best, {
           direction: [0, 0],
           controls: ["zoomControl", "fullscreenControl"],
         });
+
+        setTimeout(() => {
+          if (openGen !== panoramaOpenGen) return;
+          if (!modal.classList.contains("is-open")) return;
+          if (container.querySelector(".map-panorama-loading")) return;
+          if (container.childElementCount === 0) {
+            showPanoramaFallback(
+              container,
+              anchor,
+              "Панорама не отобразилась. Откройте просмотр на Яндекс.Картах."
+            );
+          }
+        }, 3000);
       } catch (_) {
         showPanoramaFallback(
           container,
           anchor,
-          "Не удалось загрузить панораму в окне сайта."
+          "Не удалось загрузить панораму. Откройте просмотр на Яндекс.Картах."
         );
       }
     };
 
     window.closePanorama = function closePanorama() {
+      panoramaOpenGen += 1;
       destroyPanoramaPlayer();
       const modal = document.getElementById("panorama-modal");
       const container = document.getElementById("panorama-container");
-      if (container) container.innerHTML = "";
+      if (container) {
+        container.innerHTML = "";
+        container.style.height = "";
+      }
       if (modal) {
         modal.setAttribute("hidden", "");
         modal.classList.remove("is-open");
       }
       unlockPageScroll();
+      suppressMapClickUntil = 0;
     };
 
     document.getElementById("panorama-close-btn")?.addEventListener("click", () => {
