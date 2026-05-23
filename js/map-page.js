@@ -91,22 +91,6 @@
 
   const ROUTE_IDS = ["lumbini", "bodhgaya", "sarnath", "kushinagar"];
 
-  /** Связка «маршрут ↔ тип места» */
-  const PRESET_TO_TYPE = {
-    all: "all",
-    four: "святыня",
-    tibet: "монастырь",
-    russia: "монастырь",
-    asia: "святыня",
-  };
-
-  const TYPE_TO_PRESET = {
-    all: "all",
-    святыня: "four",
-    монастырь: "russia",
-    паломничество: "all",
-  };
-
   let allPlaces = [];
   let map = null;
   let clusterer = null;
@@ -172,6 +156,17 @@
       Math.sin(dLat / 2) ** 2 +
       Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
     return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+
+  function countPlaces(presetId, typeFilter) {
+    return allPlaces.filter((p) => {
+      if (presetId !== "all") {
+        const preset = PRESETS[presetId];
+        if (!preset?.filter(p)) return false;
+      }
+      if (typeFilter !== "all" && p.type !== typeFilter) return false;
+      return true;
+    }).length;
   }
 
   function getFilteredPlaces() {
@@ -445,16 +440,42 @@
     }
   }
 
+  /**
+   * Маршрут → тип:
+   * — «4 святыни» всегда включает только «Святыни»;
+   * — «Весь мир» сбрасывает тип на «Все»;
+   * — региональные маршруты (Тибет, Россия, Азия) тип не меняют.
+   */
   function syncTypeFromPreset(presetId) {
-    activeTypeFilter = PRESET_TO_TYPE[presetId] ?? "all";
+    if (presetId === "four") {
+      activeTypeFilter = "святыня";
+    } else if (presetId === "all") {
+      activeTypeFilter = "all";
+    }
     updateTypeChips();
   }
 
+  /**
+   * Тип → маршрут:
+   * — тип «Все» маршрут не меняет;
+   * — «4 святыни» только при типе «Святыни», иначе сбрасывается на «Весь мир»;
+   * — регион сохраняется, если в нём есть места выбранного типа.
+   */
   function syncPresetFromType(typeFilter) {
-    const presetId = TYPE_TO_PRESET[typeFilter] ?? "all";
-    activePresetId = presetId;
+    if (typeFilter === "all") {
+      /* маршрут не меняем */
+    } else if (activePresetId === "four" && typeFilter !== "святыня") {
+      activePresetId = "all";
+    } else if (
+      activePresetId !== "all" &&
+      activePresetId !== "four" &&
+      countPlaces(activePresetId, typeFilter) === 0
+    ) {
+      activePresetId = "all";
+    }
+
     updatePresetChips();
-    applyPresetSideEffects(presetId);
+    applyPresetSideEffects(activePresetId);
   }
 
   function fitMapToFilteredPlaces(presetId) {
@@ -497,6 +518,13 @@
 
   function applyTypeFilter(typeFilter, options = {}) {
     const { syncPreset = true, clearSearch = true } = options;
+
+    /* «4 святыни» доступен только для типа «Святыни» */
+    if (activePresetId === "four" && typeFilter !== "all" && typeFilter !== "святыня") {
+      activePresetId = "all";
+      updatePresetChips();
+      applyPresetSideEffects("all");
+    }
 
     activeTypeFilter = typeFilter;
     updateTypeChips();
