@@ -109,6 +109,7 @@
   let activeEraIndex = 0;
   let activePresetId = "all";
   let showRoute = false;
+  let nearMeActive = false;
   let panoramaPlayer = null;
   let panoramaOpenGen = 0;
   let suppressMapClickUntil = 0;
@@ -175,6 +176,8 @@
     }).length;
   }
 
+  const NEAR_ME_RADIUS_KM = 800;
+
   function getFilteredPlaces() {
     const eraFilter = ERA_STEPS[activeEraIndex].filter;
     const searchVal = (
@@ -182,7 +185,7 @@
     ).toLowerCase().trim();
 
     const preset = PRESETS[activePresetId];
-    return allPlaces.filter((p) => {
+    let places = allPlaces.filter((p) => {
       if (preset && activePresetId !== "all" && !preset.filter(p)) return false;
       if (activeTypeFilter !== "all" && p.type !== activeTypeFilter) return false;
       if (!eraFilter(p)) return false;
@@ -192,6 +195,16 @@
       }
       return true;
     });
+
+    if (nearMeActive && userCoords) {
+      const ranked = places
+        .map((p) => ({ p, km: haversineKm(userCoords, p.coords) }))
+        .sort((a, b) => a.km - b.km);
+      const nearby = ranked.filter((x) => x.km <= NEAR_ME_RADIUS_KM).map((x) => x.p);
+      places = nearby.length ? nearby : ranked.slice(0, 8).map((x) => x.p);
+    }
+
+    return places;
   }
 
   function calculateBounds(places) {
@@ -241,9 +254,10 @@
     const panel = document.getElementById("map-place-panel");
     if (!panel) return;
 
-    const dist = userCoords
-      ? `<p class="map-place-panel__distance"><i data-lucide="navigation"></i> ~${haversineKm(userCoords, place.coords).toFixed(0)} км</p>`
-      : "";
+    const dist =
+      nearMeActive && userCoords
+        ? `<p class="map-place-panel__distance"><i data-lucide="navigation"></i> ~${haversineKm(userCoords, place.coords).toFixed(0)} км</p>`
+        : "";
     const excerpt = (place.story || place.description || "").slice(0, 220);
     const tail = (place.story || place.description || "").length > 220 ? "…" : "";
 
@@ -293,7 +307,7 @@
     }
 
     const sorted = [...places];
-    if (userCoords) {
+    if (nearMeActive && userCoords) {
       sorted.sort(
         (a, b) =>
           haversineKm(userCoords, a.coords) - haversineKm(userCoords, b.coords)
@@ -305,6 +319,7 @@
     list.innerHTML = sorted
       .map((place) => {
         const km =
+          nearMeActive &&
           userCoords &&
           `<span class="map-list__km">${haversineKm(userCoords, place.coords).toFixed(0)} км</span>`;
         return `
@@ -402,6 +417,28 @@
     updateRouteLine(places);
     renderList(places);
 
+    if (nearMeActive && userCoords) {
+      const ranked = [...places].sort(
+        (a, b) =>
+          haversineKm(userCoords, a.coords) - haversineKm(userCoords, b.coords)
+      );
+      const nearby = ranked.filter((p) => haversineKm(userCoords, p.coords) <= NEAR_ME_RADIUS_KM);
+      const focus = nearby.length ? nearby : ranked.slice(0, 1);
+      if (focus.length === 1) {
+        map.setCenter(userCoords, 8, { duration: 450 });
+      } else {
+        const bounds = calculateBounds(focus);
+        if (bounds) {
+          map.setBounds(bounds, {
+            checkZoomRange: true,
+            duration: 450,
+            zoomMargin: 72,
+          });
+        }
+      }
+      return;
+    }
+
     if (places.length === 1) {
       map.setCenter(places[0].coords, 10, { duration: 300 });
     } else if (places.length > 1) {
@@ -409,6 +446,15 @@
       if (bounds) {
         map.setBounds(bounds, { checkZoomRange: true, duration: 400, zoomMargin: 48 });
       }
+    }
+  }
+
+  function deactivateNearMe() {
+    nearMeActive = false;
+    document.getElementById("map-near-me")?.classList.remove("active");
+    if (userPlacemark && map) {
+      map.geoObjects.remove(userPlacemark);
+      userPlacemark = null;
     }
   }
 
@@ -504,6 +550,7 @@
 
     const { syncType = true, clearSearch = true } = options;
 
+    deactivateNearMe();
     activePresetId = presetId;
     updatePresetChips();
 
@@ -521,6 +568,8 @@
 
   function applyTypeFilter(typeFilter, options = {}) {
     const { syncPreset = true, clearSearch = true } = options;
+
+    deactivateNearMe();
 
     /* «4 святыни» доступен только для типа «Святыни» */
     if (activePresetId === "four" && typeFilter !== "all" && typeFilter !== "святыня") {
@@ -544,6 +593,7 @@
   }
 
   function resetMapFilters() {
+    deactivateNearMe();
     activePresetId = "all";
     activeTypeFilter = "all";
     activeEraIndex = 0;
@@ -574,39 +624,45 @@
     applyPreset("all", { syncType: true, clearSearch: false });
   }
 
-  function renderEraChips() {
-    const wrap = document.getElementById("map-era-chips");
-    if (!wrap) return;
+  function renderEraTicks() {
+    const wrap = document.getElementById("map-era-ticks");
+    if (!wrap || wrap.dataset.built) return;
+    wrap.dataset.built = "1";
 
     wrap.innerHTML = ERA_STEPS.map(
       (step, i) => `
-        <button type="button" class="map-chip" data-era="${i}" title="${escapeHtml(step.label)}">
+        <button type="button" class="map-era-tick" data-era-step="${i}" title="${escapeHtml(step.label)}">
           ${escapeHtml(step.short)}
         </button>
       `
     ).join("");
 
-    wrap.querySelectorAll("[data-era]").forEach((btn) => {
-      btn.addEventListener("click", () => setEraIndex(Number(btn.dataset.era)));
+    wrap.querySelectorAll("[data-era-step]").forEach((btn) => {
+      btn.addEventListener("click", () => setEraIndex(Number(btn.dataset.eraStep)));
     });
-    updateEraChips();
   }
 
-  function updateEraChips() {
-    document.querySelectorAll("#map-era-chips [data-era]").forEach((btn) => {
-      btn.classList.toggle("active", Number(btn.dataset.era) === activeEraIndex);
+  function updateEraUi() {
+    const label = document.getElementById("map-era-label");
+    const slider = document.getElementById("map-era-slider");
+    if (label) label.textContent = ERA_STEPS[activeEraIndex].label;
+    if (slider) slider.value = String(activeEraIndex);
+    document.querySelectorAll("[data-era-step]").forEach((btn) => {
+      btn.classList.toggle(
+        "is-active",
+        Number(btn.dataset.eraStep) === activeEraIndex
+      );
     });
   }
 
   function updateEraLabel() {
-    const label = document.getElementById("map-era-label");
-    if (label) label.textContent = ERA_STEPS[activeEraIndex].label;
-    updateEraChips();
+    updateEraUi();
   }
 
   function setEraIndex(index) {
     if (syncingFilters) return;
     syncingFilters = true;
+    deactivateNearMe();
     activePresetId = "all";
     activeTypeFilter = "all";
     updatePresetChips();
@@ -614,7 +670,7 @@
     showRoute = false;
     document.getElementById("map-route-toggle")?.classList.remove("active");
     activeEraIndex = index;
-    updateEraLabel();
+    updateEraUi();
     syncingFilters = false;
     applyView();
   }
@@ -851,10 +907,17 @@
     }
 
     btn.addEventListener("click", () => {
+      if (nearMeActive) {
+        deactivateNearMe();
+        applyView();
+        return;
+      }
+
       btn.classList.add("is-loading");
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           userCoords = [pos.coords.latitude, pos.coords.longitude];
+          nearMeActive = true;
           btn.classList.remove("is-loading");
           btn.classList.add("active");
 
@@ -865,14 +928,13 @@
             { preset: "islands#geolocationIcon" }
           );
           map.geoObjects.add(userPlacemark);
-          map.setCenter(userCoords, 5, { duration: 500 });
           applyView();
         },
         () => {
           btn.classList.remove("is-loading");
           alert("Не удалось определить местоположение. Разрешите доступ к геолокации в браузере.");
         },
-        { enableHighAccuracy: true, timeout: 12000 }
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
       );
     });
   }
@@ -899,6 +961,7 @@
     document.getElementById("map-search")?.addEventListener("input", () => {
       if (syncingFilters) return;
       syncingFilters = true;
+      deactivateNearMe();
       activePresetId = "all";
       activeTypeFilter = "all";
       showRoute = false;
@@ -909,7 +972,10 @@
       applyView();
     });
 
-    renderEraChips();
+    renderEraTicks();
+    document.getElementById("map-era-slider")?.addEventListener("input", (e) => {
+      setEraIndex(Number(e.target.value));
+    });
 
     document.getElementById("map-route-toggle")?.addEventListener("click", (e) => {
       showRoute = !showRoute;
@@ -996,6 +1062,7 @@
     initGeolocation();
     updatePresetChips();
     updateTypeChips();
+    updateEraUi();
     applyPreset("all");
 
     if (window.lucide) window.lucide.createIcons();

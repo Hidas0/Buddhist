@@ -106,7 +106,10 @@
                 <h2><i data-lucide="history"></i> Эпоха</h2>
                 <span id="map-era-label" class="map-timeline__value">Все эпохи</span>
             </div>
-            <div id="map-era-chips" class="map-chip-row map-chip-row--wrap map-era-chips" role="group" aria-label="Выбор эпохи"></div>
+            <div class="map-era-track">
+                <input type="range" id="map-era-slider" class="map-era-slider" min="0" max="6" step="1" value="0" aria-valuemin="0" aria-valuemax="6" aria-label="Выбор эпохи">
+                <div id="map-era-ticks" class="map-timeline__ticks map-timeline__ticks--many" role="group" aria-label="Быстрый выбор эпохи"></div>
+            </div>
         </section>
 
         <section class="map-legend animate-slide-up" style="animation-delay: 0.2s" aria-label="Легенда карты">
