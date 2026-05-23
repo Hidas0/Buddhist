@@ -3919,6 +3919,22 @@ a.media-card {
     cursor: pointer;
     transition: background 0.2s;
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+}
+.map-list__thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--primary-light);
+}
+.map-list__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
     flex-direction: column;
     gap: 4px;
 }
@@ -4140,31 +4156,61 @@ a.media-card {
     border-radius: 8px;
     margin-bottom: 8px;
 }
+html.map-scroll-locked,
+body.map-scroll-locked {
+    overflow: hidden;
+}
+body.map-scroll-locked {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+.map-page .map-layout,
+.map-page .map-stage,
+.map-page #map,
+.map-page .map-toolbar,
+.map-page .map-sidebar {
+    pointer-events: auto;
+}
 .map-panorama-modal {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 3000;
+}
+.map-panorama-modal__backdrop {
+    position: absolute;
+    inset: 0;
     background: rgba(15, 10, 8, 0.92);
     backdrop-filter: blur(8px);
 }
 .map-panorama-modal.is-open {
-    display: flex;
-    align-items: stretch;
-    justify-content: stretch;
-}
-body.map-panorama-open {
-    overflow: hidden;
+    display: block;
 }
 .map-panorama-modal__inner {
     position: relative;
-    flex: 1;
+    z-index: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 .map-panorama-modal__view {
     flex: 1;
-    min-height: 0;
+    min-height: 50vh;
+    width: 100%;
+}
+.map-panorama-fallback {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+}
+.map-panorama-fallback .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
 }
 .map-panorama-close {
     position: absolute;

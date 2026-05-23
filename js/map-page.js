@@ -104,6 +104,7 @@
   let activePresetId = "all";
   let showRoute = false;
   let panoramaPlayer = null;
+  let savedScrollY = 0;
 
   function escapeHtml(str) {
     return String(str)
@@ -111,6 +112,34 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function placeImg(place) {
+    return escapeHtml(place.image || "images/hero.png");
+  }
+
+  function unlockPageScroll() {
+    const y = savedScrollY;
+    savedScrollY = 0;
+    document.documentElement.classList.remove("map-scroll-locked");
+    document.body.classList.remove("map-scroll-locked", "map-panorama-open");
+    document.body.style.overflow = "";
+    document.body.style.top = "";
+    document.documentElement.style.overflow = "";
+    if (y) window.scrollTo(0, y);
+  }
+
+  function lockPageScroll() {
+    savedScrollY = window.scrollY;
+    document.documentElement.classList.add("map-scroll-locked");
+    document.body.classList.add("map-scroll-locked");
+    document.body.style.top = `-${savedScrollY}px`;
+  }
+
+  function getYandexPanoramaUrl(coords) {
+    const [lat, lon] = coords;
+    const ll = `${lon},${lat}`;
+    return `https://yandex.ru/maps/?ll=${encodeURIComponent(ll)}&z=17&panorama%5Bpoint%5D=${encodeURIComponent(ll)}&panorama%5Bdirection%5D=0%2C0&panorama%5Bspan%5D=90%2C30`;
   }
 
   function haversineKm(a, b) {
@@ -190,7 +219,7 @@
       : "";
 
     card.innerHTML = `
-      <img src="${escapeHtml(place.image)}" alt="${escapeHtml(place.name)}" loading="lazy">
+      <img src="${placeImg(place)}" alt="${escapeHtml(place.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/hero.png'">
       <div class="map-detail__body">
         <span class="map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || place.type)}</span>
         <h3>${escapeHtml(place.name)}</h3>
@@ -242,10 +271,13 @@
           `<span class="map-list__km">${haversineKm(userCoords, place.coords).toFixed(0)} км</span>`;
         return `
           <li class="map-list__item" data-id="${escapeHtml(place.id)}" role="button" tabindex="0">
-            <span class="map-list__type map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || "")}</span>
-            <strong>${escapeHtml(place.name)}</strong>
-            <span class="map-list__meta">${escapeHtml(place.region)}</span>
-            ${km || ""}
+            <img class="map-list__thumb" src="${placeImg(place)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/hero.png'">
+            <div class="map-list__text">
+              <span class="map-list__type map-type-badge map-type-badge--${escapeHtml(place.type)}">${escapeHtml(TYPE_LABELS[place.type] || "")}</span>
+              <strong>${escapeHtml(place.name)}</strong>
+              <span class="map-list__meta">${escapeHtml(place.region)}</span>
+              ${km || ""}
+            </div>
           </li>
         `;
       })
@@ -306,19 +338,13 @@
       const placemark = new ymaps.Placemark(
         place.coords,
         {
-          balloonContentHeader: place.name,
-          balloonContentBody: `
-            <div class="map-balloon">
-              <img src="${escapeHtml(place.image)}" alt="">
-              <p><strong>${escapeHtml(place.description)}</strong></p>
-              <p>${escapeHtml((place.story || "").slice(0, 220))}…</p>
-              <small>${escapeHtml(place.region)}</small>
-              <button type="button" class="map-balloon-pano" onclick="window.openMapPanoramaById('${escapeHtml(place.id)}')">Уличная панорама</button>
-            </div>
-          `,
-          hintContent: place.name,
+          hintContent: `${place.name} — ${place.description}`,
         },
-        { preset: TYPE_PRESETS[place.type] || "islands#grayIcon" }
+        {
+          preset: TYPE_PRESETS[place.type] || "islands#grayIcon",
+          openBalloonOnClick: false,
+          hasBalloon: false,
+        }
       );
 
       placemark.properties.set("placeData", place);
@@ -469,6 +495,31 @@
     return best;
   }
 
+  async function ensurePanoramaModule() {
+    if (ymaps.panorama?.locate) return true;
+    try {
+      await ymaps.modules.require(["panorama"]);
+    } catch (_) {
+      /* module unavailable */
+    }
+    return !!ymaps.panorama?.locate;
+  }
+
+  function showPanoramaFallback(container, coords, message) {
+    const url = getYandexPanoramaUrl(coords);
+    container.innerHTML = `
+      <div class="map-panorama-loading">
+        <p>${escapeHtml(message)}</p>
+        <div class="map-panorama-fallback">
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Открыть на Яндекс.Картах</a>
+          <button type="button" class="btn btn-secondary map-panorama-fallback-close">Закрыть</button>
+        </div>
+      </div>`;
+    container
+      .querySelector(".map-panorama-fallback-close")
+      ?.addEventListener("click", () => window.closePanorama());
+  }
+
   async function findNearestPanorama(points) {
     if (!ymaps.panorama?.locate) return null;
     for (const pt of points) {
@@ -483,11 +534,6 @@
   }
 
   function initPanorama() {
-    window.openMapPanoramaById = function openMapPanoramaById(id) {
-      const place = allPlaces.find((p) => p.id === id);
-      if (place) window.showMapPanorama(place);
-    };
-
     window.showMapPanorama = async function showMapPanorama(target) {
       const modal = document.getElementById("panorama-modal");
       const container = document.getElementById("panorama-container");
@@ -498,22 +544,29 @@
 
       modal.removeAttribute("hidden");
       modal.classList.add("is-open");
-      document.body.classList.add("map-panorama-open");
+      lockPageScroll();
       destroyPanoramaPlayer();
       container.innerHTML =
         '<div class="map-panorama-loading">Загрузка панорамы…</div>';
 
-      if (!ymaps.panorama?.locate) {
-        container.innerHTML =
-          '<div class="map-panorama-loading"><p>Модуль панорам не загружен. Обновите страницу.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+      const hasModule = await ensurePanoramaModule();
+      if (!hasModule) {
+        showPanoramaFallback(
+          container,
+          anchor,
+          "Встроенная панорама недоступна — откройте просмотр на Яндекс.Картах."
+        );
         return;
       }
 
       try {
         const found = await findNearestPanorama(points);
         if (!found) {
-          container.innerHTML =
-            '<div class="map-panorama-loading"><p>Уличная панорама рядом с этой точкой пока недоступна — попробуйте другое место на карте.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+          showPanoramaFallback(
+            container,
+            anchor,
+            "Рядом с этой точкой нет уличной панорамы. Можно посмотреть ближайший участок на Яндекс.Картах."
+          );
           return;
         }
         const best = pickBestPanorama(found.panoramas, anchor);
@@ -523,8 +576,11 @@
           controls: ["zoomControl", "fullscreenControl"],
         });
       } catch (_) {
-        container.innerHTML =
-          '<div class="map-panorama-loading"><p>Не удалось загрузить панораму.</p><button type="button" class="btn btn-primary" onclick="closePanorama()">Закрыть</button></div>';
+        showPanoramaFallback(
+          container,
+          anchor,
+          "Не удалось загрузить панораму в окне сайта."
+        );
       }
     };
 
@@ -537,11 +593,38 @@
         modal.setAttribute("hidden", "");
         modal.classList.remove("is-open");
       }
-      document.body.classList.remove("map-panorama-open");
+      unlockPageScroll();
     };
 
+    document.getElementById("panorama-close-btn")?.addEventListener("click", () => {
+      window.closePanorama();
+    });
+    document.querySelectorAll("[data-panorama-close]").forEach((el) => {
+      el.addEventListener("click", () => window.closePanorama());
+    });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") window.closePanorama?.();
+      if (e.key === "Escape" && document.getElementById("panorama-modal")?.classList.contains("is-open")) {
+        window.closePanorama();
+      }
+    });
+  }
+
+  function initMapScrollFix() {
+    if (!map) return;
+    map.behaviors.disable("scrollZoom");
+
+    const mapEl = document.getElementById("map");
+    map.events.add("actionend", () => {
+      if (!document.getElementById("panorama-modal")?.classList.contains("is-open")) {
+        unlockPageScroll();
+      }
+    });
+
+    mapEl?.addEventListener("mouseleave", () => {
+      if (!document.getElementById("panorama-modal")?.classList.contains("is-open")) {
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
     });
   }
 
@@ -613,20 +696,36 @@
     });
 
     map.events.add("click", () => {
+      map.balloon?.close();
       document.getElementById("place-card")?.classList.add("hidden");
       document.querySelectorAll(".map-list__item").forEach((el) => el.classList.remove("is-active"));
       if (currentPlacemark) {
         resetPlacemarkStyle(currentPlacemark);
         currentPlacemark = null;
       }
+      unlockPageScroll();
     });
   }
 
   async function init() {
+    unlockPageScroll();
     initPanorama();
 
-    const res = await fetch("data/places.json", { cache: "no-cache" });
-    allPlaces = await res.json();
+    const [placesRes, imagesRes] = await Promise.all([
+      fetch("data/places.json", { cache: "no-cache" }),
+      fetch("data/place-images.json", { cache: "no-cache" }),
+    ]);
+    const places = await placesRes.json();
+    let images = {};
+    try {
+      images = await imagesRes.json();
+    } catch (_) {
+      /* optional */
+    }
+    allPlaces = places.map((p) => ({
+      ...p,
+      image: images[p.id] || p.image,
+    }));
 
     map = new ymaps.Map(
       "map",
@@ -642,10 +741,13 @@
       preset: "islands#invertedGoldClusterIcons",
       groupByCoordinates: false,
       clusterDisableClickZoom: false,
+      clusterOpenBalloonOnClick: false,
+      hasBalloon: false,
       gridSize: 64,
     });
     map.geoObjects.add(clusterer);
 
+    initMapScrollFix();
     bindControls();
     initGeolocation();
     updateEraLabel();
@@ -659,4 +761,6 @@
   } else {
     console.error("Yandex Maps API не загружен");
   }
+
+  window.addEventListener("pagehide", unlockPageScroll);
 })();
