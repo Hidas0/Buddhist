@@ -28,7 +28,7 @@ js/config.local.js.example  →  скопировать в  js/config.local.js
 
 ## Скрипты внутри HTML
 
-- `map.html` — Яндекс.Карты, метки из `data/places.json`
+- `map.html` — карта святынь: `js/map-page.js`, данные `data/places.json`
 - `audio.html` — плеер мантр, `resolveAudioUrl()` для облака
 - `video-player.html` — каталог `window.DHARMA_VIDEO_CATALOG` и плейлисты из облака
 - `kalm.html`, `media.html` — фильтры и UI страницы (каталог — в `catalog.js`)

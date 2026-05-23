@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Карта - Путь Дхармы</title>
+    <title>Карта святынь — Путь Дхармы</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -24,16 +24,7 @@
                 <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
             </ul>
             <div class="nav-actions">
-                <button
-                    class="nav-toggle"
-                    type="button"
-                    data-mobile-nav-toggle
-                    aria-expanded="false"
-                    data-i18n-aria-label="ui.menu"
-                    data-i18n-title="ui.menu"
-                    aria-label="Меню"
-                    title="Меню"
-                >
+                <button class="nav-toggle" type="button" data-mobile-nav-toggle aria-expanded="false" aria-label="Меню" title="Меню">
                     <i data-lucide="menu"></i>
                 </button>
             </div>
@@ -41,373 +32,112 @@
         <div class="mobile-nav-backdrop" data-mobile-nav-backdrop></div>
         <div class="mobile-nav-panel" data-mobile-nav-panel>
             <ul>
-                <li><a href="index.html" data-i18n="nav.home">Главная</a></li>
-                <li><a href="catalog.html" data-i18n="nav.traditions">Традиции</a></li>
-                <li><a href="map.html" class="active" data-i18n="nav.map">Карта</a></li>
-                <li><a href="media.html" data-i18n="nav.media">Медиа</a></li>
-                <li><a href="audio.html" data-i18n="nav.audio">Аудиогид</a></li>
-                <li><a href="kalm.html" data-i18n="nav.kalm">Калмыкия</a></li>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Традиции</a></li>
+                <li><a href="map.html" class="active">Карта</a></li>
+                <li><a href="media.html">Медиа</a></li>
+                <li><a href="audio.html">Аудиогид</a></li>
+                <li><a href="kalm.html">Калмыкия</a></li>
             </ul>
         </div>
     </nav>
 
-    <main class="container py-80">
-        <h1 data-i18n="map.title">Интерактивная карта</h1>
+    <main class="map-page container py-80">
+        <header class="map-header animate-slide-up">
+            <p class="map-eyebrow">Паломничество и святыни</p>
+            <h1 data-i18n="map.title">Интерактивная карта</h1>
+            <p class="map-lead">От Лумбини до Иволгинского дацана: исследуйте святыни, монастыри и маршруты буддийского мира. Выберите пресет, эпоху или тип места — карта и список обновятся вместе.</p>
+        </header>
 
-        <div class="map-ui">
-            <!-- ФИЛЬТРЫ -->
-            <div class="map-filters">
-                <button data-filter="all" class="active" data-i18n="map.filter.all">Все</button>
-                <button data-filter="святыня" data-i18n="map.filter.shrines">Святыни</button>
-                <button data-filter="монастырь" data-i18n="map.filter.monasteries">Монастыри</button>
+        <section class="map-toolbar animate-slide-up" style="animation-delay: 0.05s" aria-label="Управление картой">
+            <div class="map-toolbar__group">
+                <span class="map-toolbar__label">Маршруты</span>
+                <div class="map-chip-row">
+                    <button type="button" class="map-chip active" data-preset="all">Весь мир</button>
+                    <button type="button" class="map-chip" data-preset="four">4 святыни Будды</button>
+                    <button type="button" class="map-chip" data-preset="tibet">Тибет</button>
+                    <button type="button" class="map-chip" data-preset="russia">Россия и Бурятия</button>
+                </div>
             </div>
 
-            <!-- ПОИСК -->
-            <input type="text" id="search" data-i18n-placeholder="ui.search" placeholder="Поиск..." class="search-input">
+            <div class="map-toolbar__group">
+                <span class="map-toolbar__label">Тип места</span>
+                <div class="map-chip-row map-chip-row--wrap">
+                    <button type="button" class="map-chip active" data-filter="all">Все</button>
+                    <button type="button" class="map-chip" data-filter="святыня">Святыни</button>
+                    <button type="button" class="map-chip" data-filter="монастырь">Монастыри</button>
+                    <button type="button" class="map-chip" data-filter="паломничество">Паломничество</button>
+                    <button type="button" class="map-chip" data-filter="музей">Музеи</button>
+                    <button type="button" class="map-chip" data-filter="праздник">Праздники</button>
+                </div>
+            </div>
 
-            <!-- КАРТОЧКА -->
-            <div id="place-card" class="place-card hidden"></div>
+            <div class="map-toolbar__actions">
+                <label class="map-search-wrap">
+                    <i data-lucide="search"></i>
+                    <input type="search" id="map-search" class="map-search" placeholder="Поиск по названию или региону…" autocomplete="off">
+                </label>
+                <button type="button" class="map-action-btn" id="map-near-me" title="Показать ближайшие места">
+                    <i data-lucide="locate-fixed"></i>
+                    <span>Рядом со мной</span>
+                </button>
+                <button type="button" class="map-action-btn" id="map-route-toggle" title="Маршрут четырёх святынь">
+                    <i data-lucide="route"></i>
+                    <span>Маршрут Будды</span>
+                </button>
+            </div>
+        </section>
 
-            <!-- КАРТА -->
-            <div id="map" class="real-map"></div>
+        <div class="map-layout animate-slide-up" style="animation-delay: 0.1s">
+            <aside class="map-sidebar" aria-label="Список мест">
+                <div class="map-sidebar__head">
+                    <h2>Места на карте</h2>
+                    <span id="map-count" class="map-sidebar__count">—</span>
+                </div>
+                <ul id="map-list" class="map-list"></ul>
+                <article id="place-card" class="map-detail hidden" aria-live="polite"></article>
+            </aside>
+            <div class="map-stage">
+                <div id="map" class="real-map" role="application" aria-label="Карта святынь"></div>
+            </div>
         </div>
+
+        <section class="map-timeline animate-slide-up" style="animation-delay: 0.15s" aria-label="Временная шкала">
+            <div class="map-timeline__head">
+                <h2><i data-lucide="history"></i> Эпоха</h2>
+                <span id="map-era-label" class="map-timeline__value">Все эпохи</span>
+            </div>
+            <input type="range" id="map-era-slider" class="map-era-slider" min="0" max="3" step="1" value="0" aria-valuemin="0" aria-valuemax="3" aria-label="Выбор эпохи">
+            <div class="map-timeline__ticks" aria-hidden="true">
+                <span>Все</span>
+                <span>Жизнь Будды</span>
+                <span>Наследие</span>
+                <span>Сегодня</span>
+            </div>
+        </section>
+
+        <section class="map-legend animate-slide-up" style="animation-delay: 0.2s" aria-label="Легенда карты">
+            <h2><i data-lucide="info"></i> Легенда</h2>
+            <ul class="map-legend__grid">
+                <li><span class="map-legend__dot map-legend__dot--shrine"></span> Святыня — храм, ступа, место учения или просветления</li>
+                <li><span class="map-legend__dot map-legend__dot--monastery"></span> Монастырь — дацан, обитель, резиденция лам</li>
+                <li><span class="map-legend__dot map-legend__dot--pilgrimage"></span> Паломничество — священная гора или обход коры</li>
+                <li><span class="map-legend__dot map-legend__dot--museum"></span> Музей / учебный центр — университет, реликвии, экспозиция</li>
+                <li><span class="map-legend__dot map-legend__dot--festival"></span> Праздник — Сагаалган, городские молебны и обряды</li>
+                <li><span class="map-legend__line"></span> Пунктир — маршрут «четыре святыни» жизни Будды (Лумбини → Кушинагар)</li>
+            </ul>
+        </section>
     </main>
 
-    <!-- Модальное окно для панорамы -->
-    <div id="panorama-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; backdrop-filter: blur(5px);">
-        <div style="position: relative; width: 100%; height: 100%;">
-            <div id="panorama-container" style="width: 100%; height: 100%;"></div>
-            <button onclick="closePanorama()" data-i18n="map.panorama.close" style="position: absolute; top: 20px; right: 20px; z-index: 2001; padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: 999px; cursor: pointer; font-family: inherit; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                <i data-lucide="x" style="width: 18px; height: 18px; margin-right: 8px;"></i>
-                Закрыть панораму
+    <div id="panorama-modal" class="map-panorama-modal" hidden>
+        <div class="map-panorama-modal__inner">
+            <button type="button" class="map-panorama-close" onclick="closePanorama()" aria-label="Закрыть панораму">
+                <i data-lucide="x"></i>
+                Закрыть
             </button>
+            <div id="panorama-container" class="map-panorama-modal__view"></div>
         </div>
     </div>
-
-    <!-- Яндекс.Карты; точки — data/places.json -->
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60ccde2f-bf26-46f9-a681-91f3dd0ec16a"></script>
-
-    <script>
-        // Панорама храма: модальное окно #panorama-modal
-        window.closePanorama = function() {
-            const modal = document.getElementById('panorama-modal');
-            const container = document.getElementById('panorama-container');
-            const meta = document.getElementById('panorama-meta');
-            
-            // Очищаем контейнер
-            container.innerHTML = '';
-            if (meta) meta.remove();
-            modal.style.display = 'none';
-            
-            // Восстанавливаем прокрутку страницы
-            document.body.style.overflow = 'auto';
-        };
-
-        ymaps.ready(init);
-
-        async function init() {
-            const map = new ymaps.Map("map", {
-                center: [55.75, 37.62],
-                zoom: 4,
-                controls: ['zoomControl', 'fullscreenControl', 'typeSelector']
-            });
-
-            // Добавляем кнопку тестовой панорамы (для примера)
-            const testButton = new ymaps.control.Button({
-                data: {
-                    content: "Тест панорамы",
-                    image: '<i data-lucide="map" style="width: 18px; height: 18px; right:200px;"></i>'
-                },
-                options: {
-                    selectOnClick: false,
-                    maxWidth: 150
-                }
-            });
-            
-            testButton.events.add('click', function() {
-                // Тестовая панорама Москвы (Кремль)
-                showPanorama([55.7517, 37.6178]);
-            });
-            
-        
-
-            // Метки святынь из data/places.json
-            const response = await fetch("data/places.json");
-            const places = await response.json();
-
-            const clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedOrangeClusterIcons',
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true
-            });
-
-            let geoObjects = [];
-            let currentPlacemark = null;
-
-            function showPanorama(coords) {
-                console.log('Пытаемся открыть панораму для координат:', coords);
-                
-                const modal = document.getElementById('panorama-modal');
-                const container = document.getElementById('panorama-container');
-                
-                // Показываем модальное окно
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // Запрещаем прокрутку страницы
-                
-                // Очищаем контейнер
-                container.innerHTML = `<div style="color: white; text-align: center; padding: 50px;">${window.SiteI18n?.t?.("map.panorama.loading") ?? "Загрузка панорамы..."}</div>`;
-                
-                try {
-                    // Ищем панораму
-                    ymaps.panorama.locate(coords).then(
-                        function (panoramas) {
-                            console.log('Найдено панорам:', panoramas.length);
-                            
-                            if (panoramas.length > 0) {
-                                // Берем панораму, которая ближе всего к заданной точке
-                                const target = coords;
-                                const distance2 = (a, b) => {
-                                    const dLat = a[0] - b[0];
-                                    const dLon = a[1] - b[1];
-                                    return dLat * dLat + dLon * dLon;
-                                };
-
-                                let best = panoramas[0];
-                                let bestD2 = Infinity;
-                                panoramas.forEach((p) => {
-                                    const pos = p.getPosition && p.getPosition();
-                                    if (!pos) return;
-                                    const d2 = distance2(pos, target);
-                                    if (d2 < bestD2) {
-                                        bestD2 = d2;
-                                        best = p;
-                                    }
-                                });
-
-                                // Очищаем контейнер
-                                container.innerHTML = '';
-                                
-                                // Создаем плеер
-                                const player = new ymaps.panorama.Player(container, best, {
-                                    direction: [0, 0],
-                                    controls: ['zoomControl', 'fullscreenControl']
-                                });
-
-                                // Обновляем иконки
-                                lucide.createIcons();
-                            } else {
-                                container.innerHTML = `
-                                    <div style="color: white; text-align: center; padding: 50px;">
-                                        <i data-lucide="map-off" style="width: 48px; height: 48px; margin-bottom: 20px;"></i>
-                                        <h3>${window.SiteI18n?.t?.("map.panorama.unavailableTitle") ?? "Панорама недоступна"}</h3>
-                                        <p>${window.SiteI18n?.t?.("map.panorama.unavailableText") ?? "Для этого места пока нет панорамных снимков."}</p>
-                                        <button onclick="closePanorama()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 999px; cursor: pointer;">
-                                            ${window.SiteI18n?.t?.("map.panorama.closeShort") ?? "Закрыть"}
-                                        </button>
-                                    </div>
-                                `;
-                                lucide.createIcons();
-                            }
-                        },
-                        function (error) {
-                            console.error('Ошибка при загрузке панорамы:', error);
-                            
-                            let errorMessage = window.SiteI18n?.t?.("map.panorama.errorGeneric") ?? 'Не удалось загрузить панораму';
-                            
-                            if (error.message) {
-                                errorMessage += ': ' + error.message;
-                            }
-                            
-                            container.innerHTML = `
-                                <div style="color: white; text-align: center; padding: 50px;">
-                                    <i data-lucide="alert-circle" style="width: 48px; height: 48px; margin-bottom: 20px; color: #e53e3e;"></i>
-                                    <h3>${window.SiteI18n?.t?.("map.panorama.errorTitle") ?? "Ошибка загрузки"}</h3>
-                                    <p>${errorMessage}</p>
-                                    <button onclick="closePanorama()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 999px; cursor: pointer;">
-                                        ${window.SiteI18n?.t?.("map.panorama.closeShort") ?? "Закрыть"}
-                                    </button>
-                                </div>
-                            `;
-                            lucide.createIcons();
-                        }
-                    );
-                } catch (e) {
-                    console.error('Критическая ошибка:', e);
-                    container.innerHTML = `
-                        <div style="color: white; text-align: center; padding: 50px;">
-                            <i data-lucide="alert-triangle" style="width: 48px; height: 48px; margin-bottom: 20px; color: #e53e3e;"></i>
-                            <h3>${window.SiteI18n?.t?.("map.panorama.unexpectedTitle") ?? "Ошибка"}</h3>
-                            <p>${window.SiteI18n?.t?.("map.panorama.unexpectedText") ?? "Произошла непредвиденная ошибка"}</p>
-                            <button onclick="closePanorama()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 999px; cursor: pointer;">
-                                ${window.SiteI18n?.t?.("map.panorama.closeShort") ?? "Закрыть"}
-                            </button>
-                        </div>
-                    `;
-                    lucide.createIcons();
-                }
-            }
-
-            function createCard(place) {
-                const card = document.getElementById("place-card");
-                card.innerHTML = `
-                    <img src="${place.image}" alt="${place.name}">
-                    <div class="content">
-                        <h3>${place.name}</h3>
-                        <p>${place.description}</p>
-                        <small>${place.region}</small>
-                        <button class="panorama-btn" data-coords='${JSON.stringify(place.coords)}' style="margin-top: 12px; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 999px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; font-size: 14px;">
-                            <i data-lucide="map" style="width: 16px; height: 16px;"></i>
-                            ${window.SiteI18n?.t?.("map.panorama.open") ?? "Открыть панораму"}
-                        </button>
-                    </div>
-                `;
-                card.classList.remove("hidden");
-                
-                lucide.createIcons();
-                
-                // Добавляем обработчик для кнопки панорамы
-                const panoramaBtn = card.querySelector('.panorama-btn');
-                if (panoramaBtn) {
-                    panoramaBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const coords = JSON.parse(panoramaBtn.dataset.coords);
-                        showPanorama(coords);
-                    });
-                }
-            }
-
-            function render(data) {
-                clusterer.removeAll();
-                geoObjects = [];
-
-                data.forEach(place => {
-                    const placemark = new ymaps.Placemark(place.coords, {
-                        balloonContent: `
-                            <div style="max-width: 200px;">
-                                <img src="${place.image}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">
-                                <h3 style="margin: 8px 0 4px;">${place.name}</h3>
-                                <p style="margin: 4px 0; font-size: 12px;">${place.description}</p>
-                                <small>${place.region}</small>
-                            </div>
-                        `
-                    }, {
-                        preset: place.type === "святыня" 
-                            ? 'islands#redIcon' 
-                            : place.type === "монастырь"
-                                ? 'islands#orangeIcon'
-                                : 'islands#greenIcon'
-                    });
-
-                    placemark.properties.set('placeData', place);
-
-                    placemark.events.add('click', (e) => {
-                        e.stopPropagation();
-                        
-                        const target = e.get('target');
-                        const placeData = target.properties.get('placeData');
-                        
-                        map.setCenter(placeData.coords, 10, {
-                            duration: 300
-                        });
-                        
-                        createCard(placeData);
-                        
-                        if (currentPlacemark) {
-                            currentPlacemark.options.set('preset', 
-                                currentPlacemark.properties.get('placeData').type === "святыня" 
-                                    ? 'islands#redIcon' 
-                                    : 'islands#orangeIcon'
-                            );
-                        }
-                        
-                        target.options.set('preset', 'islands#blueIcon');
-                        currentPlacemark = target;
-                    });
-
-                    geoObjects.push(placemark);
-                });
-
-                clusterer.add(geoObjects);
-                map.geoObjects.add(clusterer);
-            }
-
-            render(places);
-
-            // Поиск
-            document.getElementById("search").addEventListener("input", (e) => {
-                const value = e.target.value.toLowerCase().trim();
-
-                if (value === '') {
-                    render(places);
-                    return;
-                }
-
-                const filtered = places.filter(p =>
-                    p.name.toLowerCase().includes(value) ||
-                    p.region.toLowerCase().includes(value)
-                );
-
-                render(filtered);
-
-                if (filtered.length > 0) {
-                    if (filtered.length === 1) {
-                        map.setCenter(filtered[0].coords, 10, { duration: 300 });
-                    } else {
-                        const bounds = calculateBounds(filtered);
-                        map.setBounds(bounds, {
-                            checkZoomRange: true,
-                            duration: 300
-                        });
-                    }
-                }
-            });
-
-            // Фильтры
-            document.querySelectorAll(".map-filters button").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    document.querySelectorAll(".map-filters button")
-                        .forEach(b => b.classList.remove("active"));
-
-                    btn.classList.add("active");
-
-                    const filter = btn.dataset.filter;
-
-                    if (filter === "all") {
-                        render(places);
-                    } else {
-                        const filtered = places.filter(p => p.type === filter);
-                        render(filtered);
-                    }
-                    
-                    document.getElementById("place-card").classList.add("hidden");
-                    currentPlacemark = null;
-                });
-            });
-
-            function calculateBounds(places) {
-                const coords = places.map(p => p.coords);
-                const minLon = Math.min(...coords.map(c => c[1]));
-                const maxLon = Math.max(...coords.map(c => c[1]));
-                const minLat = Math.min(...coords.map(c => c[0]));
-                const maxLat = Math.max(...coords.map(c => c[0]));
-                
-                return [[minLat, minLon], [maxLat, maxLon]];
-            }
-
-            map.events.add('click', () => {
-                document.getElementById("place-card").classList.add("hidden");
-                
-                if (currentPlacemark) {
-                    currentPlacemark.options.set('preset', 
-                        currentPlacemark.properties.get('placeData').type === "святыня" 
-                            ? 'islands#redIcon' 
-                            : 'islands#orangeIcon'
-                    );
-                    currentPlacemark = null;
-                }
-            });
-        }
-    </script>
 
     <footer class="footer">
         <div class="container footer-grid">
@@ -432,36 +162,24 @@
         </div>
     </footer>
 
-     <script>
+    <script>
         lucide.createIcons();
-        
-        // Массив цитат для футера
         const quotes = [
             { text: "Ты не можешь путешествовать по пути, пока не станешь самим путем.", author: "Буддийская мудрость" },
             { text: "Счастье — это не нечто готовое. Оно проистекает из ваших собственных действий.", author: "Далай-лама XIV" },
             { text: "Мудрость — это умение видеть взаимосвязь всех вещей.", author: "Тит Нат Хан" },
             { text: "Сострадание — это не роскошь, а необходимость для выживания человечества.", author: "Далай-лама XIV" },
-            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" },
-            { text: "Не совершай зла, твори добро, очищай свой ум — таково учение Будды.", author: "Дхаммапада" },
-            { text: "Мир начинается с улыбки.", author: "Тит Нат Хан" },
-            { text: "Гнев не решает проблем, он только создает новые.", author: "Далай-лама XIV" },
-            { text: "Ваша цель в жизни — быть счастливым.", author: "Далай-лама XIV" },
-            { text: "Каждый день — это новое рождение. Каждое утро — это новое начало.", author: "Буддийская мудрость" }
+            { text: "Лучший способ обрести счастье — это делать счастливыми других.", author: "Буддийская пословица" }
         ];
-        
-        function getRandomQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            return quotes[randomIndex];
-        }
-        
-        const dailyQuoteElement = document.getElementById('daily-quote');
-        if (dailyQuoteElement) {
-            const randomQuote = getRandomQuote();
-            dailyQuoteElement.innerHTML = `"${randomQuote.text}" — ${randomQuote.author}`;
-        }
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        const el = document.getElementById("daily-quote");
+        if (el) el.innerHTML = `"${q.text}" — ${q.author}`;
     </script>
 
-    <!-- AI Чат-бот OpenRouter -->
+    <button class="back-to-top" id="backTopBtn" aria-label="Наверх страницы">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
     <div class="ai-chatbot" id="aiChatbot">
         <button class="chat-toggle" id="chatToggle">
             <i data-lucide="message-circle"></i>
@@ -475,30 +193,25 @@
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
                     <div class="message-content">
-                        Здравствуйте! Я помощник по теме «Традиции и обычаи буддийских народов». Могу рассказать о ритуалах, праздниках (Зул, Лосар, Весак), быте калмыков, тибетцев, монголов и юго-восточной Азии, а также ответить на общие вопросы о буддизме. Чем помочь?
+                        Здравствуйте! Спросите о святынях на карте, паломничестве в Россию и Бурятию или о празднике Сагаалган.
                     </div>
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Обычаи, праздники, народы…" id="chatInput">
-                <button id="chatSend">
-                    <i data-lucide="send"></i>
-                </button>
+                <input type="text" placeholder="Святыни, дацаны, маршруты…" id="chatInput">
+                <button id="chatSend"><i data-lucide="send"></i></button>
             </div>
         </div>
     </div>
-    <button class="back-to-top" id="backTopBtn" data-i18n-aria-label="ui.toTop" aria-label="Наверх страницы">
-        <i data-lucide="arrow-up"></i>
-    </button>
-     <!-- Подключаем AI чат-бот -->
-    <!-- Общие скрипты — js/README.md -->
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=60ccde2f-bf26-46f9-a681-91f3dd0ec16a"></script>
     <script src="js/lotus-bg.js"></script>
     <script src="js/site-ui.js"></script>
     <script src="js/back-to-top.js"></script>
     <script src="js/site-config.js"></script>
     <script src="js/config.local.js"></script>
     <script src="js/ai-chatbot.js"></script>
+    <script src="js/map-page.js"></script>
     <script>lucide.createIcons();</script>
-
 </body>
 </html>
