@@ -10,7 +10,8 @@
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
   const SPEED = 0.5;
-  const SMOOTH_ALPHA = 0.14;
+  const SMOOTH_ALPHA = 0.065;
+  const LAYER_PAD_PX = 44;
   const RESPAWN_MIN_MS = 2800;
   const RESPAWN_MAX_MS = 6200;
   const VANISH_REMOVE_MS = 1650;
@@ -57,8 +58,27 @@
     return Math.max(min, Math.min(max, value));
   }
 
-  function pickFreePosition() {
-    return { left: random(4, 96), top: random(6, 94) };
+  function getLayerBounds() {
+    if (!layer) {
+      return {
+        w: document.documentElement.clientWidth,
+        h: window.innerHeight,
+        pad: LAYER_PAD_PX,
+      };
+    }
+    return {
+      w: layer.offsetWidth || document.documentElement.clientWidth,
+      h: layer.offsetHeight || window.innerHeight,
+      pad: LAYER_PAD_PX,
+    };
+  }
+
+  function pickFreePositionPx() {
+    const { w, h, pad } = getLayerBounds();
+    return {
+      px: random(pad, Math.max(pad + 1, w - pad)),
+      py: random(pad, Math.max(pad + 1, h - pad)),
+    };
   }
 
   function lotusUid() {
@@ -166,92 +186,71 @@
   }
 
   function createPhysicsState(lotus, pos) {
+    const rot = random(-5, 5);
     return {
       lotus,
-      left: pos.left,
-      top: pos.top,
-      vx: random(-0.011, 0.011),
-      vy: random(-0.009, 0.009),
-      x: 0,
-      y: 0,
-      vxPx: 0,
-      vyPx: 0,
-      rot: random(-8, 8),
-      vRot: random(-0.05, 0.05),
+      px: pos.px,
+      py: pos.py,
+      vx: random(-0.045, 0.045),
+      vy: random(-0.038, 0.038),
+      rot,
+      vRot: random(-0.025, 0.025),
+      rotDelta: parseFloat(lotus.style.getPropertyValue("--rot-delta")) || 0,
       noisePhase: random(0, Math.PI * 2),
-      renderLeft: pos.left,
-      renderTop: pos.top,
-      renderX: 0,
-      renderY: 0,
-      renderRot: random(-8, 8),
+      renderPx: pos.px,
+      renderPy: pos.py,
+      renderRot: rot,
       removing: false,
     };
   }
 
   function applyLotusTransform(state) {
     const { lotus } = state;
-    lotus.style.left = `${state.renderLeft.toFixed(2)}%`;
-    lotus.style.top = `${state.renderTop.toFixed(2)}%`;
-    lotus.style.setProperty("--float-x", `${state.renderX.toFixed(2)}px`);
-    lotus.style.setProperty("--float-y", `${state.renderY.toFixed(2)}px`);
-    lotus.style.setProperty("--float-rot", `${state.renderRot.toFixed(2)}deg`);
+    const rot = state.renderRot + state.rotDelta;
+    lotus.style.transform = `translate3d(${state.renderPx.toFixed(1)}px, ${state.renderPy.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
   }
 
   function smoothToward(current, target, alpha) {
     return current + (target - current) * alpha;
   }
 
-  function bounceAxis(value, velocity, min, max, restitution) {
-    if (value < min) {
-      return { value: min, velocity: (Math.abs(velocity) * restitution + 0.002) * 0.5 };
-    }
-    if (value > max) {
-      return { value: max, velocity: (-Math.abs(velocity) * restitution - 0.002) * 0.5 };
-    }
-    return { value, velocity };
+  function softEdge(pos, vel, min, max) {
+    if (pos < min) return { pos: min, vel: Math.abs(vel) * 0.35 };
+    if (pos > max) return { pos: max, vel: -Math.abs(vel) * 0.35 };
+    return { pos, vel };
   }
 
   function tickPhysics(dt) {
-    const bounds = { minL: 3.5, maxL: 96.5, minT: 4, maxT: 96 };
+    const { w, h, pad } = getLayerBounds();
     const now = performance.now();
     const step = dt * SPEED;
+    const alpha = Math.min(0.12, SMOOTH_ALPHA * Math.max(0.85, dt));
 
     physicsStates.forEach((state) => {
       if (state.removing || !state.lotus.isConnected) return;
 
-      const current = Math.sin(now * 0.00042 + state.noisePhase);
-      state.vx += current * 0.00012 * step;
-      state.vy += Math.cos(now * 0.00035 + state.noisePhase) * 0.0001 * step;
+      state.vx += Math.sin(now * 0.00038 + state.noisePhase) * 0.0028 * step;
+      state.vy += Math.cos(now * 0.00032 + state.noisePhase) * 0.0024 * step;
 
-      state.left += state.vx * step;
-      state.top += state.vy * step;
+      state.px += state.vx * step * 14;
+      state.py += state.vy * step * 14;
 
-      let b = bounceAxis(state.left, state.vx, bounds.minL, bounds.maxL, 0.72);
-      state.left = b.value;
-      state.vx = b.velocity;
-      b = bounceAxis(state.top, state.vy, bounds.minT, bounds.maxT, 0.72);
-      state.top = b.value;
-      state.vy = b.velocity;
+      let edge = softEdge(state.px, state.vx, pad, w - pad);
+      state.px = edge.pos;
+      state.vx = edge.vel;
+      edge = softEdge(state.py, state.vy, pad, h - pad);
+      state.py = edge.pos;
+      state.vy = edge.vel;
 
-      state.vx *= 0.997;
-      state.vy *= 0.997;
-
-      state.x += state.vxPx * step;
-      state.y += state.vyPx * step;
-      state.vxPx *= 0.88;
-      state.vyPx *= 0.88;
-      state.x *= 0.96;
-      state.y *= 0.96;
+      state.vx *= 0.999;
+      state.vy *= 0.999;
 
       state.rot += state.vRot * step;
-      state.vRot *= 0.994;
-      if (Math.abs(state.rot) > 14) state.vRot += state.rot > 0 ? -0.02 : 0.02;
+      state.vRot *= 0.996;
+      if (Math.abs(state.rot) > 10) state.vRot *= 0.6;
 
-      const alpha = Math.min(1, SMOOTH_ALPHA * dt);
-      state.renderLeft = smoothToward(state.renderLeft, state.left, alpha);
-      state.renderTop = smoothToward(state.renderTop, state.top, alpha);
-      state.renderX = smoothToward(state.renderX, state.x, alpha);
-      state.renderY = smoothToward(state.renderY, state.y, alpha);
+      state.renderPx = smoothToward(state.renderPx, state.px, alpha);
+      state.renderPy = smoothToward(state.renderPy, state.py, alpha);
       state.renderRot = smoothToward(state.renderRot, state.rot, alpha);
 
       applyLotusTransform(state);
@@ -262,7 +261,8 @@
     const delay = random(RESPAWN_MIN_MS, RESPAWN_MAX_MS);
     window.setTimeout(() => {
       if (!layer) return;
-      spawnLotus(pickFreePosition());
+      syncLayerHeight();
+      spawnLotus(pickFreePositionPx());
     }, delay);
   }
 
@@ -317,7 +317,10 @@
     `;
     createBurstPieces(lotus);
 
-    const state = createPhysicsState(lotus, pos || pickFreePosition());
+    lotus.style.left = "0";
+    lotus.style.top = "0";
+
+    const state = createPhysicsState(lotus, pos || pickFreePositionPx());
     applyLotusTransform(state);
 
     lotus.addEventListener("click", (e) => onLotusClick(state, e));
@@ -347,19 +350,9 @@
       window.setTimeout(() => {
         if (state.removing || !state.lotus.isConnected) return;
 
-        const impulsePct = power * 0.018;
-        const impulsePx = power * 0.35;
-
-        state.vx += nx * impulsePct;
-        state.vy += ny * impulsePct;
-        state.vxPx += nx * impulsePx * 8;
-        state.vyPx += ny * impulsePx * 8;
-        state.vRot += nx * 0.08 * power;
-
-        state.lotus.classList.remove("lotus-wave-push");
-        void state.lotus.offsetWidth;
-        state.lotus.classList.add("lotus-wave-push");
-        window.setTimeout(() => state.lotus.classList.remove("lotus-wave-push"), 1400);
+        state.vx += nx * 0.09 * power;
+        state.vy += ny * 0.09 * power;
+        state.vRot += nx * 0.04 * power;
       }, delay);
     });
   }
@@ -515,11 +508,11 @@
     layer.setAttribute("aria-hidden", "true");
     document.body.appendChild(layer);
 
-    for (let i = 0; i < LOTUS_COUNT; i += 1) {
-      spawnLotus(pickFreePosition());
-    }
-
     syncLayerHeight();
+
+    for (let i = 0; i < LOTUS_COUNT; i += 1) {
+      spawnLotus(pickFreePositionPx());
+    }
     startPhysicsLoop();
 
     window.addEventListener("resize", syncLayerHeight);
