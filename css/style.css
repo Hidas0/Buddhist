@@ -392,11 +392,11 @@ body.nav-open { overflow: hidden; }
     transform: translate(-50%, -50%) translate(var(--float-x, 0px), var(--float-y, 0px)) rotate(calc(var(--rot-delta) + var(--float-rot, 0deg))) scale(1);
     animation:
         lotusAppear 3.5s ease-out var(--appear-delay) forwards;
-    transition: opacity 0.25s ease, transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.25s ease, transform 0.9s linear;
 }
 
 .lotus-bg__item.lotus-wave-push {
-    transition: transform 0.85s cubic-bezier(0.16, 0.9, 0.22, 1);
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lotus-bg__item:hover {
@@ -406,7 +406,7 @@ body.nav-open { overflow: hidden; }
 .lotus-flower {
     position: absolute;
     inset: 0;
-    animation: lotusRotate 14s linear infinite;
+    animation: lotusRotate 28s linear infinite;
     pointer-events: none;
 }
 

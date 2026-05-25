@@ -10,6 +10,7 @@
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
   const FLOAT_TICK_MS = 32;
+  const SPEED = 0.5;
   const RESPAWN_MIN_MS = 2800;
   const RESPAWN_MAX_MS = 6200;
   const VANISH_REMOVE_MS = 1650;
@@ -169,15 +170,14 @@
       lotus,
       left: pos.left,
       top: pos.top,
-      vx: random(-0.022, 0.022),
-      vy: random(-0.018, 0.018),
+      vx: random(-0.011, 0.011),
+      vy: random(-0.009, 0.009),
       x: 0,
       y: 0,
       vxPx: 0,
       vyPx: 0,
-      rot: random(-12, 12),
-      vRot: random(-0.12, 0.12),
-      drift: random(0.85, 1.35),
+      rot: random(-8, 8),
+      vRot: random(-0.05, 0.05),
       noisePhase: random(0, Math.PI * 2),
       removing: false,
     };
@@ -194,10 +194,10 @@
 
   function bounceAxis(value, velocity, min, max, restitution) {
     if (value < min) {
-      return { value: min, velocity: Math.abs(velocity) * restitution + 0.004 };
+      return { value: min, velocity: (Math.abs(velocity) * restitution + 0.002) * 0.5 };
     }
     if (value > max) {
-      return { value: max, velocity: -Math.abs(velocity) * restitution - 0.004 };
+      return { value: max, velocity: (-Math.abs(velocity) * restitution - 0.002) * 0.5 };
     }
     return { value, velocity };
   }
@@ -205,20 +205,17 @@
   function tickPhysics(dt) {
     const bounds = { minL: 3.5, maxL: 96.5, minT: 4, maxT: 96 };
     const now = performance.now();
+    const step = dt * SPEED;
 
     physicsStates.forEach((state) => {
       if (state.removing || !state.lotus.isConnected) return;
 
-      state.vx += random(-0.0011, 0.0011) * state.drift * dt;
-      state.vy += random(-0.0011, 0.0011) * state.drift * dt;
-      state.vRot += random(-0.004, 0.004) * dt;
+      const current = Math.sin(now * 0.00042 + state.noisePhase);
+      state.vx += current * 0.00012 * step;
+      state.vy += Math.cos(now * 0.00035 + state.noisePhase) * 0.0001 * step;
 
-      const current = Math.sin(now * 0.00085 + state.noisePhase);
-      state.vx += current * 0.00035 * dt;
-      state.vy += Math.cos(now * 0.0007 + state.noisePhase) * 0.00028 * dt;
-
-      state.left += state.vx * dt;
-      state.top += state.vy * dt;
+      state.left += state.vx * step;
+      state.top += state.vy * step;
 
       let b = bounceAxis(state.left, state.vx, bounds.minL, bounds.maxL, 0.72);
       state.left = b.value;
@@ -227,22 +224,19 @@
       state.top = b.value;
       state.vy = b.velocity;
 
-      state.vx *= 0.996;
-      state.vy *= 0.996;
-      state.vRot *= 0.992;
+      state.vx *= 0.997;
+      state.vy *= 0.997;
 
-      state.x += state.vxPx * dt;
-      state.y += state.vyPx * dt;
-      state.vxPx *= 0.94;
-      state.vyPx *= 0.94;
+      state.x += state.vxPx * step;
+      state.y += state.vyPx * step;
+      state.vxPx *= 0.88;
+      state.vyPx *= 0.88;
+      state.x *= 0.96;
+      state.y *= 0.96;
 
-      if (Math.abs(state.x) > 42) state.vxPx += state.x > 0 ? -0.08 : 0.08;
-      if (Math.abs(state.y) > 36) state.vyPx += state.y > 0 ? -0.08 : 0.08;
-      state.x = clamp(state.x, -48, 48);
-      state.y = clamp(state.y, -40, 40);
-
-      state.rot += state.vRot * dt;
-      if (Math.abs(state.rot) > 22) state.vRot += state.rot > 0 ? -0.05 : 0.05;
+      state.rot += state.vRot * step;
+      state.vRot *= 0.994;
+      if (Math.abs(state.rot) > 14) state.vRot += state.rot > 0 ? -0.02 : 0.02;
 
       applyLotusTransform(state);
     });
@@ -337,14 +331,14 @@
       window.setTimeout(() => {
         if (state.removing || !state.lotus.isConnected) return;
 
-        const impulsePct = power * random(0.028, 0.055);
-        const impulsePx = power * random(0.55, 1.05);
+        const impulsePct = power * 0.018;
+        const impulsePx = power * 0.35;
 
         state.vx += nx * impulsePct;
         state.vy += ny * impulsePct;
-        state.vxPx += nx * impulsePx * 16;
-        state.vyPx += ny * impulsePx * 16;
-        state.vRot += random(-0.35, 0.35) * power;
+        state.vxPx += nx * impulsePx * 8;
+        state.vyPx += ny * impulsePx * 8;
+        state.vRot += nx * 0.08 * power;
 
         state.lotus.classList.remove("lotus-wave-push");
         void state.lotus.offsetWidth;
