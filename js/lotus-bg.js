@@ -9,7 +9,7 @@
   const WAVE_START_RADIUS_PX = 11;
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
-  const SPEED = 0.5;
+  const SPEED = 0.2;
   const SMOOTH_ALPHA = 0.065;
   const LAYER_PAD_PX = 44;
   const RESPAWN_MIN_MS = 2800;
