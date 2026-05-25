@@ -333,27 +333,27 @@
     quote.className = "lotus-quote";
     quote.textContent = pickQuoteText();
 
-    const documentHeight = getDocumentHeight();
-    root.style.height = `${documentHeight}px`;
-
-    // First render quote, then clamp by its real dimensions.
-    quote.style.left = `${pageX.toFixed(1)}px`;
-    quote.style.top = `${(pageY - 88).toFixed(1)}px`;
-    quote.style.visibility = "hidden";
-
     root.appendChild(quote);
-    const rect = quote.getBoundingClientRect();
-    const halfW = rect.width / 2;
-    const halfH = rect.height / 2;
-    const viewportLeft = window.scrollX;
-    const viewportRight = window.scrollX + document.documentElement.clientWidth;
-    const padding = 14;
-    const x = clamp(pageX, viewportLeft + halfW + padding, viewportRight - halfW - padding);
-    const y = clamp(pageY - 88, halfH + padding, documentHeight - halfH - padding);
 
-    quote.style.left = `${x.toFixed(1)}px`;
-    quote.style.top = `${y.toFixed(1)}px`;
+    const navH =
+      parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue("--navbar-height"),
+        10
+      ) || 70;
+    const pad = 12;
+    const clientY = pageY - window.scrollY;
+
+    quote.style.visibility = "hidden";
+    const quoteH = quote.getBoundingClientRect().height;
     quote.style.visibility = "visible";
+
+    // top = нижняя привязка пузыря (над точкой клика); transform поднимает блок вверх
+    const top = clamp(
+      clientY,
+      navH + quoteH + pad,
+      window.innerHeight - pad
+    );
+    quote.style.setProperty("--lotus-quote-top", `${top.toFixed(1)}px`);
 
     window.setTimeout(() => quote.remove(), 6200);
   }

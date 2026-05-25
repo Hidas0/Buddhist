@@ -322,9 +322,14 @@ body.nav-open { overflow: hidden; }
 }
 
 .lotus-quote {
-    position: absolute;
-    width: min(86vw, 520px);
-    transform: translate(-50%, -50%);
+    position: fixed;
+    left: 50%;
+    top: var(--lotus-quote-top, 120px);
+    z-index: 950;
+    width: min(520px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    transform: translate(-50%, calc(-100% - 10px));
     padding: 16px 18px;
     border-radius: 18px;
     color: #3f220f; /* тёмно-коричневый текст цитаты (не --text, мягче для «свитка») */
@@ -333,6 +338,9 @@ body.nav-open { overflow: hidden; }
     line-height: 1.52;
     text-align: center;
     letter-spacing: 0.01em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
     background:
         radial-gradient(ellipse at 30% 10%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 55%),
         linear-gradient(170deg, rgba(255, 252, 244, 0.97), rgba(255, 242, 223, 0.96));
@@ -348,19 +356,19 @@ body.nav-open { overflow: hidden; }
 @keyframes lotusQuoteInOut {
     0% {
         opacity: 0;
-        transform: translate(-50%, -50%) translateY(14px) scale(0.92);
+        transform: translate(-50%, calc(-100% - 10px)) translateY(14px) scale(0.92);
     }
     12% {
         opacity: 1;
-        transform: translate(-50%, -50%) translateY(0) scale(1);
+        transform: translate(-50%, calc(-100% - 10px)) translateY(0) scale(1);
     }
     78% {
         opacity: 1;
-        transform: translate(-50%, -50%) translateY(-2px) scale(1);
+        transform: translate(-50%, calc(-100% - 10px)) translateY(-2px) scale(1);
     }
     100% {
         opacity: 0;
-        transform: translate(-50%, -50%) translateY(-18px) scale(0.96);
+        transform: translate(-50%, calc(-100% - 10px)) translateY(-18px) scale(0.96);
     }
 }
 
@@ -5297,7 +5305,8 @@ h2 {
     }
 
     .lotus-quote {
-        width: min(92vw, 520px);
+        width: min(520px, calc(100vw - 24px));
+        max-width: calc(100vw - 24px);
         font-size: 0.88rem;
         padding: 14px 16px;
     }
