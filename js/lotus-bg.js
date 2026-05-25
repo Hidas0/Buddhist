@@ -1,17 +1,19 @@
 /**
- * lotus-bg.js — фоновые кликабельные лотосы по краям экрана.
- * Клик: вспышка, радиальная «волна», сдвиг текста, случайная цитата.
- * z-index: .lotus-bg ниже контента; main/header с pointer-events: none (см. style.css).
+ * lotus-bg.js — фоновые лотосы с простой «физикой»:
+ * свободное движение по странице, отклик на волну, респавн после клика.
  */
 (() => {
   const LOTUS_COUNT = 16;
   const PETAL_BURST_COUNT = 14;
   const WAVE_MAX_RADIUS_PX = 460;
-  /** ~px «задержка старта» фронта относительно центра клика (подгонка к радиальному фону) */
   const WAVE_START_RADIUS_PX = 11;
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
-  const FLOAT_TICK_MS = 48;
+  const FLOAT_TICK_MS = 32;
+  const RESPAWN_MIN_MS = 2800;
+  const RESPAWN_MAX_MS = 6200;
+  const VANISH_REMOVE_MS = 1650;
+
   const LOTUS_QUOTES = [
     "Отпусти то, что не принадлежит тебе. Освободившись, ты надолго обретешь счастье и благо.",
     "Нелепо думать, что кто-то, кроме тебя, сможет сделать тебя счастливым или несчастным.",
@@ -37,8 +39,14 @@
     "Истинная любовь рождается из понимания.",
     "Если нужно что-то сделать, делай это от всего сердца.",
     "Если ты по-настоящему любишь себя, ты никогда не сможешь причинить боль другому.",
-    "В этом мире ненависть никогда не искоренить с помощью ненависти. Победить ненависть сможет только любовь. Это вечный закон."
+    "В этом мире ненависть никогда не искоренить с помощью ненависти. Победить ненависть сможет только любовь. Это вечный закон.",
   ];
+
+  let layer = null;
+  let physicsStates = [];
+  let wavePulseRoot;
+  let lotusQuoteRoot;
+  let lastQuoteIndex = -1;
 
   function random(min, max) {
     return Math.random() * (max - min) + min;
@@ -48,19 +56,14 @@
     return Math.max(min, Math.min(max, value));
   }
 
-  function pickEdgePosition() {
-    const zone = Math.floor(random(0, 4));
-    if (zone === 0) return { left: random(3, 16), top: random(8, 92) };
-    if (zone === 1) return { left: random(84, 97), top: random(8, 92) };
-    if (zone === 2) return { left: random(8, 92), top: random(4, 18) };
-    return { left: random(8, 92), top: random(82, 96) };
+  function pickFreePosition() {
+    return { left: random(4, 96), top: random(6, 94) };
   }
 
   function lotusUid() {
     return "l" + Math.random().toString(36).slice(2, 10);
   }
 
-  /** SVG-лотос из макета (широкие лепестки, 3 слоя) — уникальные id градиентов на экземпляр */
   function buildLotusSvg(uid) {
     return `
 <svg class="lotus-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -161,23 +164,137 @@
     }
   }
 
-  function createLotus() {
+  function createPhysicsState(lotus, pos) {
+    return {
+      lotus,
+      left: pos.left,
+      top: pos.top,
+      vx: random(-0.022, 0.022),
+      vy: random(-0.018, 0.018),
+      x: 0,
+      y: 0,
+      vxPx: 0,
+      vyPx: 0,
+      rot: random(-12, 12),
+      vRot: random(-0.12, 0.12),
+      drift: random(0.85, 1.35),
+      noisePhase: random(0, Math.PI * 2),
+      removing: false,
+    };
+  }
+
+  function applyLotusTransform(state) {
+    const { lotus } = state;
+    lotus.style.left = `${state.left.toFixed(3)}%`;
+    lotus.style.top = `${state.top.toFixed(3)}%`;
+    lotus.style.setProperty("--float-x", `${state.x.toFixed(2)}px`);
+    lotus.style.setProperty("--float-y", `${state.y.toFixed(2)}px`);
+    lotus.style.setProperty("--float-rot", `${state.rot.toFixed(2)}deg`);
+  }
+
+  function bounceAxis(value, velocity, min, max, restitution) {
+    if (value < min) {
+      return { value: min, velocity: Math.abs(velocity) * restitution + 0.004 };
+    }
+    if (value > max) {
+      return { value: max, velocity: -Math.abs(velocity) * restitution - 0.004 };
+    }
+    return { value, velocity };
+  }
+
+  function tickPhysics(dt) {
+    const bounds = { minL: 3.5, maxL: 96.5, minT: 4, maxT: 96 };
+    const now = performance.now();
+
+    physicsStates.forEach((state) => {
+      if (state.removing || !state.lotus.isConnected) return;
+
+      state.vx += random(-0.0011, 0.0011) * state.drift * dt;
+      state.vy += random(-0.0011, 0.0011) * state.drift * dt;
+      state.vRot += random(-0.004, 0.004) * dt;
+
+      const current = Math.sin(now * 0.00085 + state.noisePhase);
+      state.vx += current * 0.00035 * dt;
+      state.vy += Math.cos(now * 0.0007 + state.noisePhase) * 0.00028 * dt;
+
+      state.left += state.vx * dt;
+      state.top += state.vy * dt;
+
+      let b = bounceAxis(state.left, state.vx, bounds.minL, bounds.maxL, 0.72);
+      state.left = b.value;
+      state.vx = b.velocity;
+      b = bounceAxis(state.top, state.vy, bounds.minT, bounds.maxT, 0.72);
+      state.top = b.value;
+      state.vy = b.velocity;
+
+      state.vx *= 0.996;
+      state.vy *= 0.996;
+      state.vRot *= 0.992;
+
+      state.x += state.vxPx * dt;
+      state.y += state.vyPx * dt;
+      state.vxPx *= 0.94;
+      state.vyPx *= 0.94;
+
+      if (Math.abs(state.x) > 42) state.vxPx += state.x > 0 ? -0.08 : 0.08;
+      if (Math.abs(state.y) > 36) state.vyPx += state.y > 0 ? -0.08 : 0.08;
+      state.x = clamp(state.x, -48, 48);
+      state.y = clamp(state.y, -40, 40);
+
+      state.rot += state.vRot * dt;
+      if (Math.abs(state.rot) > 22) state.vRot += state.rot > 0 ? -0.05 : 0.05;
+
+      applyLotusTransform(state);
+    });
+  }
+
+  function scheduleRespawn() {
+    const delay = random(RESPAWN_MIN_MS, RESPAWN_MAX_MS);
+    window.setTimeout(() => {
+      if (!layer) return;
+      spawnLotus(pickFreePosition());
+    }, delay);
+  }
+
+  function removeLotusState(state) {
+    state.removing = true;
+    window.setTimeout(() => {
+      state.lotus.remove();
+      physicsStates = physicsStates.filter((s) => s !== state);
+    }, VANISH_REMOVE_MS);
+  }
+
+  function onLotusClick(state, event) {
+    event.preventDefault();
+    const { lotus } = state;
+    lotus.classList.remove("burst", "lotus-wave-push");
+    void lotus.offsetWidth;
+    lotus.classList.add("burst", "vanish");
+
+    const rect = lotus.getBoundingClientRect();
+    const pageX = rect.left + rect.width / 2 + window.scrollX;
+    const pageY = rect.top + rect.height / 2 + window.scrollY;
+
+    triggerBackgroundWave(pageX, pageY);
+    impactNearbyElements(pageX, pageY);
+    applyWaveToLotuses(pageX, pageY, state);
+    showLotusQuote(pageX, pageY);
+
+    removeLotusState(state);
+    scheduleRespawn();
+  }
+
+  function spawnLotus(pos) {
+    if (!layer) return null;
+
     const lotus = document.createElement("button");
     lotus.className = "lotus-bg__item";
     lotus.type = "button";
     lotus.setAttribute("aria-label", "Лотос");
-    const pos = pickEdgePosition();
-    lotus.style.left = `${pos.left}%`;
-    lotus.style.top = `${pos.top}%`;
+
     lotus.style.setProperty("--lotus-size", `${random(34, 68)}px`);
-    lotus.style.setProperty("--appear-delay", `${random(0, 8).toFixed(1)}s`);
-    lotus.style.setProperty("--sway-dur", `${random(3.5, 7).toFixed(1)}s`);
-    lotus.style.setProperty("--sway-x", `${random(-6, 6).toFixed(1)}px`);
-    lotus.style.setProperty("--sway-y", `${random(-5, 5).toFixed(1)}px`);
+    lotus.style.setProperty("--appear-delay", `${random(0, 1.2).toFixed(1)}s`);
     lotus.style.setProperty("--rot-delta", `${random(-4, 4).toFixed(1)}deg`);
-    lotus.style.setProperty("--float-x", "0px");
-    lotus.style.setProperty("--float-y", "0px");
-    lotus.style.setProperty("--float-rot", "0deg");
 
     const z = Math.round(random(0, 3));
     lotus.style.zIndex = String(z);
@@ -188,91 +305,67 @@
       <span class="lotus-flower">${buildLotusSvg(lotusUid())}</span>
       <span class="lotus-wave"></span>
     `;
-
     createBurstPieces(lotus);
 
-    lotus.addEventListener("click", (event) => {
-      event.preventDefault();
-      lotus.classList.remove("burst");
-      void lotus.offsetWidth;
-      lotus.classList.add("burst");
-      lotus.classList.add("vanish");
+    const state = createPhysicsState(lotus, pos || pickFreePosition());
+    applyLotusTransform(state);
 
-      const rect = lotus.getBoundingClientRect();
-      const pageX = rect.left + rect.width / 2 + window.scrollX;
-      const pageY = rect.top + rect.height / 2 + window.scrollY;
-      triggerBackgroundWave(pageX, pageY);
-      impactNearbyElements(pageX, pageY);
-      showLotusQuote(pageX, pageY);
-    });
+    lotus.addEventListener("click", (e) => onLotusClick(state, e));
 
-    return lotus;
+    layer.appendChild(lotus);
+    physicsStates.push(state);
+    return state;
   }
 
-  function startChaoticFloat(layer) {
-    const lotuses = Array.from(layer.querySelectorAll(".lotus-bg__item"));
-    if (!lotuses.length) return;
+  function applyWaveToLotuses(pageX, pageY, sourceState) {
+    physicsStates.forEach((state) => {
+      if (state.removing || state === sourceState || !state.lotus.isConnected) return;
 
-    const states = lotuses.map((lotus) => ({
-      lotus,
-      x: random(-8, 8),
-      y: random(-8, 8),
-      vx: random(-0.22, 0.22),
-      vy: random(-0.22, 0.22),
-      rot: random(-2, 2),
-      vRot: random(-0.055, 0.055),
-      ampX: random(7, 18),
-      ampY: random(7, 18),
-      drift: random(0.75, 1.45),
-      noisePhaseX: random(0, Math.PI * 2),
-      noisePhaseY: random(0, Math.PI * 2),
-      noiseSpeedX: random(0.0012, 0.0027),
-      noiseSpeedY: random(0.001, 0.0024),
-      maxX: random(14, 28),
-      maxY: random(12, 26),
-      maxRot: random(4.8, 9.8),
-    }));
+      const rect = state.lotus.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2 + window.scrollX;
+      const cy = rect.top + rect.height / 2 + window.scrollY;
+      const dx = cx - pageX;
+      const dy = cy - pageY;
+      const distance = Math.hypot(dx, dy);
+      if (distance > WAVE_MAX_RADIUS_PX) return;
 
+      const power = 1 - distance / WAVE_MAX_RADIUS_PX;
+      const nx = distance === 0 ? random(-1, 1) : dx / distance;
+      const ny = distance === 0 ? random(-1, 1) : dy / distance;
+      const delay = waveFrontDelayMs(distance);
+
+      window.setTimeout(() => {
+        if (state.removing || !state.lotus.isConnected) return;
+
+        const impulsePct = power * random(0.028, 0.055);
+        const impulsePx = power * random(0.55, 1.05);
+
+        state.vx += nx * impulsePct;
+        state.vy += ny * impulsePct;
+        state.vxPx += nx * impulsePx * 16;
+        state.vyPx += ny * impulsePx * 16;
+        state.vRot += random(-0.35, 0.35) * power;
+
+        state.lotus.classList.remove("lotus-wave-push");
+        void state.lotus.offsetWidth;
+        state.lotus.classList.add("lotus-wave-push");
+        window.setTimeout(() => state.lotus.classList.remove("lotus-wave-push"), 1400);
+      }, delay);
+    });
+  }
+
+  function startPhysicsLoop() {
     let lastTs = performance.now();
     window.setInterval(() => {
       const now = performance.now();
-      const dtMs = Math.min(80, now - lastTs);
+      const dtMs = Math.min(64, now - lastTs);
       lastTs = now;
-      const dt = dtMs / 16.6667;
-
-      states.forEach((state) => {
-        if (state.lotus.classList.contains("vanish")) return;
-
-        state.vx += random(-0.036, 0.036) * state.drift;
-        state.vy += random(-0.036, 0.036) * state.drift;
-        state.vRot += random(-0.008, 0.008);
-
-        state.vx *= 0.94;
-        state.vy *= 0.94;
-        state.vRot *= 0.91;
-
-        state.x += state.vx * dt;
-        state.y += state.vy * dt;
-        state.rot += state.vRot * dt;
-
-        if (Math.abs(state.x) > state.maxX) state.vx += state.x > 0 ? -0.16 : 0.16;
-        if (Math.abs(state.y) > state.maxY) state.vy += state.y > 0 ? -0.16 : 0.16;
-        if (Math.abs(state.rot) > state.maxRot) state.vRot += state.rot > 0 ? -0.06 : 0.06;
-
-        const noiseX = Math.sin(now * state.noiseSpeedX + state.noisePhaseX) * state.ampX;
-        const noiseY = Math.cos(now * state.noiseSpeedY + state.noisePhaseY) * state.ampY;
-        const finalX = clamp(state.x + noiseX * 0.36, -state.maxX, state.maxX);
-        const finalY = clamp(state.y + noiseY * 0.36, -state.maxY, state.maxY);
-        const finalRot = clamp(state.rot + (noiseX - noiseY) * 0.095, -state.maxRot, state.maxRot);
-
-        state.lotus.style.setProperty("--float-x", `${finalX.toFixed(2)}px`);
-        state.lotus.style.setProperty("--float-y", `${finalY.toFixed(2)}px`);
-        state.lotus.style.setProperty("--float-rot", `${finalRot.toFixed(2)}deg`);
-      });
+      tickPhysics(dtMs / 16.6667);
     }, FLOAT_TICK_MS);
   }
 
-  function syncLayerHeight(layer) {
+  function syncLayerHeight() {
+    if (!layer) return;
     const doc = document.documentElement;
     const body = document.body;
     const maxHeight = Math.max(
@@ -284,10 +377,6 @@
     );
     layer.style.height = `${maxHeight}px`;
   }
-
-  let wavePulseRoot;
-  let lotusQuoteRoot;
-  let lastQuoteIndex = -1;
 
   function getWavePulseRoot() {
     if (wavePulseRoot) return wavePulseRoot;
@@ -307,18 +396,6 @@
     return lotusQuoteRoot;
   }
 
-  function getDocumentHeight() {
-    const doc = document.documentElement;
-    const body = document.body;
-    return Math.max(
-      body.scrollHeight,
-      body.offsetHeight,
-      doc.clientHeight,
-      doc.scrollHeight,
-      doc.offsetHeight
-    );
-  }
-
   function pickQuoteText() {
     if (LOTUS_QUOTES.length < 2) return LOTUS_QUOTES[0] || "";
     let idx = Math.floor(random(0, LOTUS_QUOTES.length));
@@ -332,7 +409,6 @@
     const quote = document.createElement("div");
     quote.className = "lotus-quote";
     quote.textContent = pickQuoteText();
-
     root.appendChild(quote);
 
     const navH =
@@ -347,12 +423,7 @@
     const quoteH = quote.getBoundingClientRect().height;
     quote.style.visibility = "visible";
 
-    // top = нижняя привязка пузыря (над точкой клика); transform поднимает блок вверх
-    const top = clamp(
-      clientY,
-      navH + quoteH + pad,
-      window.innerHeight - pad
-    );
+    const top = clamp(clientY, navH + quoteH + pad, window.innerHeight - pad);
     quote.style.setProperty("--lotus-quote-top", `${top.toFixed(1)}px`);
 
     window.setTimeout(() => quote.remove(), 6200);
@@ -395,8 +466,8 @@
       const shift = power * 14;
       const nx = distance === 0 ? 0 : dx / distance;
       const ny = distance === 0 ? 0 : dy / distance;
-
       const delay = waveFrontDelayMs(distance);
+
       window.setTimeout(() => {
         el.style.setProperty("--wave-x", `${(nx * shift).toFixed(2)}px`);
         el.style.setProperty("--wave-y", `${(ny * shift).toFixed(2)}px`);
@@ -414,19 +485,21 @@
     getWavePulseRoot();
     getLotusQuoteRoot();
 
-    const layer = document.createElement("div");
+    layer = document.createElement("div");
     layer.className = "lotus-bg";
     layer.setAttribute("aria-hidden", "true");
+    document.body.appendChild(layer);
 
     for (let i = 0; i < LOTUS_COUNT; i += 1) {
-      layer.appendChild(createLotus());
+      spawnLotus(pickFreePosition());
     }
 
-    document.body.appendChild(layer);
-    syncLayerHeight(layer);
-    startChaoticFloat(layer);
-    window.addEventListener("resize", () => syncLayerHeight(layer));
-    window.addEventListener("load", () => syncLayerHeight(layer));
+    syncLayerHeight();
+    startPhysicsLoop();
+
+    window.addEventListener("resize", syncLayerHeight);
+    window.addEventListener("load", syncLayerHeight);
+    window.addEventListener("scroll", syncLayerHeight, { passive: true });
   }
 
   if (document.readyState === "loading") {
@@ -435,4 +508,3 @@
     initLotusBackground();
   }
 })();
-
