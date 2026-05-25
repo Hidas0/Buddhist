@@ -3,29 +3,9 @@
  * свободное движение по странице, отклик на волну, респавн после клика.
  */
 (() => {
-  const mobileMq = window.matchMedia("(max-width: 768px)");
-  const coarseMq = window.matchMedia("(pointer: coarse)");
-  const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  function isMobileViewport() {
-    return mobileMq.matches;
-  }
-
-  function isCoarsePointer() {
-    return coarseMq.matches;
-  }
-
-  function prefersReducedMotion() {
-    return reducedMq.matches;
-  }
-
-  function isLightMode() {
-    return isMobileViewport() || isCoarsePointer();
-  }
-
-  const LOTUS_COUNT = prefersReducedMotion() ? 0 : isLightMode() ? 8 : 16;
-  const PETAL_BURST_COUNT = isLightMode() ? 10 : 14;
-  const WAVE_MAX_RADIUS_PX = isLightMode() ? 320 : 460;
+  const LOTUS_COUNT = 16;
+  const PETAL_BURST_COUNT = 14;
+  const WAVE_MAX_RADIUS_PX = 460;
   const WAVE_START_RADIUS_PX = 11;
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
@@ -322,9 +302,7 @@
     lotus.type = "button";
     lotus.setAttribute("aria-label", "Лотос");
 
-    const sizeMin = isLightMode() ? 44 : 34;
-    const sizeMax = isLightMode() ? 64 : 68;
-    lotus.style.setProperty("--lotus-size", `${random(sizeMin, sizeMax)}px`);
+    lotus.style.setProperty("--lotus-size", `${random(34, 68)}px`);
     lotus.style.setProperty("--appear-delay", `${random(0, 1.2).toFixed(1)}s`);
     lotus.style.setProperty("--rot-delta", `${random(-4, 4).toFixed(1)}deg`);
 
@@ -381,20 +359,10 @@
 
   function startPhysicsLoop() {
     let lastTs = performance.now();
-    let paused = document.hidden;
-    document.addEventListener("visibilitychange", () => {
-      paused = document.hidden;
-      if (!paused) lastTs = performance.now();
-    });
-
     const frame = (now) => {
-      if (!paused) {
-        const dtMs = Math.min(48, now - lastTs);
-        lastTs = now;
-        tickPhysics(dtMs / 16.6667);
-      } else {
-        lastTs = now;
-      }
+      const dtMs = Math.min(48, now - lastTs);
+      lastTs = now;
+      tickPhysics(dtMs / 16.6667);
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
@@ -499,8 +467,6 @@
   }
 
   function impactNearbyElements(pageX, pageY) {
-    if (prefersReducedMotion() || isLightMode()) return;
-
     const targets = document.querySelectorAll(
       "h1,h2,h3,h4,p,li,a,.card,.tradition-card,.kalm-card-item,.media-card,.audio-track,.content-card,.info-pill,.quote-card,button"
     );
@@ -534,8 +500,6 @@
 
   function initLotusBackground() {
     document.getElementById("lotus-wave-filter-svg")?.remove();
-    if (LOTUS_COUNT < 1) return;
-
     getWavePulseRoot();
     getLotusQuoteRoot();
 
