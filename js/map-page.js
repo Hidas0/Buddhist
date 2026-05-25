@@ -115,6 +115,79 @@
   let suppressMapClickUntil = 0;
   let syncingFilters = false;
 
+  const MOBILE_MAP_MQ = window.matchMedia("(max-width: 768px)");
+
+  function isMobileMapLayout() {
+    return MOBILE_MAP_MQ.matches;
+  }
+
+  function invalidateMapSize() {
+    if (!map?.container?.fitToViewport) return;
+    requestAnimationFrame(() => {
+      try {
+        map.container.fitToViewport();
+      } catch (_) {
+        /* ignore */
+      }
+    });
+  }
+
+  function setMobileMapView(view) {
+    const layout = document.querySelector(".map-layout");
+    const tabs = document.querySelector(".map-view-tabs");
+    if (!layout || !tabs || !isMobileMapLayout()) return;
+    const isList = view === "list";
+    layout.classList.toggle("map-layout--list-view", isList);
+    layout.classList.toggle("map-layout--map-view", !isList);
+    tabs.querySelectorAll(".map-view-tab").forEach((btn) => {
+      const active = btn.dataset.mapView === view;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    invalidateMapSize();
+  }
+
+  function scrollListItemIntoView(placeId) {
+    const item = document.querySelector(`.map-list__item[data-id="${placeId}"]`);
+    if (item) item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  function bindMobileMapViews() {
+    const tabs = document.querySelector(".map-view-tabs");
+    const layout = document.querySelector(".map-layout");
+    if (!tabs || !layout) return;
+
+    tabs.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-map-view]");
+      if (!btn) return;
+      setMobileMapView(btn.dataset.mapView);
+    });
+
+    const resetDesktopLayout = () => {
+      if (isMobileMapLayout()) return;
+      layout.classList.remove("map-layout--list-view");
+      layout.classList.add("map-layout--map-view");
+      tabs.querySelectorAll(".map-view-tab").forEach((btn, i) => {
+        const active = i === 0;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      invalidateMapSize();
+    };
+
+    if (typeof MOBILE_MAP_MQ.addEventListener === "function") {
+      MOBILE_MAP_MQ.addEventListener("change", resetDesktopLayout);
+    } else if (typeof MOBILE_MAP_MQ.addListener === "function") {
+      MOBILE_MAP_MQ.addListener(resetDesktopLayout);
+    }
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(invalidateMapSize, 160);
+    });
+  }
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -282,7 +355,8 @@
     if (!place || !map) return;
 
     suppressMapClickUntil = Date.now() + 250;
-    map.setCenter(place.coords, 12, { duration: 350 });
+    const zoom = isMobileMapLayout() ? 11 : 12;
+    map.setCenter(place.coords, zoom, { duration: 350 });
 
     if (currentPlacemark) resetPlacemarkStyle(currentPlacemark);
     if (placemark) {
@@ -290,8 +364,11 @@
       currentPlacemark = placemark;
     }
 
+    if (isMobileMapLayout()) setMobileMapView("map");
     setActiveListItem(place.id);
+    scrollListItemIntoView(place.id);
     renderPlacePanel(place);
+    invalidateMapSize();
   }
 
   function renderList(places) {
@@ -1059,7 +1136,9 @@
 
     initMapScrollFix();
     bindControls();
+    bindMobileMapViews();
     initGeolocation();
+    invalidateMapSize();
     updatePresetChips();
     updateTypeChips();
     updateEraUi();

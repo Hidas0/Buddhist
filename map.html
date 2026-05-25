@@ -87,7 +87,18 @@
             </div>
         </section>
 
-        <div class="map-layout animate-slide-up" style="animation-delay: 0.1s">
+        <div class="map-view-tabs" role="tablist" aria-label="Карта или список мест">
+            <button type="button" class="map-view-tab is-active" role="tab" aria-selected="true" data-map-view="map" id="map-tab-map">
+                <i data-lucide="map"></i>
+                Карта
+            </button>
+            <button type="button" class="map-view-tab" role="tab" aria-selected="false" data-map-view="list" id="map-tab-list">
+                <i data-lucide="list"></i>
+                Список
+            </button>
+        </div>
+
+        <div class="map-layout map-layout--map-view animate-slide-up" style="animation-delay: 0.1s">
             <aside class="map-sidebar" aria-label="Список мест">
                 <div class="map-sidebar__head">
                     <h2>Места на карте</h2>

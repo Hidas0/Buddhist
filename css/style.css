@@ -4376,6 +4376,59 @@ html.map-scroll-locked {
     display: none !important;
 }
 
+/* Переключатель «Карта / Список» — только на узких экранах */
+.map-view-tabs {
+    display: none;
+}
+.map-view-tab {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.map-view-tab:first-child {
+    border-radius: 12px 0 0 12px;
+}
+.map-view-tab:last-child {
+    border-radius: 0 12px 12px 0;
+    border-left: none;
+}
+.map-view-tab i {
+    width: 18px;
+    height: 18px;
+}
+.map-view-tab.is-active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+.map-view-tab:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    z-index: 1;
+}
+
+@media (min-width: 769px) {
+    .map-layout .map-sidebar {
+        display: flex !important;
+    }
+    .map-layout .map-stage {
+        display: flex !important;
+    }
+}
+
 /* =============================================================================
    FOOTER — подвал на всех страницах
    ============================================================================= */
@@ -4508,32 +4561,154 @@ html.map-scroll-locked {
     .media-card .media-info { padding: 20px; }
     .media-info h3 { font-size: 1.25rem; }
     
+    .map-page {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .map-header {
+        margin-bottom: 20px;
+    }
+    .map-header h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+    .map-lead {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+    .map-view-tabs {
+        display: flex;
+        margin-bottom: 12px;
+        position: sticky;
+        top: calc(var(--navbar-height, 70px) + 4px);
+        z-index: 20;
+        background: var(--bg, #faf8f5);
+        padding: 4px 0 8px;
+    }
     .map-layout {
         grid-template-columns: 1fr;
+        gap: 0;
+        margin-bottom: 24px;
     }
-    .map-sidebar {
+    .map-layout--map-view .map-sidebar {
+        display: none;
+    }
+    .map-layout--list-view .map-stage {
+        display: none;
+    }
+    .map-layout--map-view .map-stage {
+        height: min(58svh, 520px);
+        min-height: min(280px, 52svh);
+    }
+    .map-layout--list-view .map-sidebar {
         height: auto;
         min-height: 0;
         max-height: none;
-        order: 2;
+    }
+    .map-layout--list-view .map-list {
+        max-height: min(62svh, 560px);
+        flex: 1;
+        -webkit-overflow-scrolling: touch;
     }
     .map-stage {
-        order: 1;
-        height: min(50vh, 420px);
-        min-height: 320px;
-    }
-    .map-list {
-        max-height: 320px;
-        flex: none;
+        min-height: min(280px, 52svh);
     }
     .real-map {
         height: 100%;
+        touch-action: pan-x pan-y pinch-zoom;
+    }
+    .map-chip-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+        margin: 0 -4px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    .map-chip-row::-webkit-scrollbar {
+        display: none;
+    }
+    .map-chip {
+        flex-shrink: 0;
+        min-height: 44px;
+    }
+    .map-toolbar {
+        padding: 16px;
+        gap: 16px;
+        margin-bottom: 16px;
     }
     .map-toolbar__actions {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .map-search-wrap {
+        flex: 1 1 100%;
     }
     .map-action-btn {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 0;
+    }
+    .map-place-panel {
+        left: 0;
+        right: 0;
+        bottom: 0;
         width: 100%;
+        max-width: none;
+        max-height: min(48svh, 380px);
+        border-radius: 1rem 1rem 0 0;
+        padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -8px 32px rgba(42, 15, 5, 0.2);
+    }
+    .map-place-panel__close {
+        width: 40px;
+        height: 40px;
+        top: 8px;
+        right: 8px;
+    }
+    .map-place-panel__photo {
+        height: 100px;
+    }
+    .map-place-panel .map-panorama-btn {
+        min-height: 48px;
+    }
+    .map-list__item {
+        padding: 16px;
+        min-height: 72px;
+    }
+    .map-list__thumb {
+        width: 52px;
+        height: 52px;
+    }
+    .map-timeline__head {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .map-timeline__value {
+        width: 100%;
+        text-align: left;
+        font-size: 0.85rem;
+    }
+    .map-era-slider {
+        height: 10px;
+        margin-bottom: 12px;
+    }
+    .map-era-tick {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .map-panorama-modal__view {
+        min-height: 0;
+        height: calc(100dvh - 56px - env(safe-area-inset-top, 0px));
+    }
+    .map-panorama-close {
+        top: max(12px, env(safe-area-inset-top, 12px));
+        right: max(12px, env(safe-area-inset-right, 12px));
+        min-height: 48px;
+        padding: 12px 18px;
     }
     
     .footer { padding: 60px 0; margin-top: 60px; }
@@ -5012,18 +5187,39 @@ h2 {
     }
 
     .map-toolbar {
-        padding: 16px;
+        padding: 14px;
     }
     .map-chip {
         font-size: 0.8rem;
-        padding: 7px 12px;
+        padding: 8px 14px;
     }
     .map-timeline,
     .map-legend {
-        padding: 18px;
+        padding: 16px;
+        margin-bottom: 16px;
     }
     .map-legend__grid {
         grid-template-columns: 1fr;
+    }
+    .map-timeline__ticks--many {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 4px;
+        grid-template-columns: unset;
+    }
+    .map-timeline__ticks--many::-webkit-scrollbar {
+        display: none;
+    }
+    .map-era-tick {
+        flex: 0 0 auto;
+        min-width: 3.4rem;
+        font-size: 0.6rem;
+        padding: 6px 8px;
+    }
+    .map-action-btn span {
+        font-size: 0.8rem;
     }
 
     .footer {
