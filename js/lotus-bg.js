@@ -9,8 +9,8 @@
   const WAVE_START_RADIUS_PX = 11;
   const GLOBAL_WAVE_DURATION_MS = 2300;
   const WAVE_HIT_ANIM_MS = 1720;
-  const FLOAT_TICK_MS = 32;
   const SPEED = 0.5;
+  const SMOOTH_ALPHA = 0.14;
   const RESPAWN_MIN_MS = 2800;
   const RESPAWN_MAX_MS = 6200;
   const VANISH_REMOVE_MS = 1650;
@@ -179,17 +179,26 @@
       rot: random(-8, 8),
       vRot: random(-0.05, 0.05),
       noisePhase: random(0, Math.PI * 2),
+      renderLeft: pos.left,
+      renderTop: pos.top,
+      renderX: 0,
+      renderY: 0,
+      renderRot: random(-8, 8),
       removing: false,
     };
   }
 
   function applyLotusTransform(state) {
     const { lotus } = state;
-    lotus.style.left = `${state.left.toFixed(3)}%`;
-    lotus.style.top = `${state.top.toFixed(3)}%`;
-    lotus.style.setProperty("--float-x", `${state.x.toFixed(2)}px`);
-    lotus.style.setProperty("--float-y", `${state.y.toFixed(2)}px`);
-    lotus.style.setProperty("--float-rot", `${state.rot.toFixed(2)}deg`);
+    lotus.style.left = `${state.renderLeft.toFixed(2)}%`;
+    lotus.style.top = `${state.renderTop.toFixed(2)}%`;
+    lotus.style.setProperty("--float-x", `${state.renderX.toFixed(2)}px`);
+    lotus.style.setProperty("--float-y", `${state.renderY.toFixed(2)}px`);
+    lotus.style.setProperty("--float-rot", `${state.renderRot.toFixed(2)}deg`);
+  }
+
+  function smoothToward(current, target, alpha) {
+    return current + (target - current) * alpha;
   }
 
   function bounceAxis(value, velocity, min, max, restitution) {
@@ -237,6 +246,13 @@
       state.rot += state.vRot * step;
       state.vRot *= 0.994;
       if (Math.abs(state.rot) > 14) state.vRot += state.rot > 0 ? -0.02 : 0.02;
+
+      const alpha = Math.min(1, SMOOTH_ALPHA * dt);
+      state.renderLeft = smoothToward(state.renderLeft, state.left, alpha);
+      state.renderTop = smoothToward(state.renderTop, state.top, alpha);
+      state.renderX = smoothToward(state.renderX, state.x, alpha);
+      state.renderY = smoothToward(state.renderY, state.y, alpha);
+      state.renderRot = smoothToward(state.renderRot, state.rot, alpha);
 
       applyLotusTransform(state);
     });
@@ -350,12 +366,13 @@
 
   function startPhysicsLoop() {
     let lastTs = performance.now();
-    window.setInterval(() => {
-      const now = performance.now();
-      const dtMs = Math.min(64, now - lastTs);
+    const frame = (now) => {
+      const dtMs = Math.min(48, now - lastTs);
       lastTs = now;
       tickPhysics(dtMs / 16.6667);
-    }, FLOAT_TICK_MS);
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   }
 
   function syncLayerHeight() {
@@ -403,22 +420,36 @@
     const quote = document.createElement("div");
     quote.className = "lotus-quote";
     quote.textContent = pickQuoteText();
-    root.appendChild(quote);
 
     const navH =
       parseInt(
         getComputedStyle(document.documentElement).getPropertyValue("--navbar-height"),
         10
       ) || 70;
-    const pad = 12;
+    const pad = 14;
+    const clientX = pageX - window.scrollX;
     const clientY = pageY - window.scrollY;
 
     quote.style.visibility = "hidden";
-    const quoteH = quote.getBoundingClientRect().height;
-    quote.style.visibility = "visible";
+    root.appendChild(quote);
 
-    const top = clamp(clientY, navH + quoteH + pad, window.innerHeight - pad);
-    quote.style.setProperty("--lotus-quote-top", `${top.toFixed(1)}px`);
+    const rect = quote.getBoundingClientRect();
+    const halfW = rect.width / 2;
+    const quoteH = rect.height;
+    const x = clamp(
+      clientX,
+      halfW + pad,
+      document.documentElement.clientWidth - halfW - pad
+    );
+    const top = clamp(
+      clientY,
+      navH + quoteH + pad,
+      window.innerHeight - pad
+    );
+
+    quote.style.left = `${x.toFixed(1)}px`;
+    quote.style.top = `${top.toFixed(1)}px`;
+    quote.style.visibility = "visible";
 
     window.setTimeout(() => quote.remove(), 6200);
   }
