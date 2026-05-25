@@ -79,6 +79,8 @@ html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--navbar-height) + env(safe-area-inset-top, 0px) + 12px);
+    overflow-x: clip;
 }
 
 body {
@@ -90,7 +92,8 @@ body {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-    padding-top: var(--navbar-height);
+    padding-top: calc(var(--navbar-height) + env(safe-area-inset-top, 0px));
+    -webkit-tap-highlight-color: rgba(217, 119, 6, 0.12);
 }
 h1, h2, h3, h4, .logo { font-family: 'Lora', serif; } /* «книжный» serif для заголовков */
 
@@ -105,8 +108,14 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; } /* «книжный» seri
    NAVBAR — фиксированная шапка
    Фон = --bg с прозрачностью; активная ссылка = --primary
    ============================================================================= */
-.navbar {
+.navbar > .container {
     height: var(--navbar-height);
+    box-sizing: border-box;
+}
+.navbar {
+    height: calc(var(--navbar-height) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: border-box;
     background: rgba(255, 252, 242, 0.95); /* тот же оттенок, что --bg #fffcf2 */
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
@@ -175,9 +184,9 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; } /* «книжный» seri
 .mobile-nav-panel {
     display: none;
     position: fixed;
-    top: calc(var(--navbar-height) + 10px);
-    right: 16px;
-    left: 16px;
+    top: calc(var(--navbar-height) + env(safe-area-inset-top, 0px) + 10px);
+    right: max(16px, env(safe-area-inset-right, 0px));
+    left: max(16px, env(safe-area-inset-left, 0px));
     padding: 14px 14px 10px;
     border-radius: 20px;
     background: rgba(255, 252, 242, 0.98);
@@ -380,10 +389,13 @@ body.nav-open { overflow: hidden; }
     top: 0;
     width: var(--lotus-size);
     height: var(--lotus-size);
+    min-width: 44px;
+    min-height: 44px;
     border: none;
     background: transparent;
     pointer-events: auto;
     cursor: pointer;
+    touch-action: manipulation;
     opacity: 0;
     transform: translate3d(0, 0, 0) translate(-50%, -50%) rotate(var(--rot-delta, 0deg));
     animation:
@@ -581,7 +593,7 @@ section * {
         }
         .traditions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
             gap: 40px;
             margin-bottom: 60px;
         }
@@ -1444,7 +1456,7 @@ section * {
 
 .features { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); 
     gap: 40px; 
     padding: 100px 0; 
 }
@@ -2011,7 +2023,7 @@ section * {
 
 .quotes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 24px;
 }
 .quote-card {
@@ -3670,7 +3682,7 @@ section * {
 }
 .media-grid { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); 
     gap: 40px; 
 }
 a.media-card {
@@ -4587,7 +4599,7 @@ html.map-scroll-locked {
         display: flex;
         margin-bottom: 12px;
         position: sticky;
-        top: calc(var(--navbar-height, 70px) + 4px);
+        top: calc(var(--navbar-height, 70px) + env(safe-area-inset-top, 0px) + 4px);
         z-index: 20;
         background: var(--bg, #faf8f5);
         padding: 4px 0 8px;
@@ -5085,6 +5097,96 @@ h2 {
    Уменьшенные отступы, бургер-меню, чат на весь экран, одна колонка в grid
    ============================================================================= */
 @media (max-width: 768px) {
+    .catalog-section-nav {
+        top: calc(var(--navbar-height) + env(safe-area-inset-top, 0px));
+    }
+    .catalog-section-nav__link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    .category-section {
+        padding: 22px 18px;
+        border-radius: 22px;
+        scroll-margin-top: calc(var(--navbar-height) + env(safe-area-inset-top, 0px) + 52px);
+    }
+    .traditions-hero--rich {
+        min-height: min(68svh, 420px);
+        padding: 40px 0;
+        border-radius: 0 0 24px 24px;
+    }
+    .traditions-hero h1,
+    .traditions-hero--rich h1 {
+        font-size: clamp(1.65rem, 7vw, 2.35rem);
+    }
+    .traditions-hero p,
+    .traditions-hero--rich p {
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+    .index-band {
+        padding: 40px 0;
+    }
+    .index-band--warm {
+        padding: 40px 0;
+    }
+    .study-route__item {
+        padding: 16px 18px;
+        gap: 14px;
+    }
+    .study-route__item > i {
+        display: none;
+    }
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-grid {
+        padding: 24px 18px;
+        gap: 20px;
+    }
+    .experience-panel,
+    .media-showcase {
+        border-radius: 22px;
+    }
+    .quick-link-btn,
+    .interest-btn,
+    .tradition-toggle {
+        min-height: 44px;
+    }
+    .btn,
+    .nav-toggle,
+    .chat-toggle,
+    .chat-input button {
+        touch-action: manipulation;
+    }
+    .lotus-bg-wave-pulse {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    .dalai-lamas-section {
+        padding: 40px 0;
+    }
+    .dalai-lamas-track {
+        padding: 18px 12px;
+        border-radius: 20px;
+    }
+    .dalai-carousel__title {
+        font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+    }
+    .dalai-carousel__paragraphs .lead,
+    .dalai-carousel__paragraphs .muted {
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+    .kalm-hero h1 {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+    img,
+    video,
+    iframe {
+        max-width: 100%;
+    }
+
     .py-80 { padding: 48px 0; }
     .mb-40 { margin-bottom: 28px; }
     .flex-between { padding-top: 8px; }
@@ -5315,6 +5417,26 @@ h2 {
 @media (max-width: 480px) {
     .container { padding: 0 14px; }
     :root { --navbar-height: 64px; }
+    .hero h1 {
+        font-size: clamp(1.75rem, 9vw, 2rem);
+    }
+    .card-icon {
+        width: 64px;
+        height: 64px;
+    }
+    .card-icon i {
+        width: 32px;
+        height: 32px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .stat-number {
+        font-size: 2rem;
+    }
+    .category-section__footer .btn {
+        width: 100%;
+    }
 
     .chat-toggle {
         padding: 12px 14px;
