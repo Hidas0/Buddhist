@@ -121,6 +121,38 @@ function hasComment(s) {
   return /\/\*/.test(s.replace(/"[^"]*"/g, "").replace(/'[^']*'/g, ""));
 }
 
+/** Разбить блок свойств по ; вне комментариев */
+function splitDecls(block) {
+  const parts = [];
+  let cur = "";
+  let inComment = false;
+  for (let i = 0; i < block.length; i++) {
+    const ch = block[i];
+    const next = block[i + 1];
+    if (!inComment && ch === "/" && next === "*") {
+      inComment = true;
+      cur += ch;
+      continue;
+    }
+    if (inComment && ch === "*" && next === "/") {
+      cur += "*/";
+      i++;
+      inComment = false;
+      continue;
+    }
+    if (!inComment && ch === ";") {
+      const t = cur.trim();
+      if (t) parts.push(t);
+      cur = "";
+      continue;
+    }
+    cur += ch;
+  }
+  const tail = cur.trim();
+  if (tail) parts.push(tail);
+  return parts;
+}
+
 function hint(prop, value) {
   if (prop.startsWith("--")) return `CSS-переменная ${prop}`;
   let h = PROP_HINTS[prop] || prop;
@@ -151,10 +183,7 @@ function annotateNestedBraces(fragment) {
       if (!body || !/[a-zA-Z0-9_-]+\s*:/.test(body)) {
         return `{ ${body} }`;
       }
-      const props = body
-        .split(";")
-        .map((p) => p.trim())
-        .filter(Boolean)
+      const props = splitDecls(body)
         .map((p) => (hasComment(p) ? p + ";" : annotateDecl(p)))
         .join(" ");
       return `{ ${props} }`;
@@ -191,18 +220,18 @@ function processLine(line, stack) {
   }
 
   // @keyframes на одной строке (from/to внутри)
-  if (trimmed.startsWith("@keyframes") && trimmed.includes("}") && !hasComment(trimmed)) {
-    return annotateOneLinerRule(line);
+  if (trimmed.startsWith("@keyframes") && trimmed.includes("}")) {
+    const inner = trimmed.replace(/^@keyframes[^{]+\{/, "").replace(/\}[^}]*$/, "");
+    if (inner && !hasComment(inner)) return annotateOneLinerRule(line);
+    return line;
   }
 
   // Однострочное правило без вложенности: .foo { a: b; }
   const one = trimmed.match(/^([^{]+)\{([^}]+)\}(.*)$/);
   if (one && !trimmed.includes("@")) {
+    if (hasComment(one[2])) return line;
     const indent = line.match(/^\s*/)[0];
-    const props = one[2]
-      .split(";")
-      .map((p) => p.trim())
-      .filter(Boolean)
+    const props = splitDecls(one[2])
       .map((p) => (hasComment(p) ? p + ";" : annotateDecl(p)))
       .join(" ");
     const tail = one[3].trim();

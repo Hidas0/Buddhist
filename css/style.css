@@ -80,7 +80,7 @@
 /* =============================================================================
    BASE — сброс, body, типографика, утилиты
    ============================================================================= */
-* { margin: 0; /* внешний отступ */ /* margin */ padding: 0; /* padding */ box-sizing: border-box; /* box-sizing */; }
+* { margin: 0; /* внешний отступ */; padding: 0; /* внутренний отступ */; box-sizing: border-box; /* box-sizing */ }
 html { /* html */
     -webkit-text-size-adjust: 100%; /* текст iOS */
     text-size-adjust: 100%; /* масштаб текста */
@@ -98,14 +98,14 @@ body { /* body */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E"); /* фоновое изображение */
     padding-top: var(--navbar-height); /* отступ сверху, шапка */
 } /* /body */
-h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шрифт */; } /* «книжный» serif для заголовков */
+h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ } /* «книжный» serif для заголовков */
 
-.container { max-width: 1200px; /* максимальная ширина */ /* максимальная ширина */ margin: 0 auto; /* внешний отступ */ padding: 0 32px; /* внутренний отступ */; } /* центральная колонка контента */
-.flex-between { display: flex; /* режим отображения */ /* режим отображения */ justify-content: space-between; /* выравнивание по главной оси */ align-items: center; /* выравнивание по поперечной оси */ padding-top: 20px; /* отступ сверху */; }
-.flex-center { display: flex; /* режим отображения */ /* режим отображения */ align-items: center; /* выравнивание по поперечной оси */ gap: 12px; /* расстояние между элементами */; }
-.text-center { text-align: center; /* выравнивание текста */ /* выравнивание текста */; }
-.mb-40 { margin-bottom: 40px; /* отступ снизу */ /* отступ снизу */; }
-.py-80 { padding: 80px 0; /* внутренний отступ */ /* внутренний отступ */; }
+.container { max-width: 1200px; /* максимальная ширина */; margin: 0 auto; /* внешний отступ */; padding: 0 32px; /* внутренний отступ */ } /* центральная колонка контента */
+.flex-between { display: flex; /* режим отображения */; justify-content: space-between; /* выравнивание по главной оси */; align-items: center; /* выравнивание по поперечной оси */; padding-top: 20px; /* отступ сверху */ }
+.flex-center { display: flex; /* режим отображения */; align-items: center; /* выравнивание по поперечной оси */; gap: 12px; /* расстояние между элементами */ }
+.text-center { text-align: center; /* выравнивание текста */ }
+.mb-40 { margin-bottom: 40px; /* отступ снизу */ }
+.py-80 { padding: 80px 0; /* внутренний отступ */ }
 
 /* =============================================================================
    NAVBAR — фиксированная шапка
@@ -134,8 +134,8 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шриф
     width: 28px; /* ширина */
     height: 28px; /* высота */
 } /* /.logo i */
-.icon-primary { color: var(--primary); /* цвет текста, акцент */ /* цвет текста, акцент */; } /* логотип-компас, акцентные иконки Lucide */
-.nav-links { display: flex; /* режим отображения */ /* режим отображения */ list-style: none; /* маркеры списка */ gap: 40px; /* расстояние между элементами */; }
+.icon-primary { color: var(--primary); /* цвет текста, акцент */ } /* логотип-компас, акцентные иконки Lucide */
+.nav-links { display: flex; /* режим отображения */; list-style: none; /* маркеры списка */; gap: 40px; /* расстояние между элементами */ }
 .nav-links a { /* .nav-links a */
     text-decoration: none; /* оформление текста */
     color: var(--text); /* цвет текста */
@@ -145,7 +145,7 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шриф
     opacity: 0.8; /* прозрачность */
     padding: 8px 0; /* внутренний отступ */
 } /* /.nav-links a */
-.nav-links a:hover, .nav-links a.active { color: var(--primary); /* цвет текста, акцент */ /* цвет текста, акцент */ opacity: 1; /* прозрачность */; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary); /* цвет текста, акцент */; opacity: 1; /* прозрачность */ }
 
 /* Бургер и выезжающее меню (≤768px — показ в @media в конце файла) */
 .nav-actions { /* .nav-actions */
@@ -166,8 +166,8 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шриф
     color: var(--secondary); /* цвет текста */
     transition: transform 0.2s ease, border-color 0.2s ease; /* переход */
 } /* /.nav-toggle */
-.nav-toggle:hover { transform: translateY(-1px); /* трансформация */ /* трансформация */ border-color: rgba(217, 119, 6, 0.35); /* цвет рамки */; }
-.nav-toggle i { width: 20px; /* ширина */ /* ширина */ height: 20px; /* высота */; }
+.nav-toggle:hover { transform: translateY(-1px); /* трансформация */; border-color: rgba(217, 119, 6, 0.35); /* цвет рамки */ }
+.nav-toggle i { width: 20px; /* ширина */; height: 20px; /* высота */ }
 
 .mobile-nav-backdrop { /* .mobile-nav-backdrop */
     display: none; /* режим отображения */
@@ -176,7 +176,7 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шриф
     background: rgba(0,0,0,0.35); /* фон */
     z-index: 999; /* слой z-index */
 } /* /.mobile-nav-backdrop */
-.mobile-nav-backdrop.show { display: block; /* режим отображения */ /* режим отображения */; }
+.mobile-nav-backdrop.show { display: block; /* режим отображения */ }
 
 .mobile-nav-panel { /* .mobile-nav-panel */
     display: none; /* режим отображения */
@@ -225,7 +225,7 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ /* шриф
     box-shadow: 0 0 0 4px var(--primary-light); /* тень, акцент */
 } /* /.mobile-nav-panel a.active */
 
-body.nav-open { overflow: hidden; /* переполнение */ /* переполнение */; }
+body.nav-open { overflow: hidden; /* переполнение */ }
 
 /* Translation cleanup: hide legacy EN duplicates */
 [data-lang="en"] { /* [data-lang="en"] */
@@ -263,9 +263,7 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
     transform: translate(-50%, -50%) scale(0.15); /* трансформация */
     border-radius: 50%; /* скругление */
     border: 1px solid rgba(255, 255, 255, 0.42); /* рамка */
-    box-shadow:;
-        0 0 0 1px rgba(255, 255, 255, 0.22) inset,
-        0 0 24px rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22) inset, 0 0 24px rgba(255, 255, 255, 0.18); /* тень */
     opacity: 0; /* прозрачность */
     filter: blur(0.15px); /* CSS-фильтр */
     will-change: transform, opacity; /* оптимизация рендера */
@@ -303,7 +301,7 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
 
 /* =============================================================================
    LOTUS — декоративный фон (логика кликов в js/lotus-bg.js)
-   z-index: 0 — под контентом; кликабельны только сами .lotus-bg__item; /* слой z-index */
+   z-index: 0 — под контентом; кликабельны только сами .lotus-bg__item
    ============================================================================= */
 .lotus-bg { /* .lotus-bg */
     position: absolute; /* позиционирование */
@@ -345,13 +343,9 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
     overflow-wrap: break-word; /* перенос слов */
     word-wrap: break-word; /* word-wrap */
     hyphens: auto; /* hyphens */
-    background:;
-        radial-gradient(ellipse at 30% 10%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 55%),
-        linear-gradient(170deg, rgba(255, 252, 244, 0.97), rgba(255, 242, 223, 0.96));
+    background: radial-gradient(ellipse at 30% 10%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 55%), linear-gradient(170deg, rgba(255, 252, 244, 0.97), rgba(255, 242, 223, 0.96)); /* фон */
     border: 1px solid rgba(180, 83, 9, 0.25); /* рамка */
-    box-shadow:;
-        0 1px 0 rgba(255, 255, 255, 0.9) inset,
-        0 16px 36px rgba(66, 33, 12, 0.2);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 16px 36px rgba(66, 33, 12, 0.2); /* тень */
     backdrop-filter: blur(3px); /* фильтр подложки */
     -webkit-backdrop-filter: blur(3px); /* фильтр (WebKit) */
     animation: lotusQuoteInOut 6.2s cubic-bezier(0.19, 1, 0.22, 1) forwards; /* анимация */
@@ -392,8 +386,7 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
     cursor: pointer; /* курсор */
     opacity: 0; /* прозрачность */
     transform: translate3d(0, 0, 0) translate(-50%, -50%) rotate(var(--rot-delta, 0deg)); /* трансформация */
-    animation:;
-        lotusAppear 3.5s ease-out var(--appear-delay) forwards;
+    animation: lotusAppear 3.5s ease-out var(--appear-delay) forwards; /* анимация */
     transition: opacity 0.25s ease; /* переход */
     will-change: transform; /* оптимизация рендера */
     backface-visibility: hidden; /* backface-visibility */
@@ -432,9 +425,7 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
     opacity: 0; /* прозрачность */
     pointer-events: none; /* пропуск кликов */
     transform: translate(0, 0) rotate(0deg) scale(0.35); /* трансформация */
-    background:;
-        radial-gradient(ellipse at 50% 15%, rgba(255,255,255,0.92), rgba(255,255,255,0) 40%),
-        linear-gradient(180deg, rgba(251, 113, 133, 0.9), rgba(236, 72, 153, 0.3));
+    background: radial-gradient(ellipse at 50% 15%, rgba(255,255,255,0.92), rgba(255,255,255,0) 40%), linear-gradient(180deg, rgba(251, 113, 133, 0.9), rgba(236, 72, 153, 0.3)); /* фон */
     box-shadow: 0 0 12px rgba(236, 72, 153, 0.35); /* тень */
     z-index: 5; /* слой z-index */
 } /* /.lotus-burst-piece */
@@ -486,8 +477,8 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
 } /* /@keyframes lotusAppear */
 
 @keyframes lotusRotate { /* @keyframes lotusRotate */
-    from { transform: rotate(0deg); /* трансформация */ /* трансформация */; }
-    to { transform: rotate(360deg); /* трансформация */ /* трансформация */; }
+    from { transform: rotate(0deg); /* трансформация */ }
+    to { transform: rotate(360deg); /* трансформация */ }
 } /* /@keyframes lotusRotate */
 
 @keyframes lotusWave { /* @keyframes lotusWave */
@@ -520,9 +511,9 @@ body.nav-open { overflow: hidden; /* переполнение */ /* перепо
 } /* /@keyframes lotusPetalBurst */
 
 @keyframes lotusFlowerPulse { /* @keyframes lotusFlowerPulse */
-    0% { filter: saturate(1); /* CSS-фильтр */ /* CSS-фильтр */; }
-    40% { filter: saturate(1.3) brightness(1.08); /* CSS-фильтр */ /* CSS-фильтр */; }
-    100% { filter: saturate(1); /* CSS-фильтр */ /* CSS-фильтр */; }
+    0% { filter: saturate(1); /* CSS-фильтр */ }
+    40% { filter: saturate(1.3) brightness(1.08); /* CSS-фильтр */ }
+    100% { filter: saturate(1); /* CSS-фильтр */ }
 } /* /@keyframes lotusFlowerPulse */
 
 .lotus-wave-hit { /* .lotus-wave-hit */
@@ -866,8 +857,8 @@ section * { /* section * */
             animation: backTopFloat 0.75s ease-in-out infinite; /* анимация */
         } /* /.back-to-top.is-scrolling */
         @keyframes backTopFloat { /* @keyframes backTopFloat */
-            0%, 100% { transform: translateY(0); /* трансформация */ /* трансформация */; }
-            50% { transform: translateY(-6px); /* трансформация */ /* трансформация */; }
+            0%, 100% { transform: translateY(0); /* трансформация */ }
+            50% { transform: translateY(-6px); /* трансформация */ }
         } /* /@keyframes backTopFloat */
         @media (max-width: 768px) { /* @media (max-width: 768px) */
             .traditions-grid { /* .traditions-grid */
@@ -949,9 +940,7 @@ section * { /* section * */
     padding: clamp(40px, 6vw, 72px) 0; /* внутренний отступ */
 } /* /.catalog-band */
 .catalog-band--cream { /* .catalog-band--cream */
-    background:;
-        radial-gradient(ellipse 90% 55% at 20% 0%, rgba(217, 119, 6, 0.08), transparent 58%),
-        var(--bg);
+    background: radial-gradient(ellipse 90% 55% at 20% 0%, rgba(217, 119, 6, 0.08), transparent 58%), var(--bg); /* фон */
 } /* /.catalog-band--cream */
 .catalog-band--white { /* .catalog-band--white */
     background: var(--card-bg); /* фон */
@@ -1190,7 +1179,7 @@ section * { /* section * */
     inset: 0; /* отступы со всех сторон */
     background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--bg)); /* затемнение → крем страницы */
 } /* /.hero-overlay */
-.hero-content { position: relative; /* позиционирование */ /* позиционирование */ z-index: 10; /* слой z-index */ text-align: center; /* выравнивание текста */; }
+.hero-content { position: relative; /* позиционирование */; z-index: 10; /* слой z-index */; text-align: center; /* выравнивание текста */ }
 .hero-subtitle { /* .hero-subtitle */
     margin-top: 6px; /* отступ сверху */
     margin-bottom: 24px; /* отступ снизу */
@@ -1266,7 +1255,7 @@ section * { /* section * */
     line-height: 1.1; /* межстрочный интервал */
     margin-bottom: 24px; /* отступ снизу */
 } /* /.hero h1 */
-.highlight { color: var(--primary); /* цвет текста, акцент */ /* цвет текста, акцент */; } /* выделение слова в заголовках, напр. «Дхармы» */
+.highlight { color: var(--primary); /* цвет текста, акцент */ } /* выделение слова в заголовках, напр. «Дхармы» */
 .hero p { /* .hero p */
     font-size: 1.4rem; /* размер шрифта */
     max-width: 700px; /* максимальная ширина */
@@ -1289,18 +1278,14 @@ section * { /* section * */
     border-bottom: 1px solid var(--border); /* нижняя рамка, рамка */
 } /* /.index-band--white */
 .index-band--cream { /* .index-band--cream */
-    background:;
-        radial-gradient(ellipse 90% 55% at 20% 0%, rgba(217, 119, 6, 0.08), transparent 58%),
-        radial-gradient(ellipse 70% 45% at 100% 80%, rgba(69, 26, 3, 0.04), transparent 50%),
-        var(--bg);
+    background: radial-gradient(ellipse 90% 55% at 20% 0%, rgba(217, 119, 6, 0.08), transparent 58%), radial-gradient(ellipse 70% 45% at 100% 80%, rgba(69, 26, 3, 0.04), transparent 50%), var(--bg); /* фон */
 } /* /.index-band--cream */
 .index-band--dalai { /* .index-band--dalai */
     /* дополняет .dalai-lamas-section — визуальный переход между кремом и бирюзой */
     border-top: 1px solid rgba(13, 148, 136, 0.1); /* верхняя рамка */
 } /* /.index-band--dalai */
 .index-band--warm { /* .index-band--warm */
-    background:;
-        linear-gradient(180deg, var(--bg) 0%, #fff8f0 35%, #fffbeb 100%);
+    background: linear-gradient(180deg, var(--bg) 0%, #fff8f0 35%, #fffbeb 100%); /* фон */
     padding: clamp(56px, 9vw, 96px) 0; /* внутренний отступ */
 } /* /.index-band--warm */
 
@@ -1393,9 +1378,7 @@ section * { /* section * */
     justify-content: center; /* выравнивание по главной оси */
     min-height: 100%; /* минимальная высота */
     padding: clamp(32px, 4vw, 52px); /* внутренний отступ */
-    background:;
-        radial-gradient(ellipse 80% 60% at 10% 0%, rgba(217, 119, 6, 0.12), transparent 55%),
-        linear-gradient(155deg, #fff 0%, #fdf4e8 100%);
+    background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(217, 119, 6, 0.12), transparent 55%), linear-gradient(155deg, #fff 0%, #fdf4e8 100%); /* фон */
     border-color: rgba(217, 119, 6, 0.28); /* цвет рамки */
     box-shadow: 0 20px 50px rgba(217, 119, 6, 0.1); /* тень */
 } /* /.quote-card--featured */
@@ -1435,10 +1418,10 @@ section * { /* section * */
     opacity: 1; /* прозрачность */
     transform: translateY(0); /* трансформация */
 } /* /.scroll-reveal.is-visible */
-.scroll-reveal--delay-1 { transition-delay: 0.1s; /* задержка перехода */ /* transition-delay */; }
-.scroll-reveal--delay-2 { transition-delay: 0.2s; /* задержка перехода */ /* transition-delay */; }
-.scroll-reveal--delay-3 { transition-delay: 0.3s; /* задержка перехода */ /* transition-delay */; }
-.scroll-reveal--delay-4 { transition-delay: 0.4s; /* задержка перехода */ /* transition-delay */; }
+.scroll-reveal--delay-1 { transition-delay: 0.1s; /* задержка перехода */ }
+.scroll-reveal--delay-2 { transition-delay: 0.2s; /* задержка перехода */ }
+.scroll-reveal--delay-3 { transition-delay: 0.3s; /* задержка перехода */ }
+.scroll-reveal--delay-4 { transition-delay: 0.4s; /* задержка перехода */ }
 
 @media (prefers-reduced-motion: reduce) { /* @media (prefers-reduced-motion: reduce) */
     .scroll-reveal { /* .scroll-reveal */
@@ -1505,10 +1488,7 @@ section * { /* section * */
 } /* /.section--flush */
 
 .content-card { /* .content-card */
-    background:;
-        radial-gradient(ellipse 80% 55% at 12% 0%, rgba(217, 119, 6, 0.10), transparent 60%),
-        radial-gradient(ellipse 70% 55% at 100% 70%, rgba(69, 26, 3, 0.06), transparent 55%),
-        var(--card-bg);
+    background: radial-gradient(ellipse 80% 55% at 12% 0%, rgba(217, 119, 6, 0.10), transparent 60%), radial-gradient(ellipse 70% 55% at 100% 70%, rgba(69, 26, 3, 0.06), transparent 55%), var(--card-bg); /* фон */
     border: 1px solid var(--border); /* рамка, рамка */
     border-radius: 32px; /* скругление */
     box-shadow: 0 24px 60px rgba(0,0,0,0.06); /* тень */
@@ -1637,13 +1617,9 @@ section * { /* section * */
     position: relative; /* позиционирование */
     padding: clamp(22px, 3vw, 36px); /* внутренний отступ */
     border-radius: 26px; /* скругление */
-    background:;
-        linear-gradient(195deg, rgba(13, 99, 90, 0.06) 0%, transparent 40%),
-        linear-gradient(155deg, rgba(255, 252, 248, 0.98) 0%, rgba(253, 244, 232, 0.72) 100%);
+    background: linear-gradient(195deg, rgba(13, 99, 90, 0.06) 0%, transparent 40%), linear-gradient(155deg, rgba(255, 252, 248, 0.98) 0%, rgba(253, 244, 232, 0.72) 100%); /* фон */
     border: 1px solid rgba(100, 80, 60, 0.22); /* рамка */
-    box-shadow:;
-        0 1px 0 rgba(255, 255, 255, 0.72) inset,
-        0 24px 56px rgba(30, 24, 18, 0.07);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset, 0 24px 56px rgba(30, 24, 18, 0.07); /* тень */
 } /* /.dalai-lamas-track */
 
 .dalai-lamas-track::before { /* .dalai-lamas-track::before */
@@ -1780,9 +1756,7 @@ section * { /* section * */
 .dalai-carousel__viewport--in-track { /* .dalai-carousel__viewport--in-track */
     border-radius: 22px; /* скругление */
     border: 1px solid rgba(100, 80, 60, 0.18); /* рамка */
-    box-shadow:;
-        0 18px 48px rgba(30, 24, 18, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    box-shadow: 0 18px 48px rgba(30, 24, 18, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.85); /* тень */
 } /* /.dalai-carousel__viewport--in-track */
 
 /* Оболочка: карточка + стрелки; стрелки поверх, не перекрываются карточкой (идут после неё в DOM) */
@@ -1821,7 +1795,7 @@ section * { /* section * */
     opacity: 0.3; /* прозрачность */
     cursor: not-allowed; /* курсор */
 } /* /.dalai-lamas-nav-rail .dalai-carousel__arrow:disabled */
-.dalai-lamas-nav-rail .dalai-carousel__arrow i { width: 26px; /* ширина */ /* ширина */ height: 26px; /* высота */; }
+.dalai-lamas-nav-rail .dalai-carousel__arrow i { width: 26px; /* ширина */; height: 26px; /* высота */ }
 
 .dalai-carousel { /* .dalai-carousel */
     width: 100%; /* ширина */
@@ -1869,11 +1843,7 @@ section * { /* section * */
     border: 3px solid rgba(45, 28, 18, 0.88); /* рамка */
     border-radius: 6px; /* скругление */
     background: #faf6ef; /* фон */
-    box-shadow:;
-        inset 0 0 0 2px rgba(255, 255, 255, 0.65),
-        inset 0 0 0 5px rgba(217, 119, 6, 0.22),
-        0 6px 0 rgba(45, 28, 18, 0.12),
-        6px 10px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.65), inset 0 0 0 5px rgba(217, 119, 6, 0.22), 0 6px 0 rgba(45, 28, 18, 0.12), 6px 10px 24px rgba(0, 0, 0, 0.08); /* тень */
     overflow: hidden; /* переполнение */
     display: flex; /* режим отображения */
     align-items: stretch; /* выравнивание по поперечной оси */
@@ -2393,13 +2363,9 @@ section * { /* section * */
     position: relative; /* позиционирование */
     padding: clamp(22px, 3vw, 36px); /* внутренний отступ */
     border-radius: 32px; /* скругление */
-    background:;
-        linear-gradient(180deg, rgba(61, 36, 24, 0.07) 0%, rgba(255, 249, 240, 0.4) 18%, transparent 42%),
-        linear-gradient(135deg, rgba(255, 253, 248, 0.95) 0%, rgba(253, 243, 228, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(61, 36, 24, 0.07) 0%, rgba(255, 249, 240, 0.4) 18%, transparent 42%), linear-gradient(135deg, rgba(255, 253, 248, 0.95) 0%, rgba(253, 243, 228, 0.5) 100%); /* фон */
     border: 1px solid rgba(201, 162, 39, 0.35); /* рамка */
-    box-shadow:;
-        0 1px 0 rgba(255, 255, 255, 0.65) inset,
-        0 28px 64px rgba(44, 24, 16, 0.08);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset, 0 28px 64px rgba(44, 24, 16, 0.08); /* тень */
 } /* /.kalm-forum-track */
 
 .kalm-forum-track::before { /* .kalm-forum-track::before */
@@ -2432,18 +2398,8 @@ section * { /* section * */
     width: 56px; /* ширина */
     height: 56px; /* высота */
     border-radius: 50%; /* скругление */
-    background:;
-        radial-gradient(circle at 50% 50%, #fff9f0 0 22%, #c9a227 22.5% 28%, #5c3d2e 28.5% 36%, #fff9f0 36.5% 44%, transparent 45%),
-        repeating-conic-gradient(
-            from 0deg,
-            rgba(201, 162, 39, 0.95) 0deg 3deg,
-            rgba(124, 45, 18, 0.85) 3deg 6deg,
-            transparent 6deg 45deg
-        );
-    box-shadow:;
-        0 0 0 2px rgba(201, 162, 39, 0.45),
-        0 0 0 6px rgba(44, 24, 16, 0.12),
-        0 12px 28px rgba(44, 24, 16, 0.2);
+    background: radial-gradient(circle at 50% 50%, #fff9f0 0 22%, #c9a227 22.5% 28%, #5c3d2e 28.5% 36%, #fff9f0 36.5% 44%, transparent 45%), repeating-conic-gradient( from 0deg, rgba(201, 162, 39, 0.95) 0deg 3deg, rgba(124, 45, 18, 0.85) 3deg 6deg, transparent 6deg 45deg ); /* фон */
+    box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.45), 0 0 0 6px rgba(44, 24, 16, 0.12), 0 12px 28px rgba(44, 24, 16, 0.2); /* тень */
 } /* /.kalm-dharma-wheel */
 
 .kalm-branch-header__eyebrow { /* .kalm-branch-header__eyebrow */
@@ -2535,9 +2491,7 @@ section * { /* section * */
     border-radius: 20px; /* скругление */
     overflow: hidden; /* переполнение */
     border: 2px solid rgba(201, 162, 39, 0.45); /* рамка */
-    box-shadow:;
-        0 0 0 1px rgba(124, 45, 18, 0.2),
-        0 16px 40px rgba(44, 24, 16, 0.15);
+    box-shadow: 0 0 0 1px rgba(124, 45, 18, 0.2), 0 16px 40px rgba(44, 24, 16, 0.15); /* тень */
     background: linear-gradient(180deg, #2c1810, #1a0f0a); /* фон */
 } /* /.kalm-embed--dharma */
 
@@ -2570,22 +2524,12 @@ section * { /* section * */
 } /* /.samsara-wheel__spokes */
 
 .samsara-wheel__rings { /* .samsara-wheel__rings */
-    background:;
-        radial-gradient(circle, rgba(201, 162, 39, 0.18) 0 10%, transparent 10.4%),
-        radial-gradient(circle, transparent 20%, rgba(124, 45, 18, 0.16) 20.4%, transparent 21%),
-        radial-gradient(circle, transparent 34%, rgba(201, 162, 39, 0.17) 34.4%, transparent 35%),
-        radial-gradient(circle, transparent 48%, rgba(124, 45, 18, 0.12) 48.4%, transparent 49%),
-        radial-gradient(circle, transparent 62%, rgba(201, 162, 39, 0.16) 62.4%, transparent 63%);
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.18) 0 10%, transparent 10.4%), radial-gradient(circle, transparent 20%, rgba(124, 45, 18, 0.16) 20.4%, transparent 21%), radial-gradient(circle, transparent 34%, rgba(201, 162, 39, 0.17) 34.4%, transparent 35%), radial-gradient(circle, transparent 48%, rgba(124, 45, 18, 0.12) 48.4%, transparent 49%), radial-gradient(circle, transparent 62%, rgba(201, 162, 39, 0.16) 62.4%, transparent 63%); /* фон */
     filter: drop-shadow(0 0 26px rgba(201, 162, 39, 0.2)); /* CSS-фильтр */
 } /* /.samsara-wheel__rings */
 
 .samsara-wheel__spokes { /* .samsara-wheel__spokes */
-    background:;
-        repeating-conic-gradient(
-            from -90deg,
-            rgba(124, 45, 18, 0.35) 0deg 2deg,
-            transparent 2deg 22.5deg
-        );
+    background: repeating-conic-gradient( from -90deg, rgba(124, 45, 18, 0.35) 0deg 2deg, transparent 2deg 22.5deg ); /* фон */
     mask: radial-gradient(circle, transparent 0 11%, black 11.4% 66%, transparent 66.4%); /* mask */
     -webkit-mask: radial-gradient(circle, transparent 0 11%, black 11.4% 66%, transparent 66.4%); /* -webkit-mask */
     opacity: 0.7; /* прозрачность */
@@ -2610,9 +2554,7 @@ section * { /* section * */
     color: #fff; /* цвет текста */
     background: radial-gradient(circle at 35% 30%, #e8c547, #7c2d12 70%, #2c1810 100%); /* фон */
     border: 2px solid rgba(201, 162, 39, 0.75); /* рамка */
-    box-shadow:;
-        0 0 0 6px rgba(44, 24, 16, 0.25),
-        0 18px 30px rgba(44, 24, 16, 0.35);
+    box-shadow: 0 0 0 6px rgba(44, 24, 16, 0.25), 0 18px 30px rgba(44, 24, 16, 0.35); /* тень */
 } /* /.samsara-wheel__hub */
 
 .samsara-wheel__hub i { /* .samsara-wheel__hub i */
@@ -2634,11 +2576,7 @@ section * { /* section * */
     left: 50%; /* отступ слева */
     top: 50%; /* отступ сверху */
     width: var(--node-size); /* ширина */
-    transform:;
-        translate(-50%, -50%)
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg))
-        translateY(calc(var(--orbit-radius) * -1))
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg));
+    transform: translate(-50%, -50%) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg)) translateY(calc(var(--orbit-radius) * -1)) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg)); /* трансформация */
     transform-origin: center center; /* центр трансформации */
     transition: transform 0.45s ease, opacity 0.4s ease; /* переход */
 } /* /.samsara-node */
@@ -2700,22 +2638,12 @@ section * { /* section * */
 
 .kalm-forum-flow--enhanced .samsara-node { /* .kalm-forum-flow--enhanced .samsara-node */
     opacity: 0; /* прозрачность */
-    transform:;
-        translate(-50%, -50%)
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg))
-        translateY(calc((var(--orbit-radius) + 36px) * -1))
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg))
-        scale(0.96);
+    transform: translate(-50%, -50%) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg)) translateY(calc((var(--orbit-radius) + 36px) * -1)) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg)) scale(0.96); /* трансформация */
 } /* /.kalm-forum-flow--enhanced .samsara-node */
 
 .kalm-forum-flow--enhanced .samsara-node.kalm-forum-step--inview { /* .kalm-forum-flow--enhanced .samsara-node.kalm-forum-step--inview */
     opacity: 1; /* прозрачность */
-    transform:;
-        translate(-50%, -50%)
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg))
-        translateY(calc(var(--orbit-radius) * -1))
-        rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg))
-        scale(1);
+    transform: translate(-50%, -50%) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) - 90deg)) translateY(calc(var(--orbit-radius) * -1)) rotate(calc((360deg / var(--nodes-count)) * var(--node-index) * -1 + 90deg)) scale(1); /* трансформация */
 } /* /.kalm-forum-flow--enhanced .samsara-node.kalm-forum-step--inview */
 
 @media (max-width: 640px) { /* @media (max-width: 640px) */
@@ -2781,15 +2709,8 @@ section * { /* section * */
     --samsara-shadow: rgba(44, 24, 16, 0.18); /* CSS-переменная --samsara-shadow */
 
     border: 1px solid rgba(201, 162, 39, 0.45); /* рамка */
-    background:;
-        radial-gradient(ellipse 95% 55% at 50% -5%, rgba(201, 162, 39, 0.22), transparent 58%),
-        radial-gradient(ellipse 70% 45% at 100% 100%, rgba(124, 45, 18, 0.12), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 0% 90%, rgba(201, 162, 39, 0.1), transparent 50%),
-        linear-gradient(168deg, #3d2418 0%, #5c3d2e 12%, var(--samsara-parchment) 38%, var(--samsara-cream) 72%, #fff5e6 100%);
-    box-shadow:;
-        0 1px 0 rgba(255, 248, 235, 0.35) inset,
-        0 32px 72px var(--samsara-shadow),
-        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    background: radial-gradient(ellipse 95% 55% at 50% -5%, rgba(201, 162, 39, 0.22), transparent 58%), radial-gradient(ellipse 70% 45% at 100% 100%, rgba(124, 45, 18, 0.12), transparent 55%), radial-gradient(ellipse 60% 40% at 0% 90%, rgba(201, 162, 39, 0.1), transparent 50%), linear-gradient(168deg, #3d2418 0%, #5c3d2e 12%, var(--samsara-parchment) 38%, var(--samsara-cream) 72%, #fff5e6 100%); /* фон */
+    box-shadow: 0 1px 0 rgba(255, 248, 235, 0.35) inset, 0 32px 72px var(--samsara-shadow), 0 0 0 1px rgba(255, 255, 255, 0.06) inset; /* тень */
 } /* /.kalm-forum-flow--samsara */
 
 .kalm-forum-flow__mandala { /* .kalm-forum-flow__mandala */
@@ -2798,16 +2719,7 @@ section * { /* section * */
     z-index: 0; /* слой z-index */
     pointer-events: none; /* пропуск кликов */
     opacity: 0.55; /* прозрачность */
-    background:;
-        radial-gradient(circle at 50% 42%, transparent 18%, rgba(201, 162, 39, 0.07) 18.3%, transparent 18.6%),
-        radial-gradient(circle at 50% 42%, transparent 28%, rgba(124, 45, 18, 0.06) 28.3%, transparent 28.7%),
-        radial-gradient(circle at 50% 42%, transparent 38%, rgba(201, 162, 39, 0.05) 38.3%, transparent 38.7%),
-        radial-gradient(circle at 50% 42%, transparent 48%, rgba(44, 24, 16, 0.04) 48.3%, transparent 48.8%),
-        repeating-conic-gradient(
-            from 0deg at 50% 42%,
-            rgba(201, 162, 39, 0.09) 0deg 1.5deg,
-            transparent 1.5deg 30deg
-        );
+    background: radial-gradient(circle at 50% 42%, transparent 18%, rgba(201, 162, 39, 0.07) 18.3%, transparent 18.6%), radial-gradient(circle at 50% 42%, transparent 28%, rgba(124, 45, 18, 0.06) 28.3%, transparent 28.7%), radial-gradient(circle at 50% 42%, transparent 38%, rgba(201, 162, 39, 0.05) 38.3%, transparent 38.7%), radial-gradient(circle at 50% 42%, transparent 48%, rgba(44, 24, 16, 0.04) 48.3%, transparent 48.8%), repeating-conic-gradient( from 0deg at 50% 42%, rgba(201, 162, 39, 0.09) 0deg 1.5deg, transparent 1.5deg 30deg ); /* фон */
     mask-image: radial-gradient(ellipse 85% 70% at 50% 42%, black 20%, transparent 75%); /* mask-image */
     -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% 42%, black 20%, transparent 75%); /* -webkit-mask-image */
 } /* /.kalm-forum-flow__mandala */
@@ -2818,10 +2730,7 @@ section * { /* section * */
     z-index: 0; /* слой z-index */
     pointer-events: none; /* пропуск кликов */
     opacity: 0.5; /* прозрачность */
-    background:;
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 162, 39, 0.2), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 100% 40%, rgba(124, 45, 18, 0.08), transparent 50%),
-        radial-gradient(ellipse 50% 35% at 0% 80%, rgba(253, 230, 138, 0.12), transparent 45%);
+    background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 162, 39, 0.2), transparent 55%), radial-gradient(ellipse 60% 40% at 100% 40%, rgba(124, 45, 18, 0.08), transparent 50%), radial-gradient(ellipse 50% 35% at 0% 80%, rgba(253, 230, 138, 0.12), transparent 45%); /* фон */
     filter: saturate(1.08); /* CSS-фильтр */
 } /* /.kalm-forum-flow__mesh */
 
@@ -2840,14 +2749,7 @@ section * { /* section * */
     border-radius: 999px; /* скругление */
     pointer-events: none; /* пропуск кликов */
     opacity: 0.35; /* прозрачность */
-    background:;
-        radial-gradient(circle at 50% 40%, transparent 20%, rgba(201, 162, 39, 0.15) 20.4%, transparent 21%),
-        radial-gradient(circle at 50% 40%, transparent 35%, rgba(124, 45, 18, 0.1) 35.4%, transparent 36%),
-        repeating-conic-gradient(
-            from 0deg,
-            rgba(124, 45, 18, 0.18) 0deg 2deg,
-            transparent 2deg 45deg
-        );
+    background: radial-gradient(circle at 50% 40%, transparent 20%, rgba(201, 162, 39, 0.15) 20.4%, transparent 21%), radial-gradient(circle at 50% 40%, transparent 35%, rgba(124, 45, 18, 0.1) 35.4%, transparent 36%), repeating-conic-gradient( from 0deg, rgba(124, 45, 18, 0.18) 0deg 2deg, transparent 2deg 45deg ); /* фон */
     filter: blur(0.2px); /* CSS-фильтр */
 } /* /.kalm-forum-flow--samsara .kalm-forum-flow__mesh::before */
 
@@ -2860,20 +2762,8 @@ section * { /* section * */
     margin-left: -5px; /* отступ слева */
     z-index: 1; /* слой z-index */
     border-radius: 999px; /* скругление */
-    background:;
-        linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.08)),
-        repeating-linear-gradient(
-            180deg,
-            rgba(44, 24, 16, 0.35) 0px,
-            rgba(44, 24, 16, 0.35) 3px,
-            rgba(201, 162, 39, 0.45) 3px,
-            rgba(201, 162, 39, 0.45) 6px
-        ),
-        linear-gradient(180deg, #3d2418, #7c2d12 45%, #5c3d2e 100%);
-    box-shadow:;
-        inset 0 0 0 1px rgba(232, 197, 71, 0.35),
-        inset 0 -2px 8px rgba(0, 0, 0, 0.25),
-        0 0 20px rgba(201, 162, 39, 0.15);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.08)), repeating-linear-gradient( 180deg, rgba(44, 24, 16, 0.35) 0px, rgba(44, 24, 16, 0.35) 3px, rgba(201, 162, 39, 0.45) 3px, rgba(201, 162, 39, 0.45) 6px ), linear-gradient(180deg, #3d2418, #7c2d12 45%, #5c3d2e 100%); /* фон */
+    box-shadow: inset 0 0 0 1px rgba(232, 197, 71, 0.35), inset 0 -2px 8px rgba(0, 0, 0, 0.25), 0 0 20px rgba(201, 162, 39, 0.15); /* тень */
 } /* /.kalm-forum-flow__spine */
 
 .kalm-forum-flow__spine-glow { /* .kalm-forum-flow__spine-glow */
@@ -2921,9 +2811,7 @@ section * { /* section * */
     margin-bottom: clamp(28px, 4vw, 40px); /* отступ снизу */
     opacity: 1; /* прозрачность */
     transform: none; /* трансформация */
-    transition:;
-        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); /* переход */
 } /* /.kalm-forum-step */
 
 .kalm-forum-flow--enhanced .kalm-forum-step:not(.kalm-forum-step--inview) { /* .kalm-forum-flow--enhanced .kalm-forum-step:not(.kalm-forum-step--inview) */
@@ -2940,11 +2828,11 @@ section * { /* section * */
     transform: translateY(0); /* трансформация */
 } /* /.kalm-forum-flow--enhanced .kalm-forum-step--inview */
 
-.kalm-forum-flow > article:nth-of-type(1) { transition-delay: 0.02s; /* задержка перехода */ /* transition-delay */; }
-.kalm-forum-flow > article:nth-of-type(2) { transition-delay: 0.06s; /* задержка перехода */ /* transition-delay */; }
-.kalm-forum-flow > article:nth-of-type(3) { transition-delay: 0.1s; /* задержка перехода */ /* transition-delay */; }
-.kalm-forum-flow > article:nth-of-type(4) { transition-delay: 0.14s; /* задержка перехода */ /* transition-delay */; }
-.kalm-forum-flow > article:nth-of-type(5) { transition-delay: 0.18s; /* задержка перехода */ /* transition-delay */; }
+.kalm-forum-flow > article:nth-of-type(1) { transition-delay: 0.02s; /* задержка перехода */ }
+.kalm-forum-flow > article:nth-of-type(2) { transition-delay: 0.06s; /* задержка перехода */ }
+.kalm-forum-flow > article:nth-of-type(3) { transition-delay: 0.1s; /* задержка перехода */ }
+.kalm-forum-flow > article:nth-of-type(4) { transition-delay: 0.14s; /* задержка перехода */ }
+.kalm-forum-flow > article:nth-of-type(5) { transition-delay: 0.18s; /* задержка перехода */ }
 
 .kalm-forum-step--left .kalm-forum-step__card { /* .kalm-forum-step--left .kalm-forum-step__card */
     grid-column: 1; /* колонка grid */
@@ -3003,29 +2891,8 @@ section * { /* section * */
     border-radius: 50%; /* скругление */
     z-index: 1; /* слой z-index */
     opacity: 0.95; /* прозрачность */
-    background:;
-        radial-gradient(circle at 50% 50%, rgba(255, 250, 235, 0.95) 0 18%, rgba(201, 162, 39, 0.35) 18.5% 22%, rgba(44, 24, 16, 0.85) 22.5% 28%, rgba(255, 248, 230, 0.9) 28.5% 38%, transparent 38.5%),
-        repeating-conic-gradient(
-            from -90deg,
-            #c9a227 0deg 2.8deg,
-            #5c3d2e 2.8deg 5.6deg,
-            transparent 5.6deg 45deg
-        ),
-        conic-gradient(
-            from 0deg,
-            rgba(124, 45, 18, 0.4),
-            rgba(201, 162, 39, 0.25),
-            rgba(124, 45, 18, 0.4),
-            rgba(201, 162, 39, 0.25),
-            rgba(124, 45, 18, 0.4),
-            rgba(201, 162, 39, 0.25),
-            rgba(124, 45, 18, 0.4),
-            rgba(201, 162, 39, 0.25)
-        );
-    box-shadow:;
-        0 0 0 2px rgba(201, 162, 39, 0.5),
-        0 0 0 5px rgba(44, 24, 16, 0.35),
-        0 12px 28px rgba(44, 24, 16, 0.35);
+    background: radial-gradient(circle at 50% 50%, rgba(255, 250, 235, 0.95) 0 18%, rgba(201, 162, 39, 0.35) 18.5% 22%, rgba(44, 24, 16, 0.85) 22.5% 28%, rgba(255, 248, 230, 0.9) 28.5% 38%, transparent 38.5%), repeating-conic-gradient( from -90deg, #c9a227 0deg 2.8deg, #5c3d2e 2.8deg 5.6deg, transparent 5.6deg 45deg ), conic-gradient( from 0deg, rgba(124, 45, 18, 0.4), rgba(201, 162, 39, 0.25), rgba(124, 45, 18, 0.4), rgba(201, 162, 39, 0.25), rgba(124, 45, 18, 0.4), rgba(201, 162, 39, 0.25), rgba(124, 45, 18, 0.4), rgba(201, 162, 39, 0.25) ); /* фон */
+    box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.5), 0 0 0 5px rgba(44, 24, 16, 0.35), 0 12px 28px rgba(44, 24, 16, 0.35); /* тень */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__chakra */
 
 .kalm-forum-step__ring { /* .kalm-forum-step__ring */
@@ -3038,9 +2905,7 @@ section * { /* section * */
     border-radius: 50%; /* скругление */
     border: 2px solid rgba(255, 255, 255, 0.95); /* рамка */
     background: linear-gradient(145deg, #fff, var(--primary-light)); /* фон, акцент */
-    box-shadow:;
-        0 0 0 4px rgba(251, 191, 36, 0.35),
-        0 0 20px rgba(217, 119, 6, 0.25);
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.35), 0 0 20px rgba(217, 119, 6, 0.25); /* тень */
     z-index: 2; /* слой z-index */
 } /* /.kalm-forum-step__ring */
 .kalm-forum-step--inview .kalm-forum-step__ring { /* .kalm-forum-step--inview .kalm-forum-step__ring */
@@ -3048,8 +2913,8 @@ section * { /* section * */
 } /* /.kalm-forum-step--inview .kalm-forum-step__ring */
 
 @keyframes kalmForumPulse { /* @keyframes kalmForumPulse */
-    0%, 100% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.35), 0 0 20px rgba(217, 119, 6, 0.2); /* тень */ /* тень */; }
-    50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.2), 0 0 28px rgba(217, 119, 6, 0.35); /* тень */ /* тень */; }
+    0%, 100% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.35), 0 0 20px rgba(217, 119, 6, 0.2); /* тень */ }
+    50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.2), 0 0 28px rgba(217, 119, 6, 0.35); /* тень */ }
 } /* /@keyframes kalmForumPulse */
 
 .kalm-forum-step__icon { /* .kalm-forum-step__icon */
@@ -3087,8 +2952,8 @@ section * { /* section * */
 } /* /.kalm-forum-step--inview .kalm-forum-step__chakra */
 
 @keyframes kalmChakraSpin { /* @keyframes kalmChakraSpin */
-    from { transform: rotate(0deg); /* трансформация */ /* трансформация */; }
-    to { transform: rotate(360deg); /* трансформация */ /* трансформация */; }
+    from { transform: rotate(0deg); /* трансформация */ }
+    to { transform: rotate(360deg); /* трансформация */ }
 } /* /@keyframes kalmChakraSpin */
 
 .kalm-forum-step__rail { /* .kalm-forum-step__rail */
@@ -3125,9 +2990,7 @@ section * { /* section * */
     background: var(--card-bg); /* fallback */
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 251, 235, 0.55) 100%); /* фон */
     border: 1px solid rgba(217, 119, 6, 0.18); /* рамка */
-    box-shadow:;
-        0 1px 0 rgba(255, 255, 255, 0.9) inset,
-        0 18px 40px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 18px 40px rgba(0, 0, 0, 0.06); /* тень */
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.25s ease; /* переход */
 } /* /.kalm-forum-step__card */
 
@@ -3149,9 +3012,7 @@ section * { /* section * */
 .kalm-forum-step--inview .kalm-forum-step__card:hover { /* .kalm-forum-step--inview .kalm-forum-step__card:hover */
     transform: translateY(-4px) scale(1.01); /* трансформация */
     border-color: rgba(217, 119, 6, 0.35); /* цвет рамки */
-    box-shadow:;
-        0 1px 0 rgba(255, 255, 255, 0.95) inset,
-        0 24px 48px rgba(180, 83, 9, 0.12);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 24px 48px rgba(180, 83, 9, 0.12); /* тень */
 } /* /.kalm-forum-step--inview .kalm-forum-step__card:hover */
 
 .kalm-forum-step__head { /* .kalm-forum-step__head */
@@ -3241,9 +3102,7 @@ section * { /* section * */
     margin-left: -12px; /* отступ слева */
     border: 2px solid rgba(201, 162, 39, 0.95); /* рамка */
     background: radial-gradient(circle at 35% 28%, #fffef8 0%, #f0d78c 55%, #8b4513 100%); /* фон */
-    box-shadow:;
-        0 0 0 3px rgba(44, 24, 16, 0.45),
-        0 0 16px rgba(201, 162, 39, 0.4);
+    box-shadow: 0 0 0 3px rgba(44, 24, 16, 0.45), 0 0 16px rgba(201, 162, 39, 0.4); /* тень */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__ring */
 
 .kalm-forum-flow--samsara .kalm-forum-step--inview .kalm-forum-step__ring { /* .kalm-forum-flow--samsara .kalm-forum-step--inview .kalm-forum-step__ring */
@@ -3252,14 +3111,10 @@ section * { /* section * */
 
 @keyframes kalmSamsaraPulse { /* @keyframes kalmSamsaraPulse */
     0%, 100% { /* 0%, 100% */
-        box-shadow:;
-            0 0 0 3px rgba(44, 24, 16, 0.45),
-            0 0 14px rgba(201, 162, 39, 0.35);
+        box-shadow: 0 0 0 3px rgba(44, 24, 16, 0.45), 0 0 14px rgba(201, 162, 39, 0.35); /* тень */
     } /* /0%, 100% */
     50% { /* 50% */
-        box-shadow:;
-            0 0 0 5px rgba(201, 162, 39, 0.25),
-            0 0 26px rgba(201, 162, 39, 0.45);
+        box-shadow: 0 0 0 5px rgba(201, 162, 39, 0.25), 0 0 26px rgba(201, 162, 39, 0.45); /* тень */
     } /* /50% */
 } /* /@keyframes kalmSamsaraPulse */
 
@@ -3270,9 +3125,7 @@ section * { /* section * */
     color: #5c2d0e; /* цвет текста */
     background: linear-gradient(165deg, #fffdfa 0%, #fde8c9 55%, #f4d4a8 100%); /* фон */
     border: 1px solid rgba(201, 162, 39, 0.55); /* рамка */
-    box-shadow:;
-        0 10px 22px rgba(44, 24, 16, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 22px rgba(44, 24, 16, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.95); /* тень */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__icon */
 
 .kalm-forum-flow--samsara .kalm-forum-step__badge { /* .kalm-forum-flow--samsara .kalm-forum-step__badge */
@@ -3303,13 +3156,9 @@ section * { /* section * */
 
 .kalm-forum-flow--samsara .kalm-forum-step__card { /* .kalm-forum-flow--samsara .kalm-forum-step__card */
     border-radius: 20px 28px 24px 22px; /* скругление */
-    background:;
-        linear-gradient(175deg, rgba(255, 253, 248, 0.98) 0%, rgba(253, 243, 228, 0.96) 45%, rgba(248, 232, 210, 0.94) 100%);
+    background: linear-gradient(175deg, rgba(255, 253, 248, 0.98) 0%, rgba(253, 243, 228, 0.96) 45%, rgba(248, 232, 210, 0.94) 100%); /* фон */
     border: 1px solid rgba(124, 45, 18, 0.22); /* рамка */
-    box-shadow:;
-        0 2px 0 rgba(255, 255, 255, 0.75) inset,
-        0 20px 44px rgba(44, 24, 16, 0.1),
-        0 0 0 1px rgba(201, 162, 39, 0.12);
+    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.75) inset, 0 20px 44px rgba(44, 24, 16, 0.1), 0 0 0 1px rgba(201, 162, 39, 0.12); /* тень */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__card */
 
 .kalm-forum-flow--samsara .kalm-forum-step__card::before { /* .kalm-forum-flow--samsara .kalm-forum-step__card::before */
@@ -3324,10 +3173,7 @@ section * { /* section * */
 
 .kalm-forum-flow--samsara .kalm-forum-step--inview .kalm-forum-step__card:hover { /* .kalm-forum-flow--samsara .kalm-forum-step--inview .kalm-forum-step__card:hover */
     border-color: rgba(201, 162, 39, 0.45); /* цвет рамки */
-    box-shadow:;
-        0 2px 0 rgba(255, 255, 255, 0.85) inset,
-        0 26px 52px rgba(44, 24, 16, 0.14),
-        0 0 0 1px rgba(201, 162, 39, 0.2);
+    box-shadow: 0 2px 0 rgba(255, 255, 255, 0.85) inset, 0 26px 52px rgba(44, 24, 16, 0.14), 0 0 0 1px rgba(201, 162, 39, 0.2); /* тень */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step--inview .kalm-forum-step__card:hover */
 
 .kalm-forum-flow--samsara .kalm-forum-step__tag { /* .kalm-forum-flow--samsara .kalm-forum-step__tag */
@@ -3448,8 +3294,8 @@ section * { /* section * */
    AUDIO — audio.html: список мантр, нижний плеер
    Активный трек: --primary-light; кнопки play — --primary
    ============================================================================= */
-.max-w-800 { max-width: 800px; /* максимальная ширина */ /* максимальная ширина */ margin: 0 auto; /* внешний отступ */; }
-.audio-list { margin-top: 60px; /* отступ сверху */ /* отступ сверху */ display: flex; /* режим отображения */ flex-direction: column; /* направление flex */ gap: 20px; /* расстояние между элементами */; }
+.max-w-800 { max-width: 800px; /* максимальная ширина */; margin: 0 auto; /* внешний отступ */ }
+.audio-list { margin-top: 60px; /* отступ сверху */; display: flex; /* режим отображения */; flex-direction: column; /* направление flex */; gap: 20px; /* расстояние между элементами */ }
 
 .audio-track { /* .audio-track */
     background: white; /* фон */
@@ -4140,11 +3986,11 @@ a.media-card { /* a.media-card */
     border-radius: 999px; /* скругление */
     width: fit-content; /* ширина */
 } /* /.map-type-badge */
-.map-type-badge--святыня { background: #fee2e2; /* фон */ /* фон */ color: #991b1b; /* цвет текста */; }
-.map-type-badge--монастырь { background: #ffedd5; /* фон */ /* фон */ color: #9a3412; /* цвет текста */; }
-.map-type-badge--паломничество { background: #ede9fe; /* фон */ /* фон */ color: #5b21b6; /* цвет текста */; }
-.map-type-badge--музей { background: #dbeafe; /* фон */ /* фон */ color: #1e40af; /* цвет текста */; }
-.map-type-badge--праздник { background: #dcfce7; /* фон */ /* фон */ color: #166534; /* цвет текста */; }
+.map-type-badge--святыня { background: #fee2e2; /* фон */; color: #991b1b; /* цвет текста */ }
+.map-type-badge--монастырь { background: #ffedd5; /* фон */; color: #9a3412; /* цвет текста */ }
+.map-type-badge--паломничество { background: #ede9fe; /* фон */; color: #5b21b6; /* цвет текста */ }
+.map-type-badge--музей { background: #dbeafe; /* фон */; color: #1e40af; /* цвет текста */ }
+.map-type-badge--праздник { background: #dcfce7; /* фон */; color: #166534; /* цвет текста */ }
 .map-timeline,
 .map-legend { /* .map-legend */
     padding: 24px 28px; /* внутренний отступ */
@@ -4257,11 +4103,11 @@ a.media-card { /* a.media-card */
     flex-shrink: 0; /* сжатие flex */
     margin-top: 3px; /* отступ сверху */
 } /* /.map-legend__dot */
-.map-legend__dot--shrine { background: #e53e3e; /* фон */ /* фон */; }
-.map-legend__dot--monastery { background: #dd6b20; /* фон */ /* фон */; }
-.map-legend__dot--pilgrimage { background: #7c3aed; /* фон */ /* фон */; }
-.map-legend__dot--museum { background: #2563eb; /* фон */ /* фон */; }
-.map-legend__dot--festival { background: #16a34a; /* фон */ /* фон */; }
+.map-legend__dot--shrine { background: #e53e3e; /* фон */ }
+.map-legend__dot--monastery { background: #dd6b20; /* фон */ }
+.map-legend__dot--pilgrimage { background: #7c3aed; /* фон */ }
+.map-legend__dot--museum { background: #2563eb; /* фон */ }
+.map-legend__dot--festival { background: #16a34a; /* фон */ }
 .map-legend__line { /* .map-legend__line */
     width: 28px; /* ширина */
     height: 0; /* высота */
@@ -4471,8 +4317,8 @@ html.map-scroll-locked { /* html.map-scroll-locked */
     line-height: 1.5; /* межстрочный интервал */
     opacity: 0.8; /* прозрачность */
 } /* /.footer p */
-.footer ul { list-style: none; /* маркеры списка */ /* маркеры списка */; }
-.footer ul li { margin-bottom: 12px; /* отступ снизу */ /* отступ снизу */; }
+.footer ul { list-style: none; /* маркеры списка */ }
+.footer ul li { margin-bottom: 12px; /* отступ снизу */ }
 .footer a { /* .footer a */
     color: white; /* цвет текста */
     text-decoration: none; /* оформление текста */
@@ -4493,25 +4339,25 @@ html.map-scroll-locked { /* html.map-scroll-locked */
    ANIMATIONS — появление блоков (.animate-fade-in и др.)
    ============================================================================= */
 @keyframes fadeIn { from { opacity: 0; /* прозрачность */ } to { opacity: 1; /* прозрачность */ } }
-@keyframes slideUp { from { opacity: 0; /* прозрачность */ transform: translateY(40px); /* трансформация */ } to { opacity: 1; /* прозрачность */ transform: translateY(0); /* трансформация */ } }
-@keyframes slideRight { from { opacity: 0; /* прозрачность */ transform: translateX(-40px); /* трансформация */ } to { opacity: 1; /* прозрачность */ transform: translateX(0); /* трансформация */ } }
-@keyframes zoomIn { from { transform: scale(1.1); /* трансформация */ opacity: 0; /* прозрачность */ } to { transform: scale(1); /* трансформация */ opacity: 1; /* прозрачность */ } }
+@keyframes slideUp { from { opacity: 0; /* прозрачность */; transform: translateY(40px); /* трансформация */ } to { opacity: 1; /* прозрачность */; transform: translateY(0); /* трансформация */ } }
+@keyframes slideRight { from { opacity: 0; /* прозрачность */; transform: translateX(-40px); /* трансформация */ } to { opacity: 1; /* прозрачность */; transform: translateX(0); /* трансформация */ } }
+@keyframes zoomIn { from { transform: scale(1.1); /* трансформация */; opacity: 0; /* прозрачность */ } to { transform: scale(1); /* трансформация */; opacity: 1; /* прозрачность */ } }
 
-.animate-fade-in { animation: fadeIn 1s ease forwards; /* анимация */ /* анимация */; }
-.animate-slide-up { opacity: 0; /* прозрачность */ /* прозрачность */ animation: slideUp 0.8s ease forwards; /* анимация */; }
-.animate-slide-right { opacity: 0; /* прозрачность */ /* прозрачность */ animation: slideRight 0.8s ease forwards; /* анимация */; }
-.animate-zoom-in { animation: zoomIn 1.5s ease-out forwards; /* анимация */ /* анимация */; }
+.animate-fade-in { animation: fadeIn 1s ease forwards; /* анимация */ }
+.animate-slide-up { opacity: 0; /* прозрачность */; animation: slideUp 0.8s ease forwards; /* анимация */ }
+.animate-slide-right { opacity: 0; /* прозрачность */; animation: slideRight 0.8s ease forwards; /* анимация */ }
+.animate-zoom-in { animation: zoomIn 1.5s ease-out forwards; /* анимация */ }
 
 /* Responsive Design */
 @media (max-width: 1024px) { /* @media (max-width: 1024px) */
-    .container { padding: 0 24px; /* внутренний отступ */ /* внутренний отступ */; }
-    .kalm-grid { gap: 28px; /* расстояние между элементами */ /* расстояние между элементами */; }
-    .media-grid { gap: 32px; /* расстояние между элементами */ /* расстояние между элементами */; }
+    .container { padding: 0 24px; /* внутренний отступ */ }
+    .kalm-grid { gap: 28px; /* расстояние между элементами */ }
+    .media-grid { gap: 32px; /* расстояние между элементами */ }
 } /* /@media (max-width: 1024px) */
 
 @media (max-width: 768px) { /* @media (max-width: 768px) */
-    :root { --navbar-height: 70px; /* CSS-переменная --navbar-height */ /* CSS-переменная --navbar-height */; }
-    body { padding-top: var(--navbar-height); /* отступ сверху, шапка */ /* отступ сверху, шапка */; }
+    :root { --navbar-height: 70px; /* CSS-переменная --navbar-height */ }
+    body { padding-top: var(--navbar-height); /* отступ сверху, шапка */ }
     
     .nav-links { /* .nav-links */
         display: none; /* режим отображения */
@@ -4522,10 +4368,10 @@ html.map-scroll-locked { /* html.map-scroll-locked */
     .mobile-nav-panel { /* .mobile-nav-panel */
         display: block; /* режим отображения */
     } /* /.mobile-nav-panel */
-    .hero h1 { font-size: 2.5rem; /* размер шрифта */ /* размер шрифта */; }
-    .hero p { font-size: 1.1rem; /* размер шрифта */ /* размер шрифта */; }
-    .hero-actions { gap: 10px; /* расстояние между элементами */ /* расстояние между элементами */; }
-    .btn { width: 100%; /* ширина */ /* ширина */ max-width: 360px; /* максимальная ширина */; }
+    .hero h1 { font-size: 2.5rem; /* размер шрифта */ }
+    .hero p { font-size: 1.1rem; /* размер шрифта */ }
+    .hero-actions { gap: 10px; /* расстояние между элементами */ }
+    .btn { width: 100%; /* ширина */; max-width: 360px; /* максимальная ширина */ }
     .study-route__item { /* .study-route__item */
         grid-template-columns: auto 1fr; /* колонки сетки */
     } /* /.study-route__item */
@@ -4541,21 +4387,21 @@ html.map-scroll-locked { /* html.map-scroll-locked */
     .quotes-aside { /* .quotes-aside */
         gap: 14px; /* расстояние между элементами */
     } /* /.quotes-aside */
-    .quotes-grid { gap: 16px; /* расстояние между элементами */ /* расстояние между элементами */; }
-    .quote-card { padding: 22px; /* внутренний отступ */ /* внутренний отступ */; }
-    .quotes-section__head { margin-bottom: 28px; /* отступ снизу */ /* отступ снизу */; }
-    .index-band--warm { padding: 48px 0; /* внутренний отступ */ /* внутренний отступ */; }
-    .features { padding: 60px 0; /* внутренний отступ */ /* внутренний отступ */ gap: 24px; /* расстояние между элементами */; }
-    .features .card { padding: 40px 24px; /* внутренний отступ */ /* внутренний отступ */; }
-    .card h3 { font-size: 1.4rem; /* размер шрифта */ /* размер шрифта */; }
+    .quotes-grid { gap: 16px; /* расстояние между элементами */ }
+    .quote-card { padding: 22px; /* внутренний отступ */ }
+    .quotes-section__head { margin-bottom: 28px; /* отступ снизу */ }
+    .index-band--warm { padding: 48px 0; /* внутренний отступ */ }
+    .features { padding: 60px 0; /* внутренний отступ */; gap: 24px; /* расстояние между элементами */ }
+    .features .card { padding: 40px 24px; /* внутренний отступ */ }
+    .card h3 { font-size: 1.4rem; /* размер шрифта */ }
     
-    .kalm-card-item { padding: 32px 24px; /* внутренний отступ */ /* внутренний отступ */; }
-    .kalm-card-icon { width: 60px; /* ширина */ /* ширина */ height: 60px; /* высота */; }
-    .kalm-card-icon i { width: 28px; /* ширина */ /* ширина */ height: 28px; /* высота */; }
-    .kalm-hero { padding: 24px 20px; /* внутренний отступ */ /* внутренний отступ */ border-radius: 24px; /* скругление */; }
-    .kalm-section { margin-bottom: 44px; /* отступ снизу */ /* отступ снизу */; }
+    .kalm-card-item { padding: 32px 24px; /* внутренний отступ */ }
+    .kalm-card-icon { width: 60px; /* ширина */; height: 60px; /* высота */ }
+    .kalm-card-icon i { width: 28px; /* ширина */; height: 28px; /* высота */ }
+    .kalm-hero { padding: 24px 20px; /* внутренний отступ */; border-radius: 24px; /* скругление */ }
+    .kalm-section { margin-bottom: 44px; /* отступ снизу */ }
     .kalm-forum-step__media img,
-    .kalm-forum-step__media--video iframe { height: 200px; /* высота */ /* высота */; }
+    .kalm-forum-step__media--video iframe { height: 200px; /* высота */ }
     
     .audio-track { /* .audio-track */
         flex-wrap: wrap; /* перенос flex */
@@ -4572,8 +4418,8 @@ html.map-scroll-locked { /* html.map-scroll-locked */
         justify-content: center; /* выравнивание по главной оси */
     } /* /.player-controls */
     
-    .media-card .media-info { padding: 20px; /* внутренний отступ */ /* внутренний отступ */; }
-    .media-info h3 { font-size: 1.25rem; /* размер шрифта */ /* размер шрифта */; }
+    .media-card .media-info { padding: 20px; /* внутренний отступ */ }
+    .media-info h3 { font-size: 1.25rem; /* размер шрифта */ }
     
     .map-page { /* .map-page */
         padding-top: 40px; /* отступ сверху */
@@ -4725,27 +4571,27 @@ html.map-scroll-locked { /* html.map-scroll-locked */
         padding: 12px 18px; /* внутренний отступ */
     } /* /.map-panorama-close */
     
-    .footer { padding: 60px 0; /* внутренний отступ */ /* внутренний отступ */ margin-top: 60px; /* отступ сверху */; }
-    .footer-grid { gap: 40px; /* расстояние между элементами */ /* расстояние между элементами */; }
+    .footer { padding: 60px 0; /* внутренний отступ */; margin-top: 60px; /* отступ сверху */ }
+    .footer-grid { gap: 40px; /* расстояние между элементами */ }
 } /* /@media (max-width: 768px) */
 
 @media (max-width: 480px) { /* @media (max-width: 480px) */
-    .container { padding: 0 16px; /* внутренний отступ */ /* внутренний отступ */; }
-    .hero h1 { font-size: 2rem; /* размер шрифта */ /* размер шрифта */; }
-    .badge { font-size: 0.7rem; /* размер шрифта */ /* размер шрифта */ padding: 6px 16px; /* внутренний отступ */; }
+    .container { padding: 0 16px; /* внутренний отступ */ }
+    .hero h1 { font-size: 2rem; /* размер шрифта */ }
+    .badge { font-size: 0.7rem; /* размер шрифта */; padding: 6px 16px; /* внутренний отступ */ }
     
-    .kalm-grid { grid-template-columns: 1fr; /* колонки сетки */ /* колонки сетки */; }
-    .media-grid { grid-template-columns: 1fr; /* колонки сетки */ /* колонки сетки */; }
+    .kalm-grid { grid-template-columns: 1fr; /* колонки сетки */ }
+    .media-grid { grid-template-columns: 1fr; /* колонки сетки */ }
     
-    .audio-track { flex-wrap: wrap; /* перенос flex */ /* перенос flex */; }
-    .track-time { width: 100%; /* ширина */ /* ширина */ text-align: right; /* выравнивание текста */; }
+    .audio-track { flex-wrap: wrap; /* перенос flex */ }
+    .track-time { width: 100%; /* ширина */; text-align: right; /* выравнивание текста */ }
     .track-actions { /* .track-actions */
         width: 100%; /* ширина */
         justify-content: flex-end; /* выравнивание по главной оси */
         margin-top: 12px; /* отступ сверху */
     } /* /.track-actions */
     
-    .place-card { width: calc(100% - 40px); /* ширина */ /* ширина */ left: 20px; /* отступ слева */ right: 20px; /* отступ справа */ bottom: 20px; /* отступ снизу */; }
+    .place-card { width: calc(100% - 40px); /* ширина */; left: 20px; /* отступ слева */; right: 20px; /* отступ справа */; bottom: 20px; /* отступ снизу */ }
 } /* /@media (max-width: 480px) */
 
 /* =============================================================================
@@ -4942,13 +4788,13 @@ h2 { /* h2 */
     animation: typing 1.4s infinite ease-in-out; /* анимация */
 } /* /.typing-dots span */
 
-.typing-dots span:nth-child(1) { animation-delay: 0s; /* задержка анимации */ /* задержка анимации */; }
-.typing-dots span:nth-child(2) { animation-delay: 0.2s; /* задержка анимации */ /* задержка анимации */; }
-.typing-dots span:nth-child(3) { animation-delay: 0.4s; /* задержка анимации */ /* задержка анимации */; }
+.typing-dots span:nth-child(1) { animation-delay: 0s; /* задержка анимации */ }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; /* задержка анимации */ }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; /* задержка анимации */ }
 
 @keyframes typing { /* @keyframes typing */
-    0%, 60%, 100% { transform: translateY(0); /* трансформация */ /* трансформация */ opacity: 0.4; /* прозрачность */; }
-    30% { transform: translateY(-8px); /* трансформация */ /* трансформация */ opacity: 1; /* прозрачность */; }
+    0%, 60%, 100% { transform: translateY(0); /* трансформация */; opacity: 0.4; /* прозрачность */ }
+    30% { transform: translateY(-8px); /* трансформация */; opacity: 1; /* прозрачность */ }
 } /* /@keyframes typing */
 
 @keyframes messageSlideIn { /* @keyframes messageSlideIn */
@@ -5032,7 +4878,7 @@ h2 { /* h2 */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); /* внутренний отступ, safe-area */
     background: rgba(0, 0, 0, 0.95); /* фон */
 } /* /.video-modal */
-.video-modal.active { display: flex; /* режим отображения */ /* режим отображения */; }
+.video-modal.active { display: flex; /* режим отображения */ }
 .video-modal-content { /* .video-modal-content */
     width: min(100%, 1000px); /* ширина */
     position: relative; /* позиционирование */
@@ -5063,7 +4909,7 @@ h2 { /* h2 */
     align-items: center; /* выравнивание по поперечной оси */
     justify-content: center; /* выравнивание по главной оси */
 } /* /.video-modal .close-modal */
-.page-back-link-wrap { margin-bottom: 32px; /* отступ снизу */ /* отступ снизу */; }
+.page-back-link-wrap { margin-bottom: 32px; /* отступ снизу */ }
 .page-back-link { /* .page-back-link */
     display: inline-flex; /* режим отображения */
     align-items: center; /* выравнивание по поперечной оси */
@@ -5084,26 +4930,26 @@ h2 { /* h2 */
     font-size: 0.9rem; /* размер шрифта */
     line-height: 1.45; /* межстрочный интервал */
 } /* /.video-page .error-message */
-.video-page .error-message.active { display: flex; /* режим отображения */ /* режим отображения */ align-items: flex-start; /* выравнивание по поперечной оси */ gap: 8px; /* расстояние между элементами */; }
+.video-page .error-message.active { display: flex; /* режим отображения */; align-items: flex-start; /* выравнивание по поперечной оси */; gap: 8px; /* расстояние между элементами */ }
 
 /* =============================================================================
    МОБИЛЬНАЯ ВЁРСТКА — экраны ≤768px
    Уменьшенные отступы, бургер-меню, чат на весь экран, одна колонка в grid
    ============================================================================= */
 @media (max-width: 768px) { /* @media (max-width: 768px) */
-    .py-80 { padding: 48px 0; /* внутренний отступ */ /* внутренний отступ */; }
-    .mb-40 { margin-bottom: 28px; /* отступ снизу */ /* отступ снизу */; }
-    .flex-between { padding-top: 8px; /* отступ сверху */ /* отступ сверху */; }
-    .logo { font-size: 1.2rem; /* размер шрифта */ /* размер шрифта */ gap: 8px; /* расстояние между элементами */; }
-    .logo span { max-width: 42vw; /* максимальная ширина */ /* максимальная ширина */ overflow: hidden; /* переполнение */ text-overflow: ellipsis; /* многоточие */ white-space: nowrap; /* переносы */; }
-    .logo i { width: 22px; /* ширина */ /* ширина */ height: 22px; /* высота */; }
+    .py-80 { padding: 48px 0; /* внутренний отступ */ }
+    .mb-40 { margin-bottom: 28px; /* отступ снизу */ }
+    .flex-between { padding-top: 8px; /* отступ сверху */ }
+    .logo { font-size: 1.2rem; /* размер шрифта */; gap: 8px; /* расстояние между элементами */ }
+    .logo span { max-width: 42vw; /* максимальная ширина */; overflow: hidden; /* переполнение */; text-overflow: ellipsis; /* многоточие */; white-space: nowrap; /* переносы */ }
+    .logo i { width: 22px; /* ширина */; height: 22px; /* высота */ }
 
     .hero { /* .hero */
         height: auto; /* высота */
         min-height: min(72svh, 560px); /* минимальная высота */
         padding: 48px 0 56px; /* внутренний отступ */
     } /* /.hero */
-    .hero p { font-size: 1.05rem; /* размер шрифта */ /* размер шрифта */ padding: 0 8px; /* внутренний отступ */; }
+    .hero p { font-size: 1.05rem; /* размер шрифта */; padding: 0 8px; /* внутренний отступ */ }
     .hero-actions { /* .hero-actions */
         flex-direction: column; /* направление flex */
         align-items: center; /* выравнивание по поперечной оси */
@@ -5122,15 +4968,15 @@ h2 { /* h2 */
         padding: 48px 0; /* внутренний отступ */
         gap: 20px; /* расстояние между элементами */
     } /* /.features */
-    .card { padding: 32px 22px; /* внутренний отступ */ /* внутренний отступ */; }
+    .card { padding: 32px 22px; /* внутренний отступ */ }
 
     .traditions-hero { /* .traditions-hero */
         padding: 40px 0; /* внутренний отступ */
         margin-bottom: 40px; /* отступ снизу */
         border-radius: 0 0 24px 24px; /* скругление */
     } /* /.traditions-hero */
-    .traditions-hero h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); /* размер шрифта */ /* размер шрифта */; }
-    .traditions-hero p { font-size: 1rem; /* размер шрифта */ /* размер шрифта */; }
+    .traditions-hero h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); /* размер шрифта */ }
+    .traditions-hero p { font-size: 1rem; /* размер шрифта */ }
     .traditions-grid,
     .media-grid,
     .media-grid-custom { /* .media-grid-custom */
@@ -5138,24 +4984,24 @@ h2 { /* h2 */
         gap: 20px; /* расстояние между элементами */
     } /* /.media-grid-custom */
     .tradition-header,
-    .tradition-body { padding: 20px; /* внутренний отступ */ /* внутренний отступ */; }
-    .category-title { font-size: 1.5rem; /* размер шрифта */ /* размер шрифта */; }
+    .tradition-body { padding: 20px; /* внутренний отступ */ }
+    .category-title { font-size: 1.5rem; /* размер шрифта */ }
 
-    .video-thumb { height: 200px; /* высота */ /* высота */; }
-    .media-info { padding: 18px; /* внутренний отступ */ /* внутренний отступ */; }
-    .media-info h3 { font-size: 1.15rem; /* размер шрифта */ /* размер шрифта */; }
-    .media-info p { font-size: 0.92rem; /* размер шрифта */ /* размер шрифта */; }
+    .video-thumb { height: 200px; /* высота */ }
+    .media-info { padding: 18px; /* внутренний отступ */ }
+    .media-info h3 { font-size: 1.15rem; /* размер шрифта */ }
+    .media-info p { font-size: 0.92rem; /* размер шрифта */ }
 
-    .audio-list { margin-top: 32px; /* отступ сверху */ /* отступ сверху */ gap: 14px; /* расстояние между элементами */; }
+    .audio-list { margin-top: 32px; /* отступ сверху */; gap: 14px; /* расстояние между элементами */ }
     .audio-track { /* .audio-track */
         flex-wrap: wrap; /* перенос flex */
         gap: 14px; /* расстояние между элементами */
         padding: 16px; /* внутренний отступ */
         border-radius: 18px; /* скругление */
     } /* /.audio-track */
-    .audio-track:hover { transform: none; /* трансформация */ /* трансформация */; }
-    .track-info { flex: 1 1 100%; /* сокращённый flex */ /* сокращённый flex */ min-width: 0; /* минимальная ширина */; }
-    .track-info h3 { font-size: 1.05rem; /* размер шрифта */ /* размер шрифта */ word-break: break-word; /* разрыв слов */; }
+    .audio-track:hover { transform: none; /* трансформация */ }
+    .track-info { flex: 1 1 100%; /* сокращённый flex */; min-width: 0; /* минимальная ширина */ }
+    .track-info h3 { font-size: 1.05rem; /* размер шрифта */; word-break: break-word; /* разрыв слов */ }
     .track-actions { /* .track-actions */
         width: 100%; /* ширина */
         justify-content: space-between; /* выравнивание по главной оси */
@@ -5172,8 +5018,8 @@ h2 { /* h2 */
     .audio-player { /* .audio-player */
         padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); /* внутренний отступ, safe-area */
     } /* /.audio-player */
-    .player-content { gap: 12px; /* расстояние между элементами */ /* расстояние между элементами */ position: relative; /* позиционирование */ padding-top: 8px; /* отступ сверху */; }
-    .player-info { min-width: 0; /* минимальная ширина */ /* минимальная ширина */; }
+    .player-content { gap: 12px; /* расстояние между элементами */; position: relative; /* позиционирование */; padding-top: 8px; /* отступ сверху */ }
+    .player-info { min-width: 0; /* минимальная ширина */ }
     .player-info h4 { /* .player-info h4 */
         font-size: 0.95rem; /* размер шрифта */
         white-space: nowrap; /* переносы */
@@ -5252,7 +5098,7 @@ h2 { /* h2 */
         padding-left: 12px; /* отступ слева */
         padding-right: 12px; /* отступ справа */
     } /* /.dalai-carousel__inner */
-    .dalai-lamas-nav-rail { width: 36px; /* ширина */ /* ширина */; }
+    .dalai-lamas-nav-rail { width: 36px; /* ширина */ }
     .dalai-lamas-nav-rail .dalai-carousel__arrow { /* .dalai-lamas-nav-rail .dalai-carousel__arrow */
         width: 36px; /* ширина */
         height: 36px; /* высота */
@@ -5285,8 +5131,8 @@ h2 { /* h2 */
         height: min(70dvh, 520px); /* высота */
         border-radius: 20px 20px 0 0; /* скругление */
     } /* /.chat-window */
-    body.chat-open { overflow: hidden; /* переполнение */ /* переполнение */; }
-    .chat-input input { font-size: 16px; /* размер шрифта */ /* размер шрифта */ min-height: 44px; /* минимальная высота */; }
+    body.chat-open { overflow: hidden; /* переполнение */ }
+    .chat-input input { font-size: 16px; /* размер шрифта */; min-height: 44px; /* минимальная высота */ }
 
     .back-to-top { /* .back-to-top */
         right: max(14px, env(safe-area-inset-right)); /* отступ справа, safe-area */
@@ -5295,7 +5141,7 @@ h2 { /* h2 */
         height: 48px; /* высота */
     } /* /.back-to-top */
 
-    .video-modal-content { padding: 48px 8px 16px; /* внутренний отступ */ /* внутренний отступ */; }
+    .video-modal-content { padding: 48px 8px 16px; /* внутренний отступ */ }
     .video-modal .close-modal { /* .video-modal .close-modal */
         position: fixed; /* позиционирование */
         top: max(12px, env(safe-area-inset-top)); /* отступ сверху, safe-area */
@@ -5319,14 +5165,14 @@ h2 { /* h2 */
 } /* /@media (max-width: 768px) */
 
 @media (max-width: 480px) { /* @media (max-width: 480px) */
-    .container { padding: 0 14px; /* внутренний отступ */ /* внутренний отступ */; }
-    :root { --navbar-height: 64px; /* CSS-переменная --navbar-height */ /* CSS-переменная --navbar-height */; }
+    .container { padding: 0 14px; /* внутренний отступ */ }
+    :root { --navbar-height: 64px; /* CSS-переменная --navbar-height */ }
 
     .chat-toggle { /* .chat-toggle */
         padding: 12px 14px; /* внутренний отступ */
         gap: 6px; /* расстояние между элементами */
     } /* /.chat-toggle */
-    .chat-toggle span { display: none; /* режим отображения */ /* режим отображения */; }
+    .chat-toggle span { display: none; /* режим отображения */ }
     .chat-toggle::after { /* .chat-toggle::after */
         content: "ИИ"; /* псевдоэлемент content */
         font-weight: 700; /* жирность */
@@ -5340,17 +5186,17 @@ h2 { /* h2 */
         height: 85dvh; /* высота */
         border-radius: 20px 20px 0 0; /* скругление */
     } /* /.chat-window */
-    .chat-header h4 { font-size: 0.95rem; /* размер шрифта */ /* размер шрифта */; }
+    .chat-header h4 { font-size: 0.95rem; /* размер шрифта */ }
 
-    .stats-grid { grid-template-columns: 1fr; /* колонки сетки */ /* колонки сетки */; }
-    .subtitle { font-size: 1rem; /* размер шрифта */ /* размер шрифта */; }
+    .stats-grid { grid-template-columns: 1fr; /* колонки сетки */ }
+    .subtitle { font-size: 1rem; /* размер шрифта */ }
 
-    .dalai-lamas-nav-rail--prev { left: 4px; /* отступ слева */ /* отступ слева */; }
-    .dalai-lamas-nav-rail--next { right: 4px; /* отступ справа */ /* отступ справа */; }
+    .dalai-lamas-nav-rail--prev { left: 4px; /* отступ слева */ }
+    .dalai-lamas-nav-rail--next { right: 4px; /* отступ справа */ }
 
-    .media-item iframe { height: 180px; /* высота */ /* высота */; }
-    .interest-btn { min-height: 44px; /* минимальная высота */ /* минимальная высота */; }
-    .faq-question { min-height: 48px; /* минимальная высота */ /* минимальная высота */ font-size: 0.95rem; /* размер шрифта */; }
+    .media-item iframe { height: 180px; /* высота */ }
+    .interest-btn { min-height: 44px; /* минимальная высота */ }
+    .faq-question { min-height: 48px; /* минимальная высота */; font-size: 0.95rem; /* размер шрифта */ }
 } /* /@media (max-width: 480px) */
 
 @media (max-width: 768px) and (hover: none) { /* @media (max-width: 768px) and (hover: none) */
