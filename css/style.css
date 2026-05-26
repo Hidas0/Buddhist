@@ -559,7 +559,7 @@ section * { /* section * */
 
 /* =============================================================================
    CATALOG — страница catalog.html «Традиции»
-   Hero: градиент --secondary → #2a0f05; карточки на --card-bg; /* Hero */
+   Hero: градиент --secondary → #2a0f05; карточки на --card-bg
    ============================================================================= */
  .traditions-hero { /* .traditions-hero */
             background: linear-gradient(135deg, var(--secondary) 0%, #2a0f05 100%); /* фон */
@@ -2025,7 +2025,7 @@ section * { /* section * */
 
 /* =============================================================================
    KALM — страница kalm.html (Калмыкия)
-   Hero: #fff7ed → #fffbeb; акценты через --primary / --secondary; /* Hero */
+   Hero: #fff7ed → #fffbeb; акценты через --primary / --secondary
    Блок форума/сансары — тёмные бордо/золото ниже (~строка 1830+)
    ============================================================================= */
 #kalm-about,
@@ -3815,6 +3815,7 @@ a.media-card { /* a.media-card */
     opacity: 0.85; /* прозрачность */
     display: -webkit-box; /* режим отображения */
     -webkit-line-clamp: 2; /* число строк */
+    line-clamp: 2; /* число строк */
     -webkit-box-orient: vertical; /* ориентация box */
     overflow: hidden; /* переполнение */
 } /* /.map-list__desc */
