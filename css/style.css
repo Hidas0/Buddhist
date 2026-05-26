@@ -897,12 +897,12 @@ section * { /* section * */
 .traditions-hero__overlay { /* .traditions-hero__overlay */
     position: absolute; /* позиционирование */
     inset: 0; /* отступы со всех сторон */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         135deg,
         rgba(69, 26, 3, 0.88) 0%,
         rgba(42, 15, 5, 0.78) 55%,
         rgba(0, 0, 0, 0.45) 100%
-    );
+    ); /* фон */
 } /* /.traditions-hero__overlay */
 .traditions-hero__content { /* .traditions-hero__content */
     position: relative; /* позиционирование */
@@ -1593,24 +1593,24 @@ section * { /* section * */
     pointer-events: none; /* пропуск кликов */
 } /* /.dalai-lamas-nav-rail */
 .dalai-lamas-nav-rail--prev { /* .dalai-lamas-nav-rail--prev */
-    left: max(; /* отступ слева */
+    left: max(
         14px,
         calc(env(safe-area-inset-left, 0px) + 6px),
         min(
             calc((100vw - 1200px) / 2 - 60px),
             calc((100vw - 1200px) / 4 - 24px)
         )
-    );
+    ); /* отступ слева */
 } /* /.dalai-lamas-nav-rail--prev */
 .dalai-lamas-nav-rail--next { /* .dalai-lamas-nav-rail--next */
-    right: max(; /* отступ справа */
+    right: max(
         14px,
         calc(env(safe-area-inset-right, 0px) + 6px),
         min(
             calc((100vw - 1200px) / 2 - 60px),
             calc((100vw - 1200px) / 4 - 24px)
         )
-    );
+    ); /* отступ справа */
 } /* /.dalai-lamas-nav-rail--next */
 
 .dalai-lamas-track { /* .dalai-lamas-track */
@@ -2786,18 +2786,18 @@ section * { /* section * */
     top: 0; /* отступ сверху */
     height: 100%; /* высота */
     border-radius: inherit; /* скругление */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         180deg,
         var(--samsara-gold-bright) 0%,
         var(--samsara-gold) 25%,
         #b45309 55%,
         var(--samsara-maroon) 100%
-    );
+    ); /* фон */
     transform: scaleY(0); /* трансформация */
     transform-origin: top center; /* центр трансформации */
     will-change: transform; /* оптимизация рендера */
     box-shadow: 0 0 28px rgba(201, 162, 39, 0.45); /* тень */
-    mix-blend-mode: soft-light; /* mix-blend-mode */
+    mix-blend-mode: soft-light; /* режим наложения */
     opacity: 0.92; /* прозрачность */
 } /* /.kalm-forum-flow__spine-fill */
 
@@ -2962,12 +2962,12 @@ section * { /* section * */
     margin-top: 36px; /* отступ сверху */
     height: 2px; /* высота */
     align-self: start; /* выравнивание элемента */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         90deg,
         transparent 0%,
         rgba(217, 119, 6, 0.45) 50%,
         transparent 100%
-    );
+    ); /* фон */
     opacity: 0.85; /* прозрачность */
 } /* /.kalm-forum-step__rail */
 
@@ -3137,21 +3137,21 @@ section * { /* section * */
     height: 3px; /* высота */
     margin-top: 38px; /* отступ сверху */
     opacity: 0.95; /* прозрачность */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         90deg,
         transparent 0%,
         rgba(201, 162, 39, 0.55) 42%,
         rgba(124, 45, 18, 0.35) 100%
-    );
+    ); /* фон */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__rail */
 
 .kalm-forum-flow--samsara .kalm-forum-step--right .kalm-forum-step__rail { /* .kalm-forum-flow--samsara .kalm-forum-step--right .kalm-forum-step__rail */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         90deg,
         rgba(124, 45, 18, 0.35) 0%,
         rgba(201, 162, 39, 0.55) 58%,
         transparent 100%
-    );
+    ); /* фон */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step--right .kalm-forum-step__rail */
 
 .kalm-forum-flow--samsara .kalm-forum-step__card { /* .kalm-forum-flow--samsara .kalm-forum-step__card */
@@ -3162,12 +3162,12 @@ section * { /* section * */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__card */
 
 .kalm-forum-flow--samsara .kalm-forum-step__card::before { /* .kalm-forum-flow--samsara .kalm-forum-step__card::before */
-    background: linear-gradient(; /* фон */
+    background: linear-gradient(
         135deg,
         rgba(201, 162, 39, 0.45) 0%,
         transparent 38%,
         rgba(124, 45, 18, 0.2) 100%
-    );
+    ); /* фон */
     opacity: 0.85; /* прозрачность */
 } /* /.kalm-forum-flow--samsara .kalm-forum-step__card::before */
 
