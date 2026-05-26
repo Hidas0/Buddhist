@@ -1411,8 +1411,7 @@ section * { /* section * */
 .scroll-reveal { /* .scroll-reveal */
     opacity: 0; /* прозрачность */
     transform: translateY(32px); /* трансформация */
-    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),; /* переход */
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1); /* переход */
 } /* /.scroll-reveal */
 .scroll-reveal.is-visible { /* .scroll-reveal.is-visible */
     opacity: 1; /* прозрачность */
