@@ -1,21 +1,24 @@
 /**
- * lotus-bg.js — фоновые лотосы с простой «физикой»:
- * свободное движение по странице, отклик на волну, респавн после клика.
+ * lotus-bg.js — фоновые лотосы: движение, клик, волна по странице, цитаты.
+ * Подключается в конце body на страницах сайта. Стили — css/style.css (.lotus-bg).
  */
-(() => {
-  const LOTUS_COUNT = 16;
-  const PETAL_BURST_COUNT = 14;
-  const WAVE_MAX_RADIUS_PX = 460;
-  const WAVE_START_RADIUS_PX = 11;
-  const GLOBAL_WAVE_DURATION_MS = 2300;
-  const WAVE_HIT_ANIM_MS = 1720;
-  const SPEED = 0.2;
-  const SMOOTH_ALPHA = 0.065;
-  const LAYER_PAD_PX = 44;
-  const RESPAWN_MIN_MS = 2800;
-  const RESPAWN_MAX_MS = 6200;
-  const VANISH_REMOVE_MS = 1650;
+(() => { // IIFE: изолируем переменные, не засоряем window
 
+  // --- Настройки количества и размеров эффектов ---
+  const LOTUS_COUNT = 16; // сколько лотосов создать при загрузке
+  const PETAL_BURST_COUNT = 14; // частиц «лепестков» при взрыве по клику
+  const WAVE_MAX_RADIUS_PX = 460; // радиус волны: кто дальше — не реагирует
+  const WAVE_START_RADIUS_PX = 11; // от этой дистанции волна «догоняет» с задержкой
+  const GLOBAL_WAVE_DURATION_MS = 2300; // длительность фронта волны (мс)
+  const WAVE_HIT_ANIM_MS = 1720; // длительность CSS-анимации сдвига текста/карточек
+  const SPEED = 0.2; // множитель скорости дрейфа лотосов
+  const SMOOTH_ALPHA = 0.065; // сглаживание: render-позиция догоняет физическую
+  const LAYER_PAD_PX = 44; // отступ от краёв слоя, чтобы лотос не обрезался
+  const RESPAWN_MIN_MS = 2800; // мин. пауза перед появлением нового лотоса после клика
+  const RESPAWN_MAX_MS = 6200; // макс. пауза респавна
+  const VANISH_REMOVE_MS = 1650; // через сколько удалить DOM лотоса после исчезновения
+
+  // Тексты цитат при клике на лотос (случайный выбор, без повтора подряд)
   const LOTUS_QUOTES = [
     "Отпусти то, что не принадлежит тебе. Освободившись, ты надолго обретешь счастье и благо.",
     "Нелепо думать, что кто-то, кроме тебя, сможет сделать тебя счастливым или несчастным.",
@@ -44,22 +47,27 @@
     "В этом мире ненависть никогда не искоренить с помощью ненависти. Победить ненависть сможет только любовь. Это вечный закон.",
   ];
 
-  let layer = null;
-  let physicsStates = [];
-  let wavePulseRoot;
-  let lotusQuoteRoot;
-  let lastQuoteIndex = -1;
+  // --- Состояние модуля (живёт между вызовами функций) ---
+  let layer = null; // контейнер .lotus-bg на всю высоту страницы
+  let physicsStates = []; // массив объектов физики по одному на каждый лотос
+  let wavePulseRoot; // div для полноэкранной волны (backdrop / clip-path)
+  let lotusQuoteRoot; // контейнер для всплывающих цитат
+  let lastQuoteIndex = -1; // индекс прошлой цитаты (чтобы не повторять подряд)
 
+  /** Случайное число в диапазоне [min, max) */
   function random(min, max) {
     return Math.random() * (max - min) + min;
   }
 
+  /** Ограничить value между min и max */
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
 
+  /** Ширина/высота области движения лотосов и отступ от краёв */
   function getLayerBounds() {
     if (!layer) {
+      // слой ещё не создан — берём размер окна
       return {
         w: document.documentElement.clientWidth,
         h: window.innerHeight,
@@ -73,6 +81,7 @@
     };
   }
 
+  /** Случайная точка внутри слоя с учётом отступа pad */
   function pickFreePositionPx() {
     const { w, h, pad } = getLayerBounds();
     return {
@@ -81,10 +90,12 @@
     };
   }
 
+  /** Уникальный префикс id градиентов SVG (чтобы лотосы не конфликтовали) */
   function lotusUid() {
     return "l" + Math.random().toString(36).slice(2, 10);
   }
 
+  /** SVG-цветок: градиенты и три кольца лепестков (uid в id) */
   function buildLotusSvg(uid) {
     return `
 <svg class="lotus-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -164,16 +175,18 @@
     <ellipse cx="-4" cy="-4" rx="4" ry="2" fill="#ffffff" transform="rotate(-30 -4 -4)"/>
   </g>
 </svg>`;
+    // ↑ три кольца: 12 широких + 12 средних (сдвиг 15°) + 12 тонких лепестков; центр — круг и блик
   }
 
+  /** Создаёт span.lotus-burst-piece с CSS-переменными для анимации разлёта */
   function createBurstPieces(lotus) {
     for (let i = 0; i < PETAL_BURST_COUNT; i += 1) {
       const piece = document.createElement("span");
       piece.className = "lotus-burst-piece";
-      const angle = random(0, Math.PI * 2);
-      const distance = random(42, 138);
+      const angle = random(0, Math.PI * 2); // направление разлёта
+      const distance = random(42, 138); // дальность полёта частицы
       const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance - random(10, 34);
+      const dy = Math.sin(angle) * distance - random(10, 34); // чуть вверх
       piece.style.setProperty("--dx", `${dx.toFixed(2)}px`);
       piece.style.setProperty("--dy", `${dy.toFixed(2)}px`);
       piece.style.setProperty("--rot", `${random(-260, 260).toFixed(0)}deg`);
@@ -185,69 +198,75 @@
     }
   }
 
+  /** Объект физики одного лотоса: позиция, скорость, сглаженный render */
   function createPhysicsState(lotus, pos) {
     const rot = random(-5, 5);
     return {
-      lotus,
-      px: pos.px,
+      lotus, // ссылка на DOM-кнопку
+      px: pos.px, // логическая X (px от левого края слоя)
       py: pos.py,
-      vx: random(-0.045, 0.045),
+      vx: random(-0.045, 0.045), // скорость по X
       vy: random(-0.038, 0.038),
-      rot,
-      vRot: random(-0.025, 0.025),
-      rotDelta: parseFloat(lotus.style.getPropertyValue("--rot-delta")) || 0,
-      noisePhase: random(0, Math.PI * 2),
-      renderPx: pos.px,
+      rot, // угол поворота
+      vRot: random(-0.025, 0.025), // угловая скорость
+      rotDelta: parseFloat(lotus.style.getPropertyValue("--rot-delta")) || 0, // смещение из CSS
+      noisePhase: random(0, Math.PI * 2), // фаза «покачивания» sin/cos
+      renderPx: pos.px, // то, что реально рисуем (сглажено)
       renderPy: pos.py,
       renderRot: rot,
-      removing: false,
+      removing: false, // помечен на удаление после клика
     };
   }
 
+  /** Записывает transform лотоса: translate3d + центрирование + rotate */
   function applyLotusTransform(state) {
     const { lotus } = state;
     const rot = state.renderRot + state.rotDelta;
     lotus.style.transform = `translate3d(${state.renderPx.toFixed(1)}px, ${state.renderPy.toFixed(1)}px, 0) translate(-50%, -50%) rotate(${rot.toFixed(2)}deg)`;
   }
 
+  /** Плавное приближение current к target (экспоненциальное сглаживание) */
   function smoothToward(current, target, alpha) {
     return current + (target - current) * alpha;
   }
 
+  /** Отскок от границы: не вылетает за min/max, скорость отражается */
   function softEdge(pos, vel, min, max) {
     if (pos < min) return { pos: min, vel: Math.abs(vel) * 0.35 };
     if (pos > max) return { pos: max, vel: -Math.abs(vel) * 0.35 };
     return { pos, vel };
   }
 
+  /** Один кадр физики для всех лотосов (вызывается из rAF) */
   function tickPhysics(dt) {
     const { w, h, pad } = getLayerBounds();
     const now = performance.now();
-    const step = dt * SPEED;
-    const alpha = Math.min(0.12, SMOOTH_ALPHA * Math.max(0.85, dt));
+    const step = dt * SPEED; // шаг с учётом SPEED
+    const alpha = Math.min(0.12, SMOOTH_ALPHA * Math.max(0.85, dt)); // коэфф. сглаживания кадра
 
     physicsStates.forEach((state) => {
-      if (state.removing || !state.lotus.isConnected) return;
+      if (state.removing || !state.lotus.isConnected) return; // пропуск удаляемых
 
+      // лёгкое псевдо-случайное ускорение (дрейф)
       state.vx += Math.sin(now * 0.00038 + state.noisePhase) * 0.0028 * step;
       state.vy += Math.cos(now * 0.00032 + state.noisePhase) * 0.0024 * step;
 
-      state.px += state.vx * step * 14;
+      state.px += state.vx * step * 14; // сдвиг позиции
       state.py += state.vy * step * 14;
 
-      let edge = softEdge(state.px, state.vx, pad, w - pad);
+      let edge = softEdge(state.px, state.vx, pad, w - pad); // граница по X
       state.px = edge.pos;
       state.vx = edge.vel;
-      edge = softEdge(state.py, state.vy, pad, h - pad);
+      edge = softEdge(state.py, state.vy, pad, h - pad); // граница по Y
       state.py = edge.pos;
       state.vy = edge.vel;
 
-      state.vx *= 0.999;
+      state.vx *= 0.999; // трение
       state.vy *= 0.999;
 
       state.rot += state.vRot * step;
       state.vRot *= 0.996;
-      if (Math.abs(state.rot) > 10) state.vRot *= 0.6;
+      if (Math.abs(state.rot) > 10) state.vRot *= 0.6; // гасим вращение при большом угле
 
       state.renderPx = smoothToward(state.renderPx, state.px, alpha);
       state.renderPy = smoothToward(state.renderPy, state.py, alpha);
@@ -257,6 +276,7 @@
     });
   }
 
+  /** Через случайную паузу создаёт новый лотос (после клика по другому) */
   function scheduleRespawn() {
     const delay = random(RESPAWN_MIN_MS, RESPAWN_MAX_MS);
     window.setTimeout(() => {
@@ -266,6 +286,7 @@
     }, delay);
   }
 
+  /** Помечает лотос удалённым и убирает из DOM и physicsStates */
   function removeLotusState(state) {
     state.removing = true;
     window.setTimeout(() => {
@@ -274,15 +295,16 @@
     }, VANISH_REMOVE_MS);
   }
 
+  /** Клик по лотосу: взрыв, волна, цитата, респавн */
   function onLotusClick(state, event) {
     event.preventDefault();
     const { lotus } = state;
     lotus.classList.remove("burst", "lotus-wave-push");
-    void lotus.offsetWidth;
+    void lotus.offsetWidth; // reflow — перезапуск CSS-анимации
     lotus.classList.add("burst", "vanish");
 
     const rect = lotus.getBoundingClientRect();
-    const pageX = rect.left + rect.width / 2 + window.scrollX;
+    const pageX = rect.left + rect.width / 2 + window.scrollX; // центр в координатах документа
     const pageY = rect.top + rect.height / 2 + window.scrollY;
 
     triggerBackgroundWave(pageX, pageY);
@@ -294,6 +316,7 @@
     scheduleRespawn();
   }
 
+  /** Создаёт один лотос-кнопку, вешает физику и обработчик клика */
   function spawnLotus(pos) {
     if (!layer) return null;
 
@@ -317,7 +340,7 @@
     `;
     createBurstPieces(lotus);
 
-    lotus.style.left = "0";
+    lotus.style.left = "0"; // позиция только через transform
     lotus.style.top = "0";
 
     const state = createPhysicsState(lotus, pos || pickFreePositionPx());
@@ -330,6 +353,7 @@
     return state;
   }
 
+  /** Толкает соседние лотосы от точки клика (с задержкой по расстоянию) */
   function applyWaveToLotuses(pageX, pageY, sourceState) {
     physicsStates.forEach((state) => {
       if (state.removing || state === sourceState || !state.lotus.isConnected) return;
@@ -342,8 +366,8 @@
       const distance = Math.hypot(dx, dy);
       if (distance > WAVE_MAX_RADIUS_PX) return;
 
-      const power = 1 - distance / WAVE_MAX_RADIUS_PX;
-      const nx = distance === 0 ? random(-1, 1) : dx / distance;
+      const power = 1 - distance / WAVE_MAX_RADIUS_PX; // 1 у эпицентра, 0 на краю
+      const nx = distance === 0 ? random(-1, 1) : dx / distance; // единичный вектор
       const ny = distance === 0 ? random(-1, 1) : dy / distance;
       const delay = waveFrontDelayMs(distance);
 
@@ -357,17 +381,19 @@
     });
   }
 
+  /** Бесконечный цикл requestAnimationFrame → tickPhysics */
   function startPhysicsLoop() {
     let lastTs = performance.now();
     const frame = (now) => {
-      const dtMs = Math.min(48, now - lastTs);
+      const dtMs = Math.min(48, now - lastTs); // ограничение лагов
       lastTs = now;
-      tickPhysics(dtMs / 16.6667);
+      tickPhysics(dtMs / 16.6667); // dt в «условных кадрах» ~60fps
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   }
 
+  /** Высота слоя = полная высота документа (лотосы на всей прокрутке) */
   function syncLayerHeight() {
     if (!layer) return;
     const doc = document.documentElement;
@@ -382,6 +408,7 @@
     layer.style.height = `${maxHeight}px`;
   }
 
+  /** Один раз создаёт div.lotus-bg-wave-pulse в начале body */
   function getWavePulseRoot() {
     if (wavePulseRoot) return wavePulseRoot;
     wavePulseRoot = document.createElement("div");
@@ -391,6 +418,7 @@
     return wavePulseRoot;
   }
 
+  /** Один раз создаёт контейнер для цитат .lotus-quote-layer */
   function getLotusQuoteRoot() {
     if (lotusQuoteRoot) return lotusQuoteRoot;
     lotusQuoteRoot = document.createElement("div");
@@ -400,6 +428,7 @@
     return lotusQuoteRoot;
   }
 
+  /** Случайная цитата, не совпадающая с предыдущей */
   function pickQuoteText() {
     if (LOTUS_QUOTES.length < 2) return LOTUS_QUOTES[0] || "";
     let idx = Math.floor(random(0, LOTUS_QUOTES.length));
@@ -408,6 +437,7 @@
     return LOTUS_QUOTES[idx];
   }
 
+  /** Показывает .lotus-quote у точки клика, не вылезая за экран и под шапкой */
   function showLotusQuote(pageX, pageY) {
     const root = getLotusQuoteRoot();
     const quote = document.createElement("div");
@@ -420,10 +450,10 @@
         10
       ) || 70;
     const pad = 14;
-    const clientX = pageX - window.scrollX;
+    const clientX = pageX - window.scrollX; // viewport X
     const clientY = pageY - window.scrollY;
 
-    quote.style.visibility = "hidden";
+    quote.style.visibility = "hidden"; // сначала невидимо — измеряем размер
     root.appendChild(quote);
 
     const rect = quote.getBoundingClientRect();
@@ -444,9 +474,10 @@
     quote.style.top = `${top.toFixed(1)}px`;
     quote.style.visibility = "visible";
 
-    window.setTimeout(() => quote.remove(), 6200);
+    window.setTimeout(() => quote.remove(), 6200); // убрать цитату через 6.2 с
   }
 
+  /** Визуальная волна по фону: CSS-переменные --wave-vx/vy и класс --on */
   function triggerBackgroundWave(pageX, pageY) {
     const el = getWavePulseRoot();
     const vx = ((pageX - window.scrollX) / Math.max(1, window.innerWidth)) * 100;
@@ -459,6 +490,7 @@
     window.setTimeout(() => el.classList.remove("lotus-bg-wave-pulse--on"), 2600);
   }
 
+  /** Задержка удара волны: дальше от центра — позже (эффект распространения) */
   function waveFrontDelayMs(distance) {
     if (distance <= WAVE_START_RADIUS_PX) return 0;
     if (distance >= WAVE_MAX_RADIUS_PX) return GLOBAL_WAVE_DURATION_MS;
@@ -466,12 +498,13 @@
     return ((distance - WAVE_START_RADIUS_PX) / span) * GLOBAL_WAVE_DURATION_MS;
   }
 
+  /** Добавляет класс lotus-wave-hit заголовкам и карточкам в радиусе волны */
   function impactNearbyElements(pageX, pageY) {
     const targets = document.querySelectorAll(
       "h1,h2,h3,h4,p,li,a,.card,.tradition-card,.kalm-card-item,.media-card,.audio-track,.content-card,.info-pill,.quote-card,button"
     );
     targets.forEach((el) => {
-      if (el.closest(".lotus-bg")) return;
+      if (el.closest(".lotus-bg")) return; // не трогаем другие лотосы
       const rect = el.getBoundingClientRect();
       const cx = rect.left + rect.width / 2 + window.scrollX;
       const cy = rect.top + rect.height / 2 + window.scrollY;
@@ -498,8 +531,9 @@
     });
   }
 
+  /** Точка входа: слой, лотосы, физика, слушатели resize/scroll */
   function initLotusBackground() {
-    document.getElementById("lotus-wave-filter-svg")?.remove();
+    document.getElementById("lotus-wave-filter-svg")?.remove(); // устаревший фильтр, если был
     getWavePulseRoot();
     getLotusQuoteRoot();
 
@@ -520,6 +554,7 @@
     window.addEventListener("scroll", syncLayerHeight, { passive: true });
   }
 
+  // Запуск после готовности DOM
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initLotusBackground, { once: true });
   } else {
