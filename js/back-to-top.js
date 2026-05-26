@@ -1,12 +1,13 @@
 /**
- * back-to-top.js — кнопка прокрутки наверх (#backTopBtn или .back-to-top).
- * Появляется после ~400px прокрутки; плавный scroll + снятие анимации при остановке.
+ * back-to-top.js — кнопка «Наверх» (#backTopBtn или .back-to-top).
+ * Появляется после прокрутки; плавный scroll; анимация is-scrolling снимается при остановке.
  */
 (() => {
-  const SCROLL_SHOW_Y = 400;
-  const SCROLL_TOP_EPSILON = 4;
-  const ANIM_CLASS = "is-scrolling";
+  const SCROLL_SHOW_Y = 400; // после скольких px показать кнопку
+  const SCROLL_TOP_EPSILON = 4; // считаем «у верха», если scrollY ≤ этого
+  const ANIM_CLASS = "is-scrolling"; // класс плавающей анимации на кнопке
 
+  /** Найти кнопку на странице (id или класс) */
   function getButton() {
     return (
       document.getElementById("backTopBtn") ||
@@ -14,6 +15,7 @@
     );
   }
 
+  /** Показать/скрыть кнопку по scrollY */
   function updateVisibility(btn) {
     if (window.scrollY > SCROLL_SHOW_Y) {
       btn.classList.add("show");
@@ -41,7 +43,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
 
       let lastY = window.scrollY;
-      let stableTicks = 0;
+      let stableTicks = 0; // счётчик «застывшей» прокрутки
 
       const stop = () => {
         btn.classList.remove(ANIM_CLASS);
@@ -50,7 +52,7 @@
 
       const onScrollStop = () => {
         const y = window.scrollY;
-        if (y <= SCROLL_TOP_EPSILON) return stop();
+        if (y <= SCROLL_TOP_EPSILON) return stop(); // доехали наверх
 
         if (Math.abs(y - lastY) < 0.5) {
           stableTicks += 1;
@@ -59,7 +61,7 @@
         }
         lastY = y;
 
-        // Если браузер/пользователь остановил плавную прокрутку — снимаем анимацию.
+        // Прокрутка остановилась (пользователь прервал smooth) — убрать анимацию
         if (stableTicks >= 8) stop();
       };
 
@@ -73,4 +75,3 @@
     init();
   }
 })();
-

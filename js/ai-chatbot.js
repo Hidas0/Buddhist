@@ -15,8 +15,9 @@ function getOpenRouterApiKey() {
     return String(key).trim();
 }
 
-const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'; // endpoint OpenRouter
 
+// Элементы виджета из HTML (общий фрагмент на страницах)
 const chatToggle = document.getElementById('chatToggle');
 const chatWindow = document.getElementById('chatWindow');
 const chatClose = document.getElementById('chatClose');
@@ -24,10 +25,10 @@ const chatSend = document.getElementById('chatSend');
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 
-let isTyping = false;
-let messageHistory = [];
-const CHAT_STORAGE_KEY = 'dharmaAiChatMessages';
-const HISTORY_STORAGE_KEY = 'dharmaAiMessageHistory';
+let isTyping = false; // блокировка повторной отправки
+let messageHistory = []; // последние сообщения для API (role: user|assistant)
+const CHAT_STORAGE_KEY = 'dharmaAiChatMessages'; // localStorage: отображение в DOM
+const HISTORY_STORAGE_KEY = 'dharmaAiMessageHistory'; // localStorage: контекст для API
 
 /** Приветствие в #chatMessages (одинаковое на всех страницах) */
 const CHAT_WELCOME =
@@ -62,10 +63,11 @@ const FREE_MODELS = [
     'liquid/lfm2.5-1.2b-thinking:free'
 ];
 
+/** Отправка вопроса: UI → перебор FREE_MODELS → ответ или ошибка */
 async function sendMessage() {
     const question = chatInput.value.trim();
     if (!question || isTyping) return;
-    
+
     addMessage(question, 'user');
     chatInput.value = '';
     messageHistory.push({ role: 'user', content: question });
@@ -193,6 +195,7 @@ async function sendMessage() {
     }
 }
 
+/** Добавить пузырь в #chatMessages (user|bot), простой markdown ** * и переносы */
 function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
@@ -207,6 +210,7 @@ function addMessage(text, sender) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+/** Сохранить DOM и history в localStorage (на случай восстановления в сессии) */
 function saveChatState() {
     try {
         const domMessages = Array.from(chatMessages.querySelectorAll('.message:not(.typing-indicator)')).map((item) => {
@@ -222,6 +226,7 @@ function saveChatState() {
     }
 }
 
+/** Восстановить чат из localStorage (сейчас не вызывается при загрузке) */
 function restoreChatState() {
     try {
         const savedMessagesRaw = localStorage.getItem(CHAT_STORAGE_KEY);
@@ -260,12 +265,14 @@ function clearChatStateOnPageLoad() {
     }
 }
 
+/** Перерисовать иконки Lucide в шапке чата */
 function initChatIcons() {
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
         window.lucide.createIcons();
     }
 }
 
+/** Показать «три точки» пока ждём ответ API */
 function showTypingIndicator() {
     isTyping = true;
     const typingDiv = document.createElement('div');
@@ -276,12 +283,14 @@ function showTypingIndicator() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+/** Убрать индикатор набора */
 function removeTypingIndicator() {
     isTyping = false;
     const indicator = document.getElementById('typingIndicator');
     if (indicator) indicator.remove();
 }
 
+/** Открыть/закрыть окно чата, класс body.chat-open */
 function setChatOpen(open) {
     if (!chatWindow) return;
     chatWindow.classList.toggle('active', open);
@@ -313,6 +322,7 @@ if (!chatToggle || !chatWindow || !chatMessages) {
     console.warn('AI чат: элементы не найдены на этой странице');
 }
 
+/** Подставить CHAT_WELCOME в первое сообщение бота из HTML */
 function applyWelcomeMessage() {
     if (!chatMessages) return;
     const firstBot = chatMessages.querySelector('.message.bot .message-content');

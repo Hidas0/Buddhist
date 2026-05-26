@@ -1,7 +1,12 @@
 /**
- * map-page.js — интерактивная карта (map.html)
+ * map-page.js — интерактивная карта святынь (map.html).
+ * Данные: data/places.json, data/place-images.json. API: Яндекс.Карты 2.1.
+ *
+ * Основные блоки: пресеты и фильтры → маркеры и список → панель места →
+ * таймлайн эпох → панорама → геолокация «рядом со мной» → мобильные вкладки карта/список.
  */
 (() => {
+  // --- Стили меток по типу места (пресеты Яндекс.Карт) ---
   const TYPE_PRESETS = {
     святыня: "islands#redIcon",
     монастырь: "islands#orangeIcon",
@@ -95,8 +100,9 @@
     },
   };
 
-  const ROUTE_IDS = ["lumbini", "bodhgaya", "sarnath", "kushinagar"];
+  const ROUTE_IDS = ["lumbini", "bodhgaya", "sarnath", "kushinagar"]; // маршрут «4 святыни»
 
+  // --- Состояние карты (живёт на время сессии страницы) ---
   let allPlaces = [];
   let map = null;
   let clusterer = null;
@@ -117,10 +123,12 @@
 
   const MOBILE_MAP_MQ = window.matchMedia("(max-width: 768px)");
 
+  /** true на узком экране — вкладки «Карта» / «Список» */
   function isMobileMapLayout() {
     return MOBILE_MAP_MQ.matches;
   }
 
+  /** Пересчитать размер карты после смены layout */
   function invalidateMapSize() {
     if (!map?.container?.fitToViewport) return;
     requestAnimationFrame(() => {
@@ -132,6 +140,7 @@
     });
   }
 
+  /** Переключить мобильный вид: map или list */
   function setMobileMapView(view) {
     const layout = document.querySelector(".map-layout");
     const tabs = document.querySelector(".map-view-tabs");
@@ -147,11 +156,13 @@
     invalidateMapSize();
   }
 
+  /** Прокрутить пункт списка к выбранному месту */
   function scrollListItemIntoView(placeId) {
     const item = document.querySelector(`.map-list__item[data-id="${placeId}"]`);
     if (item) item.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
+  /** Кнопки вкладок Карта/Список на мобильном */
   function bindMobileMapViews() {
     const tabs = document.querySelector(".map-view-tabs");
     const layout = document.querySelector(".map-layout");
@@ -188,6 +199,7 @@
     });
   }
 
+  /** Экранирование HTML в шаблонах */
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -196,10 +208,12 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** URL картинки места (place-images.json или place.image) */
   function placeImg(place) {
     return escapeHtml(place.image || "images/hero.png");
   }
 
+  /** Разблокировать прокрутку body */
   function unlockPageScroll() {
     document.documentElement.classList.remove("map-scroll-locked");
     document.body.classList.remove("map-panorama-open");
@@ -207,10 +221,12 @@
     document.documentElement.style.overflow = "";
   }
 
+  /** Заблокировать прокрутку при открытой панораме */
   function lockPageScroll() {
     document.documentElement.classList.add("map-scroll-locked");
   }
 
+  /** Promise с таймаутом */
   function withTimeout(promise, ms) {
     return Promise.race([
       promise,
@@ -220,12 +236,14 @@
     ]);
   }
 
+  /** Ссылка на панораму в Яндекс.Картах */
   function getYandexPanoramaUrl(coords) {
     const [lat, lon] = coords;
     const ll = `${lon},${lat}`;
     return `https://yandex.ru/maps/?ll=${encodeURIComponent(ll)}&z=17&panorama%5Bpoint%5D=${encodeURIComponent(ll)}&panorama%5Bdirection%5D=0%2C0&panorama%5Bspan%5D=90%2C30`;
   }
 
+  /** Расстояние между двумя точками в км */
   function haversineKm(a, b) {
     const R = 6371;
     const dLat = ((b[0] - a[0]) * Math.PI) / 180;
@@ -238,6 +256,7 @@
     return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
   }
 
+  /** Число мест для пресета и фильтра типа */
   function countPlaces(presetId, typeFilter) {
     return allPlaces.filter((p) => {
       if (presetId !== "all") {
@@ -251,6 +270,7 @@
 
   const NEAR_ME_RADIUS_KM = 800;
 
+  /** Список мест после пресета, типа и эпохи */
   function getFilteredPlaces() {
     const eraFilter = ERA_STEPS[activeEraIndex].filter;
     const searchVal = (
@@ -280,6 +300,7 @@
     return places;
   }
 
+  /** Границы для fitBounds */
   function calculateBounds(places) {
     if (!places.length) return null;
     const lats = places.map((p) => p.coords[0]);
@@ -290,22 +311,26 @@
     ];
   }
 
+  /** Подсветить строку в списке */
   function setActiveListItem(placeId) {
     document.querySelectorAll(".map-list__item").forEach((el) => {
       el.classList.toggle("is-active", el.dataset.id === placeId);
     });
   }
 
+  /** Сбросить стиль метки */
   function resetPlacemarkStyle(pm) {
     const place = pm.properties.get("placeData");
     if (!place) return;
     pm.options.set("preset", TYPE_PRESETS[place.type] || "islands#grayIcon");
   }
 
+  /** Скрыть нижнюю панель места */
   function hidePlacePanel() {
     document.getElementById("map-place-panel")?.classList.add("hidden");
   }
 
+  /** Кнопки панели: панорама, закрыть */
   function bindPlacePanelActions(container, place) {
     container.querySelector(".map-panorama-btn")?.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -323,6 +348,7 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
+  /** HTML панели выбранного места */
   function renderPlacePanel(place) {
     const panel = document.getElementById("map-place-panel");
     if (!panel) return;
@@ -351,6 +377,7 @@
     bindPlacePanelActions(panel, place);
   }
 
+  /** Выбрать место: панель + метка + список */
   function selectPlace(place, placemark) {
     if (!place || !map) return;
 
@@ -371,6 +398,7 @@
     invalidateMapSize();
   }
 
+  /** Отрисовать список мест слева/внизу */
   function renderList(places) {
     const list = document.getElementById("map-list");
     const countEl = document.getElementById("map-count");
@@ -433,6 +461,7 @@
     });
   }
 
+  /** Линия маршрута 4 святынь */
   function updateRouteLine(places) {
     if (!map) return;
     if (routeLine) {
@@ -459,6 +488,7 @@
     map.geoObjects.add(routeLine);
   }
 
+  /** Метки на карте и кластеризатор */
   function renderMapMarkers(places) {
     if (!clusterer) return;
 
@@ -526,6 +556,7 @@
     }
   }
 
+  /** Выключить режим «рядом со мной» */
   function deactivateNearMe() {
     nearMeActive = false;
     document.getElementById("map-near-me")?.classList.remove("active");
@@ -535,6 +566,7 @@
     }
   }
 
+  /** Применить фильтры к карте и списку */
   function applyView() {
     const places = getFilteredPlaces();
     renderMapMarkers(places);
@@ -549,6 +581,7 @@
     }
   }
 
+  /** Побочные эффекты пресета (маршрут, центр) */
   function applyPresetSideEffects(presetId) {
     const preset = PRESETS[presetId];
     if (!preset) return;
@@ -572,6 +605,7 @@
    * — «Весь мир» сбрасывает тип на «Все»;
    * — региональные маршруты (Тибет, Россия, Азия) тип не меняют.
    */
+  /** Синхронизировать чип типа с пресетом */
   function syncTypeFromPreset(presetId) {
     if (presetId === "four") {
       activeTypeFilter = "святыня";
@@ -587,6 +621,7 @@
    * — «4 святыни» только при типе «Святыни», иначе сбрасывается на «Весь мир»;
    * — регион сохраняется, если в нём есть места выбранного типа.
    */
+  /** Синхронизировать пресет с типом */
   function syncPresetFromType(typeFilter) {
     if (typeFilter === "all") {
       /* маршрут не меняем */
@@ -604,6 +639,7 @@
     applyPresetSideEffects(activePresetId);
   }
 
+  /** Подогнать zoom к отфильтрованным точкам */
   function fitMapToFilteredPlaces(presetId) {
     const preset = PRESETS[presetId];
     const places = getFilteredPlaces();
@@ -621,6 +657,7 @@
     }
   }
 
+  /** Активировать пресет (весь мир, Тибет, …) */
   function applyPreset(presetId, options = {}) {
     const preset = PRESETS[presetId];
     if (!preset) return;
@@ -643,6 +680,7 @@
     fitMapToFilteredPlaces(presetId);
   }
 
+  /** Фильтр по типу: святыня, монастырь, … */
   function applyTypeFilter(typeFilter, options = {}) {
     const { syncPreset = true, clearSearch = true } = options;
 
@@ -669,6 +707,7 @@
     fitMapToFilteredPlaces(activePresetId);
   }
 
+  /** Сброс всех фильтров */
   function resetMapFilters() {
     deactivateNearMe();
     activePresetId = "all";
@@ -685,22 +724,26 @@
     applyView();
   }
 
+  /** Обновить UI чипов пресетов */
   function updatePresetChips() {
     document.querySelectorAll("[data-preset]").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.preset === activePresetId);
     });
   }
 
+  /** Обновить UI чипов типов */
   function updateTypeChips() {
     document.querySelectorAll("[data-filter]").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.filter === activeTypeFilter);
     });
   }
 
+  /** Снять выделение пресета */
   function clearPresetSelection() {
     applyPreset("all", { syncType: true, clearSearch: false });
   }
 
+  /** Кнопки таймлайна эпох */
   function renderEraTicks() {
     const wrap = document.getElementById("map-era-ticks");
     if (!wrap || wrap.dataset.built) return;
@@ -719,6 +762,7 @@
     });
   }
 
+  /** Состояние слайдера эпох */
   function updateEraUi() {
     const label = document.getElementById("map-era-label");
     const slider = document.getElementById("map-era-slider");
@@ -732,10 +776,12 @@
     });
   }
 
+  /** Текст текущей эпохи */
   function updateEraLabel() {
     updateEraUi();
   }
 
+  /** Выбрать эпоху по индексу */
   function setEraIndex(index) {
     if (syncingFilters) return;
     syncingFilters = true;
@@ -752,6 +798,7 @@
     applyView();
   }
 
+  /** Уничтожить плеер панорамы */
   function destroyPanoramaPlayer() {
     if (!panoramaPlayer) return;
     try {
@@ -762,6 +809,7 @@
     panoramaPlayer = null;
   }
 
+  /** Точки поиска панорамы вокруг места */
   function getPanoramaSearchPoints(target) {
     if (Array.isArray(target) && typeof target[0] === "number") {
       return [target];
@@ -783,6 +831,7 @@
     ];
   }
 
+  /** Выбрать лучшую панораму по расстоянию */
   function pickBestPanorama(panoramas, target) {
     let best = panoramas[0];
     let bestD = Infinity;
@@ -808,6 +857,7 @@
     return !!ymaps.panorama?.locate;
   }
 
+  /** Запасной UI если панорамы нет */
   function showPanoramaFallback(container, coords, message) {
     const url = getYandexPanoramaUrl(coords);
     container.innerHTML = `
@@ -823,6 +873,7 @@
       ?.addEventListener("click", () => window.closePanorama());
   }
 
+  /** Индикатор загрузки панорамы */
   function showPanoramaLoading(container, coords) {
     const url = getYandexPanoramaUrl(coords);
     container.innerHTML = `
@@ -851,6 +902,7 @@
     return null;
   }
 
+  /** Модальное окно панорамы */
   function initPanorama() {
     window.showMapPanorama = async function showMapPanorama(target) {
       const modal = document.getElementById("panorama-modal");
@@ -951,6 +1003,7 @@
     });
   }
 
+  /** Исправление scroll на touch */
   function initMapScrollFix() {
     if (!map) return;
 
@@ -976,6 +1029,7 @@
     });
   }
 
+  /** Кнопка «моё местоположение» */
   function initGeolocation() {
     const btn = document.getElementById("map-near-me");
     if (!btn || !navigator.geolocation) {
@@ -1016,6 +1070,7 @@
     });
   }
 
+  /** Все кнопки и поля поиска */
   function bindControls() {
     document.querySelectorAll("[data-preset]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1073,6 +1128,7 @@
     });
   }
 
+  /** Сообщение об ошибке загрузки */
   function showMapLoadError(message) {
     const list = document.getElementById("map-list");
     const mapEl = document.getElementById("map");
@@ -1086,6 +1142,7 @@
     }
   }
 
+  /** Загрузка JSON, создание карты, привязка контролов */
   async function init() {
     unlockPageScroll();
     initPanorama();

@@ -1,11 +1,12 @@
-# Деплой статического сайта на GitHub Pages.
-# Секрет OPENROUTER_API_KEY (необязательно) → создаёт js/config.local.js при сборке для AI-чата.
+# Деплой статического сайта на GitHub Pages (корень репозитория = сайт).
+# Секрет OPENROUTER_API_KEY (необязательно) → при сборке создаётся js/config.local.js для AI-чата.
+
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [main]  # автодеплой при push в main
+  workflow_dispatch:  # ручной запуск в Actions
 
 permissions:
   contents: read
@@ -14,7 +15,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: true  # отменить предыдущий деплой, если новый push
 
 jobs:
   deploy:
@@ -23,8 +24,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4  # скачать код репозитория
 
+      # Если в Secrets задан OPENROUTER_API_KEY — записать js/config.local.js для продакшена
       - name: Подключить ключ AI на сайте (если задан секрет)
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -37,7 +39,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: .  # весь проект как статический сайт
 
       - id: deployment
         uses: actions/deploy-pages@v4

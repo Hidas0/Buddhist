@@ -5,7 +5,9 @@
  */
 (function () {
     /** Порядок: XIV → I. Поле photo — только имя файла (Dalai_Lama_14.jpg …). */
-    var DALAI_PHOTO_DIR = 'images/dalai-lamas/';
+    var DALAI_PHOTO_DIR = 'images/dalai-lamas/'; // путь к портретам
+
+    /* Массив из 14 слайдов: roman, photo, badge, titleLead, titleHighlight, paragraphs[], quote, chips[] */
     var slides = [
         {
             roman: 'XIV',
@@ -285,12 +287,13 @@
         }
     ];
 
+    /* --- Привязка к разметке index.html (data-dalai-*) --- */
     var root = document.querySelector('[data-dalai-carousel]');
-    if (!root) return;
+    if (!root) return; // блока карусели нет на странице
 
     var section = root.closest('.dalai-lamas-section');
 
-    var idx = 0;
+    var idx = 0; // индекс текущего слайда (0 = XIV)
     var badgeEl = root.querySelector('[data-dalai-badge]');
     var titleLeadEl = root.querySelector('[data-dalai-title-lead]');
     var titleHiEl = root.querySelector('[data-dalai-title-highlight]');
@@ -305,6 +308,7 @@
     var nextBtn = (section || root).querySelector('[data-dalai-next]');
     var region = root.querySelector('[data-dalai-region]');
 
+    /** Загрузить фото слайда или показать placeholder с римской цифрой */
     function renderPhoto(s) {
         if (!imgEl || !phEl) return;
         var url = s.photo ? DALAI_PHOTO_DIR + s.photo : '';
@@ -326,6 +330,7 @@
         imgEl.src = url;
     }
 
+    /** Заполнить текст, чипы, фото и состояние кнопок prev/next */
     function render() {
         var s = slides[idx];
         if (badgeEl) badgeEl.textContent = s.badge;
@@ -381,6 +386,7 @@
         if (nextBtn) nextBtn.disabled = slides.length <= 1 || idx >= slides.length - 1;
     }
 
+    /** Переключить слайд на delta (-1 | +1) с коротким fade */
     function go(delta) {
         var nextIdx = idx + delta;
         if (nextIdx < 0 || nextIdx >= slides.length) return;

@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <!-- ШАПКА: логотип, меню, бургер на мобильном -->
     <nav class="navbar animate-fade-in">
         <div class="container flex-between">
             <a href="index.html" class="logo flex-center">
@@ -51,6 +52,7 @@
         </div>
     </nav>
 
+    <!-- ГЛАВНЫЙ БАННЕР: заголовок, кнопки в каталог и Калмыкию -->
     <header class="hero">
         <div class="hero-bg animate-zoom-in" style="background-image: url('images/hero.png');"></div>
         <div class="hero-overlay"></div>
@@ -77,6 +79,7 @@
         </div>
     </header>
 
+    <!-- Три карточки: Дхарма, сострадание, община -->
     <section class="index-band index-band--white" aria-label="Что изучает портал">
         <div class="features container">
             <div class="card scroll-reveal">
@@ -97,6 +100,7 @@
         </div>
     </section>
 
+    <!-- Ссылки-маршрут: традиции, Калмыкия, карта, медиа -->
     <section class="index-band index-band--cream" aria-label="Маршрут изучения темы">
         <div class="container py-80">
             <header class="quotes-section__head scroll-reveal">
@@ -199,6 +203,7 @@
     </section>
 
     <!-- Блок: линия Далай-лам (оформление в духе раздела Калмыкия, со своей палитрой) -->
+    <!-- Карусель 14 Далай-лам (js/dalai-carousel.js) -->
     <section class="index-band index-band--dalai dalai-lamas-section section section--top" aria-labelledby="dalai-lamas-heading">
         <div class="dalai-lamas-nav-rail dalai-lamas-nav-rail--prev">
             <button
@@ -314,6 +319,7 @@
         </div>
     </section>
 
+    <!-- ПОДВАЛ: ссылки, случайная цитата (скрипт внизу страницы) -->
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-brand">
@@ -368,6 +374,7 @@
         <i data-lucide="arrow-up"></i>
     </button>
 
+    <!-- СКРИПТЫ: порядок важен — см. js/README.md -->
     <script src="js/scroll-reveal.js"></script><!-- появление блоков при прокрутке -->
     <script src="js/dalai-carousel.js"></script><!-- только на главной: 14 Далай-лам -->
     <script>

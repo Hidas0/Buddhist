@@ -1,5 +1,6 @@
 /**
- * video-player-page.js — плейлист на video-player.html (?category=…)
+ * video-player-page.js — страница video-player.html.
+ * Читает ?category= и ?title=, строит сетку карточек из window.DHARMA_VIDEO_CATALOG.
  */
 (async () => {
   const { getVideoUrl, getCategoryById } = window.DHARMA_MEDIA || {};
@@ -10,12 +11,12 @@
   }
 
   const urlParams = new URLSearchParams(window.location.search);
-  const categoryId = urlParams.get("category") || "monastery";
-  const titleParam = urlParams.get("title");
-  const catalog = window.DHARMA_VIDEO_CATALOG;
+  const categoryId = urlParams.get("category") || "monastery"; // id категории из media.html
+  const titleParam = urlParams.get("title"); // опциональный заголовок из URL
+  const catalog = window.DHARMA_VIDEO_CATALOG; // объект в <script> на странице
   const category =
     getCategoryById(catalog, categoryId) || catalog?.categories?.[0];
-  const videos = (category?.videos || []).filter((v) => getVideoUrl(v));
+  const videos = (category?.videos || []).filter((v) => getVideoUrl(v)); // только с url
 
   const titleEl = document.getElementById("categoryTitle");
   const container = document.getElementById("videosContainer");
@@ -27,6 +28,7 @@
       : category?.title || "Медиатека";
   }
 
+  /** Экранирование текста для вставки в innerHTML */
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -35,6 +37,7 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** Открыть модальное окно с HTML5 video */
   function playVideo(src) {
     const modal = document.getElementById("videoModal");
     const video = document.getElementById("html5Player");
@@ -44,7 +47,7 @@
     video.load();
     modal.classList.add("active");
     document.body.classList.add("video-modal-open");
-    video.play().catch(() => {});
+    video.play().catch(() => {}); // autoplay может быть заблокирован
   }
 
   window.closeVideo = function closeVideo() {
@@ -93,6 +96,7 @@
     container.appendChild(card);
   });
 
+  // Превью: кадр с начала ролика; при ошибке загрузки скрыть video
   container.querySelectorAll(".video-thumb__preview").forEach((el) => {
     el.addEventListener("loadedmetadata", () => {
       if (el.currentTime < 0.5) {
@@ -111,7 +115,7 @@
   const modal = document.getElementById("videoModal");
   if (modal) {
     modal.addEventListener("click", (e) => {
-      if (e.target === modal) window.closeVideo();
+      if (e.target === modal) window.closeVideo(); // клик по затемнению
     });
   }
 

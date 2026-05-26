@@ -1,8 +1,9 @@
 /**
  * catalog.js — страница «Традиции» (catalog.html):
- * фильтры, URL ?filter=, счётчик, статистика, якорное меню, сворачивание карточек.
+ * фильтры интересов, URL ?filter=, счётчик карточек, якорное меню, «Подробнее», FAQ.
  */
 (() => {
+  // --- DOM-элементы страницы каталога ---
   const filterContainer = document.getElementById("interestFilter");
   const filterButtons = document.querySelectorAll(".interest-btn");
   const categorySections = document.querySelectorAll(".category-section[data-interest]");
@@ -14,6 +15,7 @@
     ? [...sectionNav.querySelectorAll(".catalog-section-nav__link")]
     : [];
 
+  // Подписи к блоку статистики в зависимости от активного фильтра
   const STAT_NOTES = {
     all: "Цифры отражают масштаб буддизма в мире",
     peoples: "В фильтре: обычаи и праздники пяти регионов — ядро темы «народы»",
@@ -23,6 +25,7 @@
     beginner: "В фильтре: понятные темы для первого знакомства",
   };
 
+  /** Сколько видимых разделов и карточек после фильтра */
   function countVisible() {
     let sections = 0;
     let cards = 0;
@@ -34,6 +37,7 @@
     return { sections, cards };
   }
 
+  /** Строка «Показано N разделов · M карточек» */
   function updateFilterStatus() {
     const { sections, cards } = countVisible();
     if (filterStatusEl) {
@@ -45,11 +49,13 @@
     }
   }
 
+  /** Текст под статистикой по выбранному фильтру */
   function updateStatsNote(filterValue) {
     if (!statsNoteEl) return;
     statsNoteEl.textContent = STAT_NOTES[filterValue] || STAT_NOTES.all;
   }
 
+  /** Скрыть/показать секции по data-interest (теги через пробел) */
   function applyFilter(filterValue) {
     categorySections.forEach((section) => {
       const tags = section.dataset.interest || "";
@@ -61,6 +67,7 @@
     updateStatsNote(filterValue);
   }
 
+  /** Активная кнопка фильтра + применение + опционально URL */
   function setActiveFilter(filterValue, updateUrl = true) {
     const value = filterValue || "all";
     filterButtons.forEach((btn) => {
@@ -98,6 +105,7 @@
     });
   }
 
+  // Фильтр из адресной строки ?filter=practice
   const initialFilter = new URLSearchParams(window.location.search).get("filter");
   if (initialFilter && [...filterButtons].some((b) => b.dataset.filter === initialFilter)) {
     setActiveFilter(initialFilter, false);
@@ -105,7 +113,7 @@
     applyFilter("all");
   }
 
-  /* Hero CTA */
+  /* Кнопки в hero: «для новичков» / «практики» */
   document.querySelectorAll("[data-catalog-cta]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const action = btn.dataset.catalogCta;
@@ -123,7 +131,7 @@
     });
   });
 
-  /* Сворачивание длинных карточек */
+  /* Сворачивание длинного текста карточки: «Подробнее» / «Свернуть» */
   document.querySelectorAll(".tradition-body").forEach((body) => {
     const lead = body.querySelector(":scope > p");
     if (!lead) return;
@@ -163,7 +171,7 @@
     body.appendChild(toggle);
   });
 
-  /* FAQ */
+  /* Аккордеон FAQ */
   document.querySelectorAll(".faq-question").forEach((button) => {
     button.addEventListener("click", () => {
       const item = button.closest(".faq-item");
@@ -171,7 +179,7 @@
     });
   });
 
-  /* Sticky-навигация: подсветка активного раздела */
+  /* Sticky-навигация: подсветка ссылки при прокрутке к секции */
   if (sectionNav && navLinks.length) {
     const sectionIds = navLinks
       .map((a) => a.getAttribute("href")?.replace("#", ""))
