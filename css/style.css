@@ -1764,11 +1764,10 @@ section * { /* section * */
     width: 100%; /* ширина */
 } /* /.dalai-lamas-carousel-shell */
 
-/* Кнопки по центру высоты секции (не sticky — ломается при overflow-x на предках) */
+/* Sticky в пределах .dalai-lamas-section: по центру окна, не выходят за верх/низ блока */
 .dalai-lamas-nav-rail .dalai-carousel__arrow { /* .dalai-lamas-nav-rail .dalai-carousel__arrow */
-    position: absolute; /* позиционирование */
-    top: 50%; /* отступ сверху */
-    left: 0; /* отступ слева */
+    position: sticky; /* позиционирование */
+    top: 50vh; /* отступ сверху */
     transform: translateY(-50%); /* трансформация */
     pointer-events: auto; /* пропуск кликов */
     width: 48px; /* ширина */
