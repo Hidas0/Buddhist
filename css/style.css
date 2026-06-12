@@ -85,6 +85,7 @@ html { /* html */
     -webkit-text-size-adjust: 100%; /* текст iOS */
     text-size-adjust: 100%; /* масштаб текста */
     scroll-behavior: smooth; /* плавный скролл */
+    overflow-x: clip; /* без горизонтальной прокрутки страницы */
 } /* /html */
 
 body { /* body */
@@ -5162,6 +5163,69 @@ h2 { /* h2 */
         font-size: 0.88rem; /* размер шрифта */
         padding: 14px 16px; /* внутренний отступ */
     } /* /.lotus-quote */
+
+    .kalm-hero { /* .kalm-hero */
+        flex-direction: column; /* направление flex */
+        align-items: stretch; /* выравнивание по поперечной оси */
+        padding: 20px 16px; /* внутренний отступ */
+    } /* /.kalm-hero */
+
+    .kalm-subnav { /* .kalm-subnav */
+        flex-wrap: nowrap; /* перенос flex */
+        overflow-x: auto; /* переполнение по X */
+        -webkit-overflow-scrolling: touch; /* инерция скролла */
+        justify-content: flex-start; /* выравнивание по главной оси */
+        border-radius: 20px; /* скругление */
+        scrollbar-width: none; /* скроллбар */
+        margin-bottom: 28px; /* отступ снизу */
+    } /* /.kalm-subnav */
+    .kalm-subnav::-webkit-scrollbar { display: none; /* режим отображения */ }
+    .kalm-subnav a { /* .kalm-subnav a */
+        flex-shrink: 0; /* сжатие flex */
+        min-height: 44px; /* минимальная высота */
+        display: inline-flex; /* режим отображения */
+        align-items: center; /* выравнивание по поперечной оси */
+    } /* /.kalm-subnav a */
+
+    .interest-filter { /* .interest-filter */
+        flex-wrap: nowrap; /* перенос flex */
+        overflow-x: auto; /* переполнение по X */
+        -webkit-overflow-scrolling: touch; /* инерция скролла */
+        scrollbar-width: none; /* скроллбар */
+        padding-bottom: 4px; /* отступ снизу */
+        margin: 0 -2px; /* внешний отступ */
+    } /* /.interest-filter */
+    .interest-filter::-webkit-scrollbar { display: none; /* режим отображения */ }
+    .interest-btn { flex-shrink: 0; /* сжатие flex */ min-height: 44px; /* минимальная высота */ }
+
+    .kalm-grid { grid-template-columns: 1fr; /* колонки сетки */ }
+
+    .catalog-section-nav__link { min-height: 44px; /* минимальная высота */ display: inline-flex; /* режим отображения */ align-items: center; /* выравнивание по поперечной оси */ }
+
+    .video-page .page-back-link-wrap h1,
+    .video-page #categoryTitle { /* .video-page #categoryTitle */
+        font-size: clamp(1.45rem, 5.5vw, 2rem); /* размер шрифта */
+        line-height: 1.2; /* межстрочный интервал */
+        word-break: break-word; /* разрыв слов */
+    } /* /.video-page #categoryTitle */
+
+    .study-route__item { padding: 16px 18px; /* внутренний отступ */ gap: 12px; /* расстояние между элементами */ }
+
+    .media-grid .media-card,
+    .media-grid-custom .media-card { min-width: 0; /* минимальная ширина */ }
+
+    .kalm-forum-step__card { padding: 16px; /* внутренний отступ */ }
+    .kalm-forum-step__card h3 { font-size: 1.05rem; /* размер шрифта */ word-break: break-word; /* разрыв слов */ }
+
+    .kalm-forum-step__split { grid-template-columns: 1fr; /* колонки сетки */ }
+
+    .kalm-forum-step__media img { height: auto; /* высота */ max-height: 220px; /* максимальная высота */ aspect-ratio: 16 / 10; /* пропорции */ }
+
+    .kalm-forum-step__media--video iframe { /* .kalm-forum-step__media--video iframe */
+        height: auto; /* высота */
+        aspect-ratio: 16 / 9; /* пропорции */
+        min-height: 180px; /* минимальная высота */
+    } /* /.kalm-forum-step__media--video iframe */
 } /* /@media (max-width: 768px) */
 
 @media (max-width: 480px) { /* @media (max-width: 480px) */
@@ -5194,7 +5258,12 @@ h2 { /* h2 */
     .dalai-lamas-nav-rail--prev { left: 4px; /* отступ слева */ }
     .dalai-lamas-nav-rail--next { right: 4px; /* отступ справа */ }
 
-    .media-item iframe { height: 180px; /* высота */ }
+    .media-item iframe { height: min(180px, 42vw); /* высота */ }
+
+    .kalm-hero-content { max-width: none; /* максимальная ширина */ }
+
+    .page-back-link-wrap { margin-bottom: 24px; /* отступ снизу */ }
+
     .interest-btn { min-height: 44px; /* минимальная высота */ }
     .faq-question { min-height: 48px; /* минимальная высота */; font-size: 0.95rem; /* размер шрифта */ }
 } /* /@media (max-width: 480px) */
