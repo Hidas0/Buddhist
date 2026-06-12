@@ -85,7 +85,6 @@ html { /* html */
     -webkit-text-size-adjust: 100%; /* текст iOS */
     text-size-adjust: 100%; /* масштаб текста */
     scroll-behavior: smooth; /* плавный скролл */
-    overflow-x: clip; /* без горизонтальной прокрутки страницы */
 } /* /html */
 
 body { /* body */
@@ -1765,10 +1764,11 @@ section * { /* section * */
     width: 100%; /* ширина */
 } /* /.dalai-lamas-carousel-shell */
 
-/* Sticky в пределах .dalai-lamas-section: по центру окна, не выходят за верх/низ блока */
+/* Кнопки по центру высоты секции (не sticky — ломается при overflow-x на предках) */
 .dalai-lamas-nav-rail .dalai-carousel__arrow { /* .dalai-lamas-nav-rail .dalai-carousel__arrow */
-    position: sticky; /* позиционирование */
-    top: 50vh; /* отступ сверху */
+    position: absolute; /* позиционирование */
+    top: 50%; /* отступ сверху */
+    left: 0; /* отступ слева */
     transform: translateY(-50%); /* трансформация */
     pointer-events: auto; /* пропуск кликов */
     width: 48px; /* ширина */

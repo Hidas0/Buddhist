@@ -304,6 +304,7 @@
     var phEl = root.querySelector('[data-dalai-photo-placeholder]');
     var phNumEl = root.querySelector('[data-dalai-photo-num]');
     var statusEl = root.querySelector('[data-dalai-status]');
+    var headerCounterEl = section ? section.querySelector('.dalai-lamas-branch-header__counter') : null;
     var prevBtn = (section || root).querySelector('[data-dalai-prev]');
     var nextBtn = (section || root).querySelector('[data-dalai-next]');
     var region = root.querySelector('[data-dalai-region]');
@@ -379,6 +380,7 @@
         if (statusEl) {
             statusEl.textContent = s.roman + ' · ' + (idx + 1) + ' / ' + slides.length;
         }
+        if (headerCounterEl) headerCounterEl.textContent = s.roman;
         if (region) {
             region.setAttribute('aria-label', 'Далай-лама ' + s.roman + ', карточка ' + (idx + 1) + ' из ' + slides.length);
         }
