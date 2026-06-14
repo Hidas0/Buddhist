@@ -226,7 +226,7 @@ function saveChatState() {
     }
 }
 
-/** Восстановить чат из localStorage (сейчас не вызывается при загрузке) */
+/** Восстановить чат из localStorage при переходе между страницами сайта */
 function restoreChatState() {
     try {
         const savedMessagesRaw = localStorage.getItem(CHAT_STORAGE_KEY);
@@ -239,9 +239,9 @@ function restoreChatState() {
             }
         }
 
-        if (!savedMessagesRaw) return;
+        if (!savedMessagesRaw) return false;
         const savedMessages = JSON.parse(savedMessagesRaw);
-        if (!Array.isArray(savedMessages) || savedMessages.length === 0) return;
+        if (!Array.isArray(savedMessages) || savedMessages.length === 0) return false;
 
         chatMessages.innerHTML = '';
         savedMessages.forEach((msg) => {
@@ -249,20 +249,20 @@ function restoreChatState() {
                 addMessage(msg.content, msg.sender);
             }
         });
+        return true;
     } catch (error) {
         console.warn('Не удалось восстановить историю чата:', error);
+        return false;
     }
 }
 
-/** История чата не сохраняется между перезагрузками страницы (намеренно) */
-function clearChatStateOnPageLoad() {
-    messageHistory = [];
-    try {
-        localStorage.removeItem(CHAT_STORAGE_KEY);
-        localStorage.removeItem(HISTORY_STORAGE_KEY);
-    } catch (error) {
-        console.warn('Не удалось очистить историю чата:', error);
+/** Первый визит или пустая история — приветствие из HTML */
+function initChatOnPageLoad() {
+    const restored = restoreChatState();
+    if (!restored) {
+        applyWelcomeMessage();
     }
+    initChatIcons();
 }
 
 /** Перерисовать иконки Lucide в шапке чата */
@@ -330,15 +330,9 @@ function applyWelcomeMessage() {
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        clearChatStateOnPageLoad();
-        applyWelcomeMessage();
-        initChatIcons();
-    }, { once: true });
+    document.addEventListener('DOMContentLoaded', initChatOnPageLoad, { once: true });
 } else {
-    clearChatStateOnPageLoad();
-    applyWelcomeMessage();
-    initChatIcons();
+    initChatOnPageLoad();
 }
 
 console.log('✅ AI чат-бот загружен (бесплатные модели OpenRouter)');
