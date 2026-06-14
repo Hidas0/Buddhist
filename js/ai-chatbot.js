@@ -239,6 +239,29 @@ function saveChatState() {
     }
 }
 
+/** Страница обновлена (F5 / Ctrl+R), а не переход по ссылке */
+function isPageReload() {
+    const nav = performance.getEntriesByType('navigation')[0];
+    return nav && nav.type === 'reload';
+}
+
+/** Очистить историю и вернуть приветствие */
+function clearChatState() {
+    messageHistory = [];
+    try {
+        localStorage.removeItem(CHAT_STORAGE_KEY);
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+    } catch (error) {
+        console.warn('Не удалось очистить историю чата:', error);
+    }
+    if (chatMessages) {
+        chatMessages.innerHTML =
+            '<div class="message bot"><div class="message-content"></div></div>';
+        applyWelcomeMessage();
+    }
+    setChatOpen(false);
+}
+
 /** Восстановить чат из localStorage при переходе между страницами сайта */
 function restoreChatState() {
     try {
@@ -269,11 +292,15 @@ function restoreChatState() {
     }
 }
 
-/** Первый визит или пустая история — приветствие из HTML */
+/** F5 — новый диалог; переход по меню — сохранить историю */
 function initChatOnPageLoad() {
-    const restored = restoreChatState();
-    if (!restored) {
-        applyWelcomeMessage();
+    if (isPageReload()) {
+        clearChatState();
+    } else {
+        const restored = restoreChatState();
+        if (!restored) {
+            applyWelcomeMessage();
+        }
     }
     initChatIcons();
 }
