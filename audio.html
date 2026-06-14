@@ -130,8 +130,7 @@
                 category: "МАНТРА",
                 duration: "23:02",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_-_Mantra_Avalokiteshvary_Om_Mani_Pad_Me_Hum_(SkySound.cc).mp3",
-                fileName: "Mantra_-_Mantra_Avalokiteshvary_Om_Mani_Pad_Me_Hum_(SkySound.cc).mp3",
-                youtubeId: "nOdcU5fic1Q"
+                fileName: "Mantra_-_Mantra_Avalokiteshvary_Om_Mani_Pad_Me_Hum_(SkySound.cc).mp3"
             },
             {
                 id: 2,
@@ -140,8 +139,7 @@
                 category: "МАНТРА",
                 duration: "23:51",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_Zelyonoj_Tary_-_Om_Tare_Tuttare_Ture_Soha_(SkySound.cc).mp3",
-                fileName: "Mantra_Zelyonoj_Tary_-_Om_Tare_Tuttare_Ture_Soha_(SkySound.cc).mp3",
-                youtubeId: "mvBLSJWk6HE"
+                fileName: "Mantra_Zelyonoj_Tary_-_Om_Tare_Tuttare_Ture_Soha_(SkySound.cc).mp3"
             },
             {
                 id: 3,
@@ -150,8 +148,7 @@
                 category: "МАНТРА",
                 duration: "17:00",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Padmasambhava_Guru_Rinpoche_mantra_-_Om_Ah_Hum_Vajra_Guru_Padma_Siddhi_Hum_(SkySound.cc).mp3",
-                fileName: "Padmasambhava_Guru_Rinpoche_mantra_-_Om_Ah_Hum_Vajra_Guru_Padma_Siddhi_Hum_(SkySound.cc).mp3",
-                youtubeId: "cUmo5n4ShYs"
+                fileName: "Padmasambhava_Guru_Rinpoche_mantra_-_Om_Ah_Hum_Vajra_Guru_Padma_Siddhi_Hum_(SkySound.cc).mp3"
             },
             {
                 id: 4,
@@ -160,8 +157,7 @@
                 category: "МАНТРА",
                 duration: "7:13",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Mantra_Buddy_SHakyamuni_-_Om_muni_muni_maha_muni_soha_(SkySound.cc).mp3",
-                fileName: "Mantra_Buddy_SHakyamuni_-_Om_muni_muni_maha_muni_soha_(SkySound.cc).mp3",
-                youtubeId: "mMMerxh_12U"
+                fileName: "Mantra_Buddy_SHakyamuni_-_Om_muni_muni_maha_muni_soha_(SkySound.cc).mp3"
             },
             {
                 id: 5,
@@ -170,8 +166,7 @@
                 category: "МАНТРА",
                 duration: "46:09",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Deva_Premal_-_100-slogovaya_mantra_Vadzhrasattvy_(SkySound.cc).mp3",
-                fileName: "Deva_Premal_-_100-slogovaya_mantra_Vadzhrasattvy_(SkySound.cc).mp3",
-                youtubeId: "mvBLSJWk6HE"
+                fileName: "Deva_Premal_-_100-slogovaya_mantra_Vadzhrasattvy_(SkySound.cc).mp3"
             },
             {
                 id: 6,
@@ -180,8 +175,7 @@
                 category: "МАНТРА",
                 duration: "8:25",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Existence_Margot_Reisinger_-_Mantra_Mandzhushri_-_Om_A_Ra_Pa_Ca_Na_Di_(SkySound.cc).mp3",
-                fileName: "Existence_Margot_Reisinger_-_Mantra_Mandzhushri_-_Om_A_Ra_Pa_Ca_Na_Di_(SkySound.cc).mp3",
-                youtubeId: "8Ioyid9OG90"
+                fileName: "Existence_Margot_Reisinger_-_Mantra_Mandzhushri_-_Om_A_Ra_Pa_Ca_Na_Di_(SkySound.cc).mp3"
             },
             {
                 id: 7,
@@ -190,8 +184,7 @@
                 category: "МАНТРА",
                 duration: "10:48",
                 audioUrl: "https://storage.yandexcloud.net/diplom11/%D0%90%D1%83%D0%B4%D0%B8%D0%BE/Iscelyayucshie_Matry_Tibeta_6_chakra_-_Matra_Zdrovya_Buddy._TEJATA_OM_BEKANDZE_BEKANDZE_MAHA_BEKANDZE_(SkySound.cc).mp3",
-                fileName: "Iscelyayucshie_Matry_Tibeta_6_chakra_-_Matra_Zdrovya_Buddy._TEJATA_OM_BEKANDZE_BEKANDZE_MAHA_BEKANDZE_(SkySound.cc).mp3",
-                youtubeId: "nOdcU5fic1Q"
+                fileName: "Iscelyayucshie_Matry_Tibeta_6_chakra_-_Matra_Zdrovya_Buddy._TEJATA_OM_BEKANDZE_BEKANDZE_MAHA_BEKANDZE_(SkySound.cc).mp3"
             }
             
         ];
@@ -205,38 +198,14 @@
         }
 
         /** Облако — как есть; /audio/... — с сайта; иначе — папка audio/ */
-        function resolveAudioUrl(audioUrl, fileName) {
+        function resolveAudioUrl(audioUrl) {
             var raw = String(audioUrl || '').trim();
             if (!raw) return '';
-            if (isRemoteAudioUrl(raw)) {
-                if (fileName) {
-                    return 'audio/' + encodeURIComponent(fileName);
-                }
-                try {
-                    var cloudName = decodeURIComponent(new URL(raw).pathname.split('/').pop() || '');
-                    if (cloudName) return 'audio/' + encodeURIComponent(cloudName);
-                } catch (e) { /* ignore */ }
-                return raw;
-            }
+            if (isRemoteAudioUrl(raw)) return raw;
             if (raw.charAt(0) === '/') return raw;
             return 'audio/' + raw.split('/').filter(Boolean).map(function (part) {
                 return encodeURIComponent(part);
             }).join('/');
-        }
-
-        function playYoutubeFallback(track) {
-            if (!track.youtubeId) {
-                alert('Не удалось загрузить аудио. Положите файл в папку audio/ или откройте публичный доступ к бакету diplom11 в Yandex Object Storage.');
-                return;
-            }
-            window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(track.youtubeId), '_blank', 'noopener');
-            document.getElementById('currentTrackDesc').textContent = 'Открыта версия на YouTube (облако недоступно)';
-        }
-
-        function loadAudioSource(track, useCloud) {
-            var localUrl = resolveAudioUrl(track.audioUrl, track.fileName);
-            var remoteUrl = String(track.audioUrl || '').trim();
-            return useCloud && isRemoteAudioUrl(remoteUrl) ? remoteUrl : localUrl;
         }
 
         function escapeHtml(str) {
@@ -262,9 +231,7 @@
 
         // Скачивание: локально — через blob; облако — прямая ссылка (CORS не мешает)
         function downloadAudio(audioUrl, fileName, title) {
-            var url = isRemoteAudioUrl(audioUrl)
-                ? String(audioUrl || '').trim()
-                : resolveAudioUrl(audioUrl, fileName);
+            var url = resolveAudioUrl(audioUrl);
             if (!url) return;
 
             if (isRemoteAudioUrl(url)) {
@@ -328,46 +295,33 @@
                 currentAudio.removeEventListener('timeupdate', updateProgress);
                 currentAudio.removeEventListener('ended', onTrackEnd);
             }
+            
+            currentAudio = new Audio(resolveAudioUrl(track.audioUrl));
+            currentAudio.addEventListener('timeupdate', updateProgress);
+            currentAudio.addEventListener('ended', onTrackEnd);
+            currentAudio.addEventListener('error', function () {
+                alert('Не удалось загрузить аудио. Проверьте ссылку и доступ к файлу в облаке.');
+                isPlaying = false;
+                document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
+                lucide.createIcons();
+            });
 
-            var triedCloud = false;
-
-            function startPlayback(useCloud) {
-                currentAudio = new Audio(loadAudioSource(track, useCloud));
-                currentAudio.addEventListener('timeupdate', updateProgress);
-                currentAudio.addEventListener('ended', onTrackEnd);
-                currentAudio.addEventListener('error', function () {
-                    if (!triedCloud && isRemoteAudioUrl(track.audioUrl)) {
-                        triedCloud = true;
-                        currentAudio.removeEventListener('timeupdate', updateProgress);
-                        currentAudio.removeEventListener('ended', onTrackEnd);
-                        startPlayback(true);
-                        return;
-                    }
-                    playYoutubeFallback(track);
-                    isPlaying = false;
-                    document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="play"></i>';
-                    lucide.createIcons();
-                });
-
-                currentAudio.play().then(function () {
-                    isPlaying = true;
-                    currentTrackIndex = index;
-                    document.getElementById('currentTrackTitle').textContent = track.title;
-                    document.getElementById('currentTrackDesc').textContent = track.description;
-                    document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="pause"></i>';
-                    document.getElementById('audioPlayer').classList.add('active');
-                    lucide.createIcons();
-                }).catch(function () {
-                    if (!triedCloud && isRemoteAudioUrl(track.audioUrl)) {
-                        triedCloud = true;
-                        startPlayback(true);
-                        return;
-                    }
-                    alert('Воспроизведение недоступно. Откройте сайт через http(s), не как файл с диска.');
-                });
-            }
-
-            startPlayback(false);
+            currentAudio.play().catch(function () {
+                alert('Воспроизведение недоступно. Откройте сайт через http(s), не как файл с диска.');
+            });
+            isPlaying = true;
+            currentTrackIndex = index;
+            
+            // Обновляем интерфейс плеера
+            document.getElementById('currentTrackTitle').textContent = track.title;
+            document.getElementById('currentTrackDesc').textContent = track.description;
+            document.getElementById('playPauseBtn').innerHTML = '<i data-lucide="pause"></i>';
+            
+            // Показываем плеер
+            document.getElementById('audioPlayer').classList.add('active');
+            
+            // Обновляем иконки
+            lucide.createIcons();
         }
         
         function onTrackEnd() {
@@ -426,7 +380,7 @@
         const audioList = document.getElementById('audioList');
         
         meditations.forEach((med, index) => {
-            var resolvedUrl = isRemoteAudioUrl(med.audioUrl) ? med.audioUrl : resolveAudioUrl(med.audioUrl, med.fileName);
+            var resolvedUrl = resolveAudioUrl(med.audioUrl);
             var downloadName = audioFileName(med);
 
             const trackDiv = document.createElement('div');

@@ -56,14 +56,7 @@
     <div class="video-modal" id="videoModal">
         <div class="video-modal-content">
             <button class="close-modal" onclick="closeVideo()">&times;</button>
-            <video id="html5Player" controls playsinline hidden></video>
-            <iframe
-                id="youtubePlayer"
-                title="Видео с YouTube"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-                hidden
-            ></iframe>
+            <video id="html5Player" controls playsinline></video>
         </div>
     </div>
 
@@ -148,39 +141,33 @@
           "title": "Жизнь монастыря",
           "description": "Документальные кадры повседневности.",
           "thumb": "images/monks.png",
-          "cloudFolder": "Жизнь монастыря",
           "videos": [
             {
               "title": "Как устроена жизнь в буддийском монастыре в Непале",
-              "youtubeId": "J6TvVjRbCGQ",
               "description": "Мы отправились в буддийский монастырь в Непале, недалеко от Катманду, чтобы познакомиться с Ольгой, которая прожила в монастыре около 10 лет, а в целом практикует буддизм уже 18 лет. Она стала буддисткой практически случайно, не зная ни чем занимаются буддисты, ни кто такой Далай-Лама, ни к чему это все ее приведет.",
               "thumbnail": "images/monks.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8F/%D0%9A%D0%B0%D0%BA%20%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B0%20%D0%B6%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%B2%20%D0%B1%D1%83%D0%B4%D0%B4%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%BC%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D0%B5%20%D0%B2%20%D0%9D%D0%B5%D0%BF%D0%B0%D0%BB%D0%B5.mp4"
             },
             {
               "title": "Монастырь Копан: где рождаются Будды. Документальный фильм",
-              "youtubeId": "4PMJeRQP8HE",
               "description": "Документальный фильм «Монастырь Копан: где рождаются Будды» посвящен выдающемуся буддийскому наставнику Ламе Сопе Ринпоче и монастырю Копан в Непале, где зародился Фонд Поддержания Махаянской Традиции – буддийская организация, сыгравшая важную роль в сохранении и распространении буддизма во всем мире.",
               "thumbnail": "images/prayer-wheels.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8F/%D0%9C%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8C%20%D0%9A%D0%BE%D0%BF%D0%B0%D0%BD%20%D0%B3%D0%B4%D0%B5%20%D1%80%D0%BE%D0%B6%D0%B4%D0%B0%D1%8E%D1%82%D1%81%D1%8F%20%D0%91%D1%83%D0%B4%D0%B4%D1%8B%20%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Будда Гений древнего мира Документальный фильм BBC",
-              "youtubeId": "Vc7_VyVXDLs",
               "description": "Исследуются радикальные идеи принца Сиддхартхи, который отказался от роскоши ради духовных поисков. Прослеживается путь от экспериментов с аскетизмом до озарения под деревом Бодхи, перевернувшего представление о страдании и самопознании.",
               "thumbnail": "images/flags.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8F/%D0%91%D1%83%D0%B4%D0%B4%D0%B0%20%D0%93%D0%B5%D0%BD%D0%B8%D0%B9%20%D0%B4%D1%80%D0%B5%D0%B2%D0%BD%D0%B5%D0%B3%D0%BE%20%D0%BC%D0%B8%D1%80%D0%B0%20%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%20BBC%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Затерянный мир Тибета",
-              "youtubeId": "55Vh4mshUZg",
               "description": "Это Тибет 30-х годов. Прекрасная изолированная земля высоко в горной цепи Гималаев. Окруженная Китайской империей, она все же оставалась недоступной для внешнего мира. Ныне Тибет знаменит своим лидером Далай-Ламой, который был вынужден отправиться в изгнание почти 50 лет тому назад. Британский институт кино сохранил редчайшее сокровище — цветные фильмы, снятые британцами, китайцами и тибетцами в те далекие годы. Эти кадры позволят заглянуть в почти исчезнувший мир, в то время когда Далай-Лама и его народ еще не потеряли свою родину.",
               "thumbnail": "images/hero.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8F/%D0%97%D0%B0%D1%82%D0%B5%D1%80%D1%8F%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%BC%D0%B8%D1%80%20%D0%A2%D0%B8%D0%B1%D0%B5%D1%82%D0%B0%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Стас Атман. Жизнь в буддийском монастыре.",
-              "youtubeId": "tXjNT4ShksE",
               "description": "Путешествие и жизнь в буддийском лесном монастыре Северного Таиланда традиции тхеравада. Буддийский монастырь. Буддийские монахи.",
               "thumbnail": "images/monks.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8F/%D0%A1%D1%82%D0%B0%D1%81%20%D0%90%D1%82%D0%BC%D0%B0%D0%BD%20%D0%96%D0%B8%D0%B7%D0%BD%D1%8C%20%D0%B2%20%D0%B1%D1%83%D0%B4%D0%B4%D0%B8%D0%B9%D1%81%D0%BA%D0%BE%D0%BC%20%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D0%B5%20%5Bget.gt%5D.mp4"
@@ -192,12 +179,9 @@
           "title": "Ритуалы",
           "description": "Ритуалы и все, что с ними связано.",
           "thumb": "images/prayer-wheels.png",
-          "cloudFolder": "Ритуалы очищения",
           "videos": [
             {
               "title": "Практика Ваджрасаттвы",
-              "source": "youtube",
-              "youtubeId": "mvBLSJWk6HE",
               "description": "Практика Ваджрасаттвы — это тантрический метод очищения кармы, негативных эмоций и глубинных умов. Главная цель ритуала — восстановить изначальную чистоту ума и разорвать цепь негативных последствий через визуализацию, искаяние и повторение мантры.",
               "thumbnail": "images/prayer-wheels.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A0%D0%B8%D1%82%D1%83%D0%B0%D0%BB%D1%8B%20%D0%BE%D1%87%D0%B8%D1%89%D0%B5%D0%BD%D0%B8%D1%8F/%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D0%B0%20%D0%92%D0%B0%D0%B4%D0%B6%D1%80%D0%B0%D1%81%D0%B0%D1%82%D1%82%D0%B2%D1%8B.mp4"
@@ -206,24 +190,18 @@
               "title": "Церемония в дацане",
               "description": "Проведение буддийских ритуалов.",
               "thumbnail": "images/flags.png",
-              "source": "youtube",
-              "youtubeId": "G_D_lfEwB-w",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A0%D0%B8%D1%82%D1%83%D0%B0%D0%BB%D1%8B%20%D0%BE%D1%87%D0%B8%D1%89%D0%B5%D0%BD%D0%B8%D1%8F/%D0%98%D0%B2%D0%BE%D0%BB%D0%B3%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B0%D1%86%D0%B0%D0%BD%20%D0%BC%D0%BE%D0%BB%D0%B5%D0%B1%D0%B5%D0%BD%20%D0%A6%D0%B5%D0%B4%D0%BE%D1%80%20%D0%9B%D1%85%D0%B0%D0%BC%D0%BE%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Мантра Ом Мани Падме Хум",
               "description": "Значение и правильное произнесение главной мантры.",
               "thumbnail": "images/monks.png",
-              "source": "youtube",
-              "youtubeId": "cUmo5n4ShYs",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A0%D0%B8%D1%82%D1%83%D0%B0%D0%BB%D1%8B%20%D0%BE%D1%87%D0%B8%D1%89%D0%B5%D0%BD%D0%B8%D1%8F/%D0%9E%D0%9C%20%D0%9C%D0%90%D0%9D%D0%98%20%D0%9F%D0%90%D0%94%D0%9C%D0%95%20%D0%A5%D0%A3%D0%9C%20%D0%9E%D0%B1%D1%8A%D1%8F%D1%81%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BA%D1%80%D0%B0%D1%82%D0%BA%D0%BE%D0%B9%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D0%B8%20%D0%A7%D0%B5%D0%BD%D1%80%D0%B5%D0%B7%D0%B8%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Практика простираний",
               "description": "108 простираний для очищения кармы.",
               "thumbnail": "images/hero.png",
-              "source": "youtube",
-              "youtubeId": "mMMerxh_12U",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A0%D0%B8%D1%82%D1%83%D0%B0%D0%BB%D1%8B%20%D0%BE%D1%87%D0%B8%D1%89%D0%B5%D0%BD%D0%B8%D1%8F/%D0%9A%D0%B0%D0%BA%20%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B0%D1%82%D1%8C%20%D0%B1%D1%83%D0%B4%D0%B4%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B5%20%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%B8%D1%80%D0%B0%D0%BD%D0%B8%D1%8F%20%5Bget.gt%5D.mp4"
             }
           ]
@@ -233,12 +211,9 @@
           "title": "Священные места",
           "description": "Атмосфера традиционных мест паломничества.",
           "thumb": "images/flags.png",
-          "cloudFolder": "Священные места",
           "videos": [
             {
               "title": "Документальный фильм «ПО МЕСТАМ БУДДЫ» / Студия Бодхи",
-              "source": "youtube",
-              "youtubeId": "WROo267tyko",
               "description": "Фильм рассказывает о четырёх священных местах буддизма: Лумбини - место рождения Будды, Бодхгая - место достижения Буддой просветления, Сарнатх - место первых проповедей Будды, и Кушинагар - место достижения Буддой паринирваны.",
               "thumbnail": "images/flags.png",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A1%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%81%D1%82%D0%B0/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%20%D0%9F%D0%9E%20%D0%9C%D0%95%D0%A1%D0%A2%D0%90%D0%9C%20%D0%91%D0%A3%D0%94%D0%94%D0%AB%20%D0%A1%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%91%D0%BE%D0%B4%D1%85%D0%B8%20%5Bget.gt%5D.mp4"
@@ -247,24 +222,18 @@
               "title": "«За пределы богов». Северная Индия, Гималаи, буддизм и Будда. Размышления и путешествие.",
               "description": "Для тех, кто ценит большое кино. Красивый и философский фильм о Будде, тибетском буддизме и непростой жизни ладакхцев, снятый в рамках авто-водного путешествия по Индийским Гималаям, Ладакху и Занскару.",
               "thumbnail": "images/flags.png",
-              "source": "youtube",
-              "youtubeId": "MTFAMDy26aQ",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A1%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%81%D1%82%D0%B0/%D0%97%D0%B0%20%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8B%20%D0%B1%D0%BE%D0%B3%D0%BE%D0%B2%20%D0%A1%D0%B5%D0%B2%D0%B5%D1%80%D0%BD%D0%B0%D1%8F%20%D0%98%D0%BD%D0%B4%D0%B8%D1%8F%20%D0%93%D0%B8%D0%BC%D0%B0%D0%BB%D0%B0%D0%B8%20%D0%B1%D1%83%D0%B4%D0%B4%D0%B8%D0%B7%D0%BC%20%D0%B8%20%D0%91%D1%83%D0%B4%D0%B4%D0%B0%20%D0%A0%D0%B0%D0%B7%D0%BC%D1%8B%D1%88%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BF%D1%83%D1%82%D0%B5%D1%88%D0%B5%D1%81%D1%82%D0%B2%D0%B8%D0%B5%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Обитель. Тубтен Шедруб Линг | Документальный фильм",
               "description": "«Тубтен Шедруб Линг» – самый большой буддийский монастырь в России. Он станет местом, где монахи смогут постигать глубину и мудрость учения Будды. С появлением в Туве этого монастыря на территорию нашей страны прибыла ценнейшая реликвия – прах Будды Шакьямуни, которому около двух с половиной тысяч лет.",
               "thumbnail": "images/monks.png",
-              "source": "youtube",
-              "youtubeId": "hAaJkNfnS34",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A1%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%81%D1%82%D0%B0/%D0%9E%D0%B1%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%20%D0%A2%D1%83%D0%B1%D1%82%D0%B5%D0%BD%20%D0%A8%D0%B5%D0%B4%D1%80%D1%83%D0%B1%20%D0%9B%D0%B8%D0%BD%D0%B3%20%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%20%5Bget.gt%5D.mp4"
             },
             {
               "title": "Будда в сердце народа",
               "description": "Предлагаем вашему вниманию документальный фильм «Будда в сердце народа» об истории буддизма в Калмыкии. Буддизм по праву считается главной духовной скрепой калмыцкого народа на протяжении многих веков, а связь с Тибетом и Далай-ламой неотъемлемой частью жизни общества. В ХХ веке калмыцкий народ пережил тяжелейшие испытания — гражданскую и великую отечественную войну, депортацию в Сибирь, практически полное уничтожение религиозных и культурных традиций. Об этих тяжелых страницах истории в фильме «Будда в сердце народа» рассказывают ученые и исследователи, хранители духовных и материальных ценностей. Фильм создан в честь 25-летия буддийского храма «Геден Шеддуп Чойкорлинг» (Сякюсн-сюме) в Калмыкии.",
               "thumbnail": "images/hero.png",
-              "source": "youtube",
-              "youtubeId": "uADqCx431Rg",
               "url": "https://storage.yandexcloud.net/diplom11/%D0%A1%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BC%D0%B5%D1%81%D1%82%D0%B0/%D0%91%D1%83%D0%B4%D0%B4%D0%B0%20%D0%B2%20%D1%81%D0%B5%D1%80%D0%B4%D1%86%D0%B5%20%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0%20%5Bget.gt%5D.mp4"
             }
           ]
