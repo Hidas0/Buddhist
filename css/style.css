@@ -130,6 +130,12 @@ h1, h2, h3, h4, .logo { font-family: 'Lora', serif; /* шрифт */ } /* «кн
     text-decoration: none; /* оформление текста */
     gap: 12px; /* расстояние между элементами */
 } /* /.logo */
+.logo__icon { /* .logo__icon */
+    width: 32px; /* ширина */
+    height: 32px; /* высота */
+    object-fit: contain; /* вписывание */
+    flex-shrink: 0; /* сжатие flex */
+} /* /.logo__icon */
 .logo i { /* .logo i */
     width: 28px; /* ширина */
     height: 28px; /* высота */
@@ -4943,6 +4949,7 @@ h2 { /* h2 */
     .logo { font-size: 1.2rem; /* размер шрифта */; gap: 8px; /* расстояние между элементами */ }
     .logo span { max-width: 42vw; /* максимальная ширина */; overflow: hidden; /* переполнение */; text-overflow: ellipsis; /* многоточие */; white-space: nowrap; /* переносы */ }
     .logo i { width: 22px; /* ширина */; height: 22px; /* высота */ }
+    .logo__icon { width: 22px; /* ширина */; height: 22px; /* высота */ }
 
     .hero { /* .hero */
         height: auto; /* высота */

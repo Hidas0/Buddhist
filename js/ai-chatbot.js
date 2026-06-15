@@ -39,6 +39,7 @@ const CHAT_WELCOME =
 const CHAT_SYSTEM_PROMPT = `Ты — образовательный помощник сайта «Путь Дхармы»: традиции и обычаи буддийских народов (Тибет, Калмыкия, Монголия, Бурятия, ЮВА).
 
 ПРАВИЛА ОТВЕТА:
+0. Язык — только русский. Не пиши на английском. Не показывай ход рассуждений («Okay», «Let me», «The user is asking») — только готовый ответ пользователю.
 1. Отвечай только на то, о чём спросили. Не подставляй темы (гелуг, школы, праздники), если пользователь о них не спрашивал.
 2. На приветствие («привет», «здравствуйте») — 1–2 коротких предложения: поздороваться и мягко спросить, чем помочь. Без лекций и без перечисления терминов.
 3. Длина ответа пропорциональна вопросу: короткий вопрос — короткий ответ (2–5 предложений), развёрнутый — до 8–10.
@@ -65,6 +66,19 @@ function isSimpleGreeting(text) {
 
 const GREETING_REPLY =
     'Здравствуйте! Я помогу с традициями и обычаями буддийских народов — ритуалы, праздники, Калмыкия, мантры. О чём хотите спросить?';
+
+/** Ответ модели на английском или с «мыслями вслух» — не показывать пользователю */
+function sanitizeBotReply(text) {
+    const s = String(text || '').trim();
+    if (!s) return s;
+    const cyrillic = (s.match(/[а-яёА-ЯЁ]/g) || []).length;
+    const latin = (s.match(/[a-zA-Z]/g) || []).length;
+    const looksLikeThinking = /^(okay|let me|the user is|i need to|wait,|from my knowledge|upon recalling)/i.test(s);
+    if (looksLikeThinking || (latin > 80 && cyrillic < latin * 0.4)) {
+        return 'Извините, ответ пришёл некорректно. Повторите вопрос по-русски — отвечу кратко и по теме.';
+    }
+    return s;
+}
 
 /** Список бесплатных моделей OpenRouter — перебор по порядку до первого успешного ответа */
 const FREE_MODELS = [
@@ -197,6 +211,7 @@ async function sendMessage() {
         removeTypingIndicator();
         
         if (reply) {
+            reply = sanitizeBotReply(reply);
             addMessage(reply, 'bot');
             messageHistory.push({ role: 'assistant', content: reply });
             saveChatState();
